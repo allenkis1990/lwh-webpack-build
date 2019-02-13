@@ -1,6 +1,6 @@
 
 console.log('当前是否开发环境'+dev);
-alert('project1的portal')
+console.log('project1的portal12121222222')
 //require('style/style1.css');
 //require('@/less/style1.less');
 //let data1 = require('data/data1.js')
@@ -12,4 +12,3 @@ require('portal/assets/vue.min.js')
 if(module.hot){
     module.hot.accept();
 }
-

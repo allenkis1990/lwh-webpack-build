@@ -10,25 +10,38 @@ const app = express()
 const webpack  = require('webpack')
 const path = require('path')
 //console.log(path.resolve(__dirname,'projects/project1/src'),12121212);
-let webpackConfig = process.env.NODE_ENV === 'production' ?
-    require('./webpack.pro.config') :
-    require('./webpack.dev.config');
-const webpackBaseConfig = require('./webpack.base.config');
-webpackConfig.mode = 'development'
-if(process.env.NODE_ENV === 'development'){
-    Object.keys(webpackBaseConfig.entry).forEach(function (name) {
-        webpackBaseConfig.entry[name] = ['./dev-client'].concat(webpackBaseConfig.entry[name])
-    })
-}
-let finallyConfig = merge(webpackBaseConfig,webpackConfig);
-var compiler = webpack(finallyConfig)
+let webpackConfig = require('./webpack.dev.config')
+// webpackConfig.mode = 'development'
+webpackConfig.forEach((itemConfig)=>{
+    let entry = {
+
+    }
+    itemConfig.mode = 'development'
+    // Object.keys(itemConfig.entry).forEach(function (name) {
+    //     // console.log(name);
+    //     if(name!=='index'){
+    //         itemConfig.entry[name] = ['./dev-client'].concat(itemConfig.entry[name])
+    //     }
+    // })
+    // console.log(entry);
+})
+// webpackConfig[0].entry['portalEntry'] = ['./dev-client'].concat(webpackConfig[0].entry['portalEntry'])
+// if(process.env.NODE_ENV === 'development'){
+//     Object.keys(webpackBaseConfig.entry).forEach(function (name) {
+//         webpackBaseConfig.entry[name] = ['./dev-client'].concat(webpackBaseConfig.entry[name])
+//     })
+// }
+// let finallyConfig = merge(webpackBaseConfig,webpackConfig);
+var compiler = webpack(webpackConfig)
 
 
 //////////////////////热更新////////////////////////////
 // 开发环境下加自动刷新的entry
 // index.html无法热更新
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-    log: () => {}
+    log: () => {},
+    path: "/__webpack_hmr"
+    // heartbeat: 20000
 })
 // compiler.plugin('compilation', function (compilation) {
 //     compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
@@ -38,13 +51,13 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler, {
 // })
 app.use(hotMiddleware);
 //////////////////////热更新////////////////////////////
-
-
 //////////////////////开发服务器配置////////////////////////////
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
-    publicPath: '/',
+    publicPath: 'http://127.0.0.1:8080/',
+    // publicPath: 'project1/',
     quiet: true,
-    noInfo: true
+    noInfo: true,
+    // writeToDisk:true
 })
 // console.log(typeof devMiddleware);//fn
 // app.use(function(req,res,next){
@@ -72,9 +85,22 @@ Object.keys(proxyList).forEach(function (context) {
 })
 //////////////////////代理////////////////////////////
 
-
 // 静态资源
-//app.use('/src', express.static('./projects/project1/src'))
-
+// app.use('/js',express.static(path.join(__dirname,'dist/project1/portal/js')))
+// app.use(function (req,res) {
+//     if(/hot-update.json/.test(req.url)){
+//         console.log(req.url);
+//         console.log(req.statusCode);
+//         console.log(req.statusMessage);
+//         console.log(Object.keys(req))
+//         if(!req.statusCode){
+//             res.send({"h":"389482d4f86b2024450b","c":{"portalEntry":true}})
+//         }
+//     }
+//     if(/hot-update.js/.test(req.url)){
+//         res.send(1)
+//     }
+//     // res.send('111')
+// })
 // 启动服务
-app.listen('8088');
+app.listen('8080','127.0.0.1');

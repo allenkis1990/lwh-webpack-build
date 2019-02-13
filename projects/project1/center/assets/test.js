@@ -1,5 +1,5 @@
 module.exports =  {
     fn() {
-        return 'fn';
+        return 'lwhhahahhahahahaha';
     }
 }

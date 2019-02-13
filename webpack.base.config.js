@@ -89,11 +89,20 @@ module.exports = {
                     enforce: true,
                     minChunks:1//最小被引用两次的公共库才被抽离到公共代码
                 },
-                assets: {
+                centerAssets: {
                     chunks: 'initial',// 只对入口文件处理
-                    //test: path.resolve(config.projectPath+'/src/assets'),
-                    test: /(portal|center)\\assets/,
-                    name: '../common/assets',
+                    test: path.resolve(config.projectPath+'/center/assets'),
+                    // test: /(center)\\assets/,
+                    name: '../center/common/assets',
+                    priority: 10,
+                    enforce: true,
+                    minChunks:1//最小被引用两次的公共库才被抽离到公共代码
+                },
+                portalAssets: {
+                    chunks: 'initial',// 只对入口文件处理
+                    test: path.resolve(config.projectPath+'/portal/assets'),
+                    // test: /(portal)\\assets/,
+                    name: '../portal/common/assets',
                     priority: 10,
                     enforce: true,
                     minChunks:1//最小被引用两次的公共库才被抽离到公共代码
