@@ -15,7 +15,8 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 function getExports(entryName,which){
     return {
         entry: {
-            [entryName]: [`${config.projectPath}/${which}/js/index.js`,'./dev-client']
+            [entryName]: [`${config.projectPath}/${which}/js/index.js`]
+            //[entryName]: [`${config.projectPath}/${which}/js/index.js`,'./dev-client']
         },
         output:{
             path:path.resolve(__dirname,'dist',config.project,which),
