@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "set NODE_ENV=development&&node dev-server.js",
+    "dev2": "set NODE_ENV=development&&node dev-server.js",
     "pro": "set NODE_ENV=production&&webpack --mode production --config webpack.pro.config.js",
     "replace": "webpack --mode production --config webpack.pro.config.js --project=project1",
     "build": "node build-all.js&&npm run replace"

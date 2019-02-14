@@ -10,7 +10,8 @@ const app = express()
 const webpack  = require('webpack')
 const path = require('path')
 //console.log(path.resolve(__dirname,'projects/project1/src'),12121212);
-let webpackConfig = require('./webpack.dev.config')
+// let webpackConfig = require('./webpack.dev.config')
+let webpackConfig = require('./webpack.dev2.config')
 // webpackConfig.mode = 'development'
 webpackConfig.forEach((itemConfig)=>{
     let entry = {
@@ -53,11 +54,11 @@ app.use(hotMiddleware);
 //////////////////////热更新////////////////////////////
 //////////////////////开发服务器配置////////////////////////////
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
-    publicPath: 'http://127.0.0.1:8080/',
-    // publicPath: 'project1/',
+    publicPath: '/',
+    // publicPath: 'http://127.0.0.1:8080/portal',
     quiet: true,
     noInfo: true,
-    // writeToDisk:true
+    writeToDisk:true
 })
 // console.log(typeof devMiddleware);//fn
 // app.use(function(req,res,next){
