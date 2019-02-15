@@ -1,7 +1,7 @@
 
 console.log('当前是否开发环境'+dev);
 console.log('project1的9999999999')
-require('portal/style/style2.css');
+require('../style/style2.css');
 //require('@/less/style1.less');
 //let data1 = require('data/data1.js')
 //let data2 = require('@/data/data2.js')

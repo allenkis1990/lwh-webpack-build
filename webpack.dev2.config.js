@@ -26,8 +26,8 @@ function recursiveIssuer(m) {
 function getExports(entryName,which){
     return {
         entry: {
-            portalEntry: [`${config.projectPath}/portal/js/index.js`,'./dev-client'],
-            centerEntry: [`${config.projectPath}/center/js/index.js`,'./dev-client']
+            portal: [`${config.projectPath}/portal/js/index.js`,'./dev-client'],
+            center: [`${config.projectPath}/center/js/index.js`,'./dev-client']
             // [entryName]: [`${config.projectPath}/${which}/js/index.js`,'./dev-client']
         },
         output:{
@@ -172,7 +172,7 @@ function getExports(entryName,which){
                     //loader:'style-loader!css-loader'
                     use:[
                         {
-                            loader: CenterMiniCssExtractPlugin.loader,//注意这边
+                            loader: PortalMiniCssExtractPlugin.loader,//注意这边
                             // options: {
                             //     publicPath:'../'//解决css下的图片路径错误问题
                             // }
@@ -204,7 +204,7 @@ function getExports(entryName,which){
                     vendor: {
                         chunks: 'initial',// 只对入口文件处理
                         test:/[\\/]node_modules[\\/]/,
-                        name: 'common/vendor',
+                        name: 'vendor',
                         priority: 10,
                         enforce: true,
                         // minChunks:1//最小被引用两次的公共库才被抽离到公共代码
@@ -229,7 +229,7 @@ function getExports(entryName,which){
                         chunks: 'initial',// 只对入口文件处理
                         test: path.resolve(`${config.projectPath}/portal/assets`),
                         // test: /assets/,
-                        name: 'portal/js/assets',
+                        name: 'portal/assets',
                         priority: 10,
                         enforce: true,
                         minChunks:1//最小被引用两次的公共库才被抽离到公共代码
@@ -238,7 +238,7 @@ function getExports(entryName,which){
                         chunks: 'initial',// 只对入口文件处理
                         test: path.resolve(`${config.projectPath}/center/assets`),
                         // test: /assets/,
-                        name: 'center/js/assets',
+                        name: 'center/assets',
                         priority: 10,
                         enforce: true,
                         minChunks:1//最小被引用两次的公共库才被抽离到公共代码
@@ -247,7 +247,7 @@ function getExports(entryName,which){
             },
             //抽取webpack运行文件代码
             runtimeChunk: {
-                name: 'common/manifest'
+                name: 'manifest'
             }
         },
         plugins: [
@@ -275,8 +275,8 @@ function getExports(entryName,which){
                     collapseWhitespace:true,//html片段变成一行
                     // removeComments: true
                 },
-                // excludeChunks:['centerVendor'],
-                chunks:['portalEntry','portalVendor']//按需映入入口JS
+                excludeChunks:['center'],
+                chunks:['portal']//按需映入入口JS
             }),
             new HtmlWebpackPlugin({
                 filename: 'center/index.html',//真正输出的地址output.path+filename=./dist/index.html
@@ -289,8 +289,8 @@ function getExports(entryName,which){
                     collapseWhitespace:true,//html片段变成一行
                     // removeComments: true
                 },
-                // excludeChunks:['portalVendor'],
-                chunks:['centerEntry','centerVendor']//按需映入入口JS
+                excludeChunks:['portal'],
+                chunks:['center']//按需映入入口JS
             }),
             new ProgressBarPlugin(),
             new webpack.DefinePlugin({
@@ -324,45 +324,13 @@ function getExports(entryName,which){
             new webpack.HotModuleReplacementPlugin(),
             new FriendlyErrorsPlugin(),
             new PortalMiniCssExtractPlugin({
-                filename: "portal/css/style.css",
-                chunkFilename: "portal/css/style.[hash:8].css"}),
-            new CenterMiniCssExtractPlugin({
-                filename: "center/css/style.css",
-                chunkFilename: "center/css/style.[hash:8].css"})
-            // new moveEntryToDirPlugin()
+                filename: "[name]/css/[name]Style.css",
+                chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
+            new moveEntryToDirPlugin()
             //抽取CSS
         ]
     }
 }
 
-function getIndex(){
-    return {
-        entry: {
-            index: `${config.projectPath}/index.js`
-        },
-        output:{
-            path:path.resolve(__dirname,'dist',config.project),
-            filename:'[name].[hash:8].bundle.js',
-            publicPath: ""
-            //publicPath:"dist"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
-        },
-        plugins: [
-            new HtmlWebpackPlugin({
-                filename: 'index.html',//真正输出的地址output.path+filename=./dist/index.html
-                template:`${config.projectPath}/index.html`,//INdex的模板
-                inject: true,
-                hash:true,
-                title:'',
-                minify: {
-                    removeAttributeQuotes: true, // 移除属性的引号
-                    collapseWhitespace:true,//html片段变成一行
-                    removeComments: true
-                }
-                // chunks:['portalEntry']//按需映入入口JS
-            }),
-            new ProgressBarPlugin()
-        ]
-    }
-}
 
-module.exports = [getExports('portalEntry','portal')]
+module.exports = [getExports()]

@@ -239,5 +239,5 @@ function getIndex(){
     }
 }
 
-module.exports = [getExports('portalEntry','portal'),
-    getExports('centerEntry','center')]
+module.exports = [getExports('portal','portal'),
+    getExports('center','center')]
