@@ -10,7 +10,7 @@ const copyWebpackPlugin = require('copy-webpack-plugin');
 const Happypack = require('happypack')
 const config = require('./config/config.js')
 const RightEntryPlugin = require('./plugins/rightEntryPlugin.js')
-const moveEntryToDirPlugin = require('./plugins/moveEntryToDirPlugin.js')
+const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 function getExports(entryName,which){
     return {
@@ -203,7 +203,7 @@ function getExports(entryName,which){
             new RightEntryPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new FriendlyErrorsPlugin()
-            // new moveEntryToDirPlugin()
+            // new MoveAssetsToDirPlugin()
             //抽取CSS
         ]
     }

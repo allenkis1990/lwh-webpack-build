@@ -7,7 +7,8 @@ require('../style/style2.css');
 //let data2 = require('@/data/data2.js')
 //console.log(data2);
 require('jquery')
-require('portal/assets/test.js')
+let test = require('portal/assets/test.js')
+console.log(test);
 // require('portal/assets/vue.min.js')
 // let data1 = require('portal/data/data1.js')
 // console.log(data1);

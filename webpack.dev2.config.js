@@ -10,10 +10,9 @@ const copyWebpackPlugin = require('copy-webpack-plugin');
 const Happypack = require('happypack')
 const config = require('./config/config.js')
 const RightEntryPlugin = require('./plugins/rightEntryPlugin.js')
-const moveEntryToDirPlugin = require('./plugins/moveEntryToDirPlugin.js')
+const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const PortalMiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
-const CenterMiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
 function recursiveIssuer(m) {
     if (m.issuer) {
         return recursiveIssuer(m.issuer);
@@ -148,7 +147,7 @@ function getExports(entryName,which){
                     //从右到左执行
                     use:[
                         {
-                            loader: PortalMiniCssExtractPlugin.loader,//注意这边
+                            loader: MiniCssExtractPlugin.loader,//注意这边
                             // options: {
                             //     publicPath:'../'//解决css下的图片路径错误问题
                             // }
@@ -172,7 +171,7 @@ function getExports(entryName,which){
                     //loader:'style-loader!css-loader'
                     use:[
                         {
-                            loader: PortalMiniCssExtractPlugin.loader,//注意这边
+                            loader: MiniCssExtractPlugin.loader,//注意这边
                             // options: {
                             //     publicPath:'../'//解决css下的图片路径错误问题
                             // }
@@ -323,10 +322,10 @@ function getExports(entryName,which){
             new RightEntryPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new FriendlyErrorsPlugin(),
-            new PortalMiniCssExtractPlugin({
+            new MiniCssExtractPlugin({
                 filename: "[name]/css/[name]Style.css",
                 chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
-            new moveEntryToDirPlugin()
+            new MoveAssetsToDirPlugin()
             //抽取CSS
         ]
     }
