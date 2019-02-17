@@ -1,6 +1,7 @@
 
 console.log('当前是否开发环境'+dev);
-alert('project1的center')
+console.log('1111212111')
+
 // require('../less/style1.less');
 //require('@/less/style1.less');
 //let data1 = require('data/data1.js')
@@ -8,7 +9,7 @@ alert('project1的center')
 //require('center/assets/test.js')
 require('jquery')
 // console.log(data2);
-/*if(module.hot){
+if(module.hot){
     module.hot.accept();
-}*/
+}
 

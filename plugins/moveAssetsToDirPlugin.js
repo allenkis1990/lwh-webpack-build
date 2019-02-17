@@ -7,6 +7,58 @@
  */
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 class moveAssetsToDirPlugin{
+    //处理manifest和vendor等通用的
+    processCommon(itemTag,compilation){
+        this.oldAssetFullFile = `js/${this.assetFileName}`
+        this.assetFileFullName1 = `center/js/${this.assetFileName}`
+        this.assetFileFullName2 = `portal/js/${this.assetFileName}`
+        //console.log(compilation.assets[oldAssetFullFile],1212);
+        compilation.assets[this.assetFileFullName1] = compilation.assets[this.oldAssetFullFile]
+        compilation.assets[this.assetFileFullName2] = compilation.assets[this.oldAssetFullFile]
+        if (compilation.assets[this.oldAssetFullFile + '.map']) {
+            compilation.assets[this.assetFileFullName1 + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
+            compilation.assets[this.assetFileFullName2 + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
+        }
+        itemTag.attributes.src = `$$$$dir$$$$/js/${this.assetFileName}${this.hash}`
+        //console.log(src,1212);
+        //console.log(this.HtmlWebpackPluginCount);
+        //if (this.HtmlWebpackPluginCount === 2) {
+        //    if(compilation.assets[this.oldAssetFullFile]){
+        //        delete compilation.assets[this.oldAssetFullFile]
+        //    }
+        //    if (compilation.assets[this.oldAssetFullFile + '.map']) {
+        //        delete compilation.assets[this.oldAssetFullFile + '.map']
+        //    }
+        //}
+    }
+    //处理assets下的文件
+    processAssets(dir,itemTag,compilation){
+        this.oldAssetFullFile = `js/${dir}/${this.assetFileName}`
+        this.assetFileFullName = `${dir}/js/${this.assetFileName}`
+        itemTag.attributes.src = this.assetFileFullName+this.hash
+        compilation.assets[this.assetFileFullName] = compilation.assets[this.oldAssetFullFile]
+        if(compilation.assets[this.oldAssetFullFile+'.map']){
+            compilation.assets[this.assetFileFullName+'.map'] = compilation.assets[this.oldAssetFullFile+'.map']
+            delete compilation.assets[this.oldAssetFullFile+'.map']
+        }
+        if(compilation.assets[this.oldAssetFullFile]){
+            delete compilation.assets[this.oldAssetFullFile]
+        }
+    }
+    //处理入口文件
+    processEntry(dir,itemTag,compilation){
+        this.oldAssetFullFile = `js/${this.assetFileName}`
+        this.assetFileFullName = `${dir}/js/${this.assetFileName}`
+        itemTag.attributes.src = this.assetFileFullName + this.hash
+        compilation.assets[this.assetFileFullName] = compilation.assets[this.oldAssetFullFile]
+        if (compilation.assets[this.oldAssetFullFile + '.map']) {
+            compilation.assets[this.assetFileFullName + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
+            delete compilation.assets[this.oldAssetFullFile + '.map']
+        }
+        if(compilation.assets[this.oldAssetFullFile]){
+            delete compilation.assets[this.oldAssetFullFile]
+        }
+    }
     apply(compiler){
         compiler.hooks.compilation.tap('moveAssetsToDirPlugin',(compilation)=>{
             let portalReg1 = /([\\/]portal[\\/])/
@@ -15,85 +67,71 @@ class moveAssetsToDirPlugin{
             let centerReg2 = /([\\/]center\.)/
             let vendorReg = /([\\/]vendor\.)/
             let manifestReg = /([\\/]manifest\.)/
-            let HtmlWebpackPluginCount = 0
+            let hotUpdateReg = /hot-update/
+            this.HtmlWebpackPluginCount = 0
+            this.vendorLoadObj = {count:0}
+            this.maniFestLoadObj = {count:0}
             HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(
                 'alterAssetTagGroups',
                 (data, cb) => {
                     //Object.keys(compilation.assets).forEach((itemAsset)=>{
                     //    console.log(itemAsset);
                     //})
-                    HtmlWebpackPluginCount++
+                    //console.log(222222222);
+                    this.HtmlWebpackPluginCount++
+                    console.log(this.HtmlWebpackPluginCount);
                     data.bodyTags.forEach((itemTag)=>{
                         // console.log(itemTag);
                         let tagSrcReg = /.+\?(.+)/
                         let src = itemTag.attributes.src
+                        console.log(src,this.HtmlWebpackPluginCount);
                         let beforeHashSrc = itemTag.attributes.src.replace(/\?(.+)/,'')
-                        let hash = src.match(tagSrcReg)?'?'+src.match(tagSrcReg)[1]:''
+                        this.hash = src.match(tagSrcReg)?'?'+src.match(tagSrcReg)[1]:''
                         // console.log(hash);
-                        let assetFileName = beforeHashSrc.split('/').pop()
-                        let assetFileFullName,oldAssetFullFile,assetFileFullName1,assetFileFullName2
-                        //处理assets下的文件
-                        function processAssets(dir){
-                            oldAssetFullFile = `js/${dir}/${assetFileName}`
-                            assetFileFullName = `${dir}/js/${assetFileName}`
-                            itemTag.attributes.src = assetFileFullName+hash
-                            compilation.assets[assetFileFullName] = compilation.assets[oldAssetFullFile]
-                            if(compilation.assets[oldAssetFullFile+'.map']){
-                                compilation.assets[assetFileFullName+'.map'] = compilation.assets[oldAssetFullFile+'.map']
-                                delete compilation.assets[oldAssetFullFile+'.map']
-                            }
-                            delete compilation.assets[oldAssetFullFile]
-                        }
-                        //处理入口文件
-                        function processEntry(dir){
-                            oldAssetFullFile = `js/${assetFileName}`
-                            assetFileFullName = `${dir}/js/${assetFileName}`
-                            itemTag.attributes.src = assetFileFullName+hash
-                            compilation.assets[assetFileFullName] = compilation.assets[oldAssetFullFile]
-                            if(compilation.assets[oldAssetFullFile+'.map']){
-                                compilation.assets[assetFileFullName+'.map'] = compilation.assets[oldAssetFullFile+'.map']
-                                delete compilation.assets[oldAssetFullFile+'.map']
-                            }
-                            delete compilation.assets[oldAssetFullFile]
-                        }
-                        //处理manifest和vendor等通用的
-                        function processCommon(){
-                            oldAssetFullFile = `js/${assetFileName}`
-                            assetFileFullName1 = `center/js/${assetFileName}`
-                            assetFileFullName2 = `portal/js/${assetFileName}`
-                            //console.log(compilation.assets[oldAssetFullFile],1212);
-                            compilation.assets[assetFileFullName1] = compilation.assets[oldAssetFullFile]
-                            compilation.assets[assetFileFullName2] = compilation.assets[oldAssetFullFile]
-                            if(compilation.assets[oldAssetFullFile+'.map']){
-                                compilation.assets[assetFileFullName1+'.map'] = compilation.assets[oldAssetFullFile+'.map']
-                                compilation.assets[assetFileFullName2+'.map'] = compilation.assets[oldAssetFullFile+'.map']
-                            }
-                            itemTag.attributes.src = `$$$$dir$$$$/js/${assetFileName}${hash}`
-                            //console.log(src,1212);
-                            if(HtmlWebpackPluginCount===2){
-                                delete compilation.assets[oldAssetFullFile]
-                                if(compilation.assets[oldAssetFullFile+'.map']){
-                                    delete compilation.assets[oldAssetFullFile+'.map']
-                                }
-                            }
-                        }
+                        this.assetFileName = beforeHashSrc.split('/').pop()
+                        //let assetFileFullName,oldAssetFullFile,assetFileFullName1,assetFileFullName2
                         if(portalReg1.test(src)){
-                            processAssets('portal')
-                        }else if(portalReg2.test(src)){
-                            processEntry('portal')
+                            this.processAssets('portal',itemTag,compilation)
+                        }else if(portalReg2.test(src)&&!hotUpdateReg.test(src)){
+                            this.processEntry('portal',itemTag,compilation)
                         } else if(centerReg1.test(src)){
-                            processAssets('center')
-                        }else if(centerReg2.test(src)){
-                            processEntry('center')
+                            this.processAssets('center',itemTag,compilation)
+                        }else if(centerReg2.test(src)&&!hotUpdateReg.test(src)){
+                            this.processEntry('center',itemTag,compilation)
                         }else if(vendorReg.test(src)){
-                            processCommon()
-                        } else if(manifestReg.test(src)){
-                            processCommon()
+                            //console.log(222222);
+                            //this.oldAssetFullFile = `js/${this.assetFileName}`
+                            this.processCommon(itemTag,compilation)
+                            this.vendorLoadObj.fullFile = this.oldAssetFullFile
+                            this.vendorLoadObj.count ++
+                        }else if(manifestReg.test(src)){
+                            this.processCommon(itemTag,compilation)
+                            this.maniFestLoadObj.fullFile = this.oldAssetFullFile
+                            this.maniFestLoadObj.count ++
                         } else{
 
                         }
-
                     })
+                    //console.log(this.vendorLoadObj.count,'vvvvv');
+                    //console.log(this.maniFestLoadObj.count,'mmmmm');
+                    if (this.HtmlWebpackPluginCount===2&&(this.vendorLoadObj.count===1||this.vendorLoadObj.count===2)) {
+                        console.log(this.vendorLoadObj.count,'vvvvv');
+                        if(compilation.assets[this.vendorLoadObj.fullFile]){
+                            delete compilation.assets[this.vendorLoadObj.fullFile]
+                        }
+                        if (compilation.assets[this.vendorLoadObj.fullFile+'map']) {
+                            delete compilation.assets[this.vendorLoadObj.fullFile+'map']
+                        }
+                    }
+                    if (this.HtmlWebpackPluginCount===2&&this.maniFestLoadObj.count===2) {
+                        console.log(this.maniFestLoadObj.count,'mmmmm');
+                        if(compilation.assets[this.maniFestLoadObj.fullFile]){
+                            delete compilation.assets[this.maniFestLoadObj.fullFile]
+                        }
+                        if (compilation.assets[this.maniFestLoadObj.fullFile+'map']) {
+                            delete compilation.assets[this.maniFestLoadObj.fullFile+'map']
+                        }
+                    }
                     cb(null, data)
                 }
             )

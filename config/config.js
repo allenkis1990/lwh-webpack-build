@@ -7,6 +7,7 @@ let fs = require('fs')
 let colors = require('colors/safe');
 let dirs
 let _project
+let isBuildAll = argv.all
 if(argv.project&&typeof argv.project==='string'){
     dirs = getDirs()
     if(dirs){
@@ -37,12 +38,15 @@ function getDirs(){
     }
     return dirs
 }
-console.log(colors.green(`当前项目：'${_project}   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+if(!isBuildAll){
+    console.log(colors.green(`现在开始构建项目：${_project}   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+} else {
+    console.log(colors.green(`现在开始构建projects下的所有项目   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+}
 module.exports = {
-    projectPath:'./projects/'+_project,
+    mainDir:'./projects',
     project:_project,
-    parentProject:'parentProject',
-    indexPath:'./projects/'+_project+'/src/index.html',
+    parentMainDir:'./parentProject',
     portal:'portal',
     center:'center'
 }

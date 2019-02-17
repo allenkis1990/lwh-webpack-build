@@ -1,9 +1,4 @@
-const rimraf = require('rimraf');
-rimraf('./dist', function (err) {
-    if(err){
-        console.log(err);
-    }
-});
+
 const express = require('express')
 const merge = require('webpack-merge')
 const app = express()
@@ -11,28 +6,15 @@ const webpack  = require('webpack')
 const path = require('path')
 //console.log(path.resolve(__dirname,'projects/project1/src'),12121212);
 // let webpackConfig = require('./webpack.dev.config')
-let webpackConfig = require('./webpack.dev2.config')
+let webpackConfig = require('./webpack.dev.config')
 // webpackConfig.mode = 'development'
-webpackConfig.forEach((itemConfig)=>{
-    let entry = {
-
+webpackConfig.mode = 'development'
+Object.keys(webpackConfig.entry).forEach(function (name) {
+    // console.log(name);
+    if (name !== 'index') {
+        webpackConfig.entry[name] = ['./dev-client'].concat(webpackConfig.entry[name])
     }
-    itemConfig.mode = 'development'
-    // Object.keys(itemConfig.entry).forEach(function (name) {
-    //     // console.log(name);
-    //     if(name!=='index'){
-    //         itemConfig.entry[name] = ['./dev-client'].concat(itemConfig.entry[name])
-    //     }
-    // })
-    // console.log(entry);
 })
-// webpackConfig[0].entry['portalEntry'] = ['./dev-client'].concat(webpackConfig[0].entry['portalEntry'])
-// if(process.env.NODE_ENV === 'development'){
-//     Object.keys(webpackBaseConfig.entry).forEach(function (name) {
-//         webpackBaseConfig.entry[name] = ['./dev-client'].concat(webpackBaseConfig.entry[name])
-//     })
-// }
-// let finallyConfig = merge(webpackBaseConfig,webpackConfig);
 var compiler = webpack(webpackConfig)
 
 
@@ -44,12 +26,12 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler, {
     path: "/__webpack_hmr"
     // heartbeat: 20000
 })
-// compiler.plugin('compilation', function (compilation) {
-//     compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-//         hotMiddleware.publish({ action: 'reload' })
-//         cb()
-//     })
-// })
+ //compiler.plugin('compilation', function (compilation) {
+ //    compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+ //        hotMiddleware.publish({ action: 'reload' })
+ //        cb()
+ //    })
+ //})
 app.use(hotMiddleware);
 //////////////////////热更新////////////////////////////
 //////////////////////开发服务器配置////////////////////////////
@@ -57,8 +39,8 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
     publicPath: '/',
     // publicPath: 'http://127.0.0.1:8080/portal',
     quiet: true,
-    noInfo: true,
-    writeToDisk:true
+    noInfo: true
+    //writeToDisk:true
 })
 // console.log(typeof devMiddleware);//fn
 // app.use(function(req,res,next){

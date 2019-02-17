@@ -12,18 +12,30 @@ const config = require('./config/config.js')
 const RightEntryPlugin = require('./plugins/rightEntryPlugin.js')
 const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-function getExports(entryName,which){
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
+function recursiveIssuer(m) {
+    if (m.issuer) {
+        return recursiveIssuer(m.issuer);
+    } else if (m.name) {
+        return m.name;
+    } else {
+        return false;
+    }
+}
+function getExports(project){
     return {
         entry: {
-            [entryName]: [`${config.projectPath}/${which}/js/index.js`]
+            portal: `${config.mainDir}/${project}/portal/js/index.js`,
+            center: `${config.mainDir}/${project}/center/js/index.js`
             // [entryName]: [`${config.projectPath}/${which}/js/index.js`,'./dev-client']
         },
         output:{
-            path:path.resolve(__dirname,'dist',config.project,which),
-            filename:'js/[name].[hash:8].bundle.js',
+            path:path.resolve(__dirname,'dist',project),
+            filename:'js/[name].bundle.js',
+            //filename:'js/[name].[hash:8].bundle.js',
             // publicPath: 'http://127.0.0.1:8080/'+which+'/'
-            publicPath: which+'/'
-            // publicPath:"portal/"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
+            // publicPath: which+'/'
+            publicPath:""//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
         },
         externals: {
             // 使用动态连接库的VUE模块，这样就可以直接在项目中require('Vue')使用 webpack不会进行打包
@@ -35,13 +47,13 @@ function getExports(entryName,which){
             extensions: ['.js', '.vue', '.json','.less'],
             //require('xxx')先去src目录下找没有才去node_modules从左到右
             //作用于项目中，webpack配置文件中无法使用
-            modules: [path.resolve("node_modules"),path.resolve(config.projectPath),path.resolve(config.parentProject)],
+            modules: [path.resolve("node_modules"),path.resolve(`${config.mainDir}/${project}`),path.resolve(config.parentMainDir)],
             //原本在文件夹里去找package.json只会找main和module现在fuck和shit也会去找优先级从左到右
             mainFields:['main','module','fuck','shit'],
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:{
                 //'@':path.resolve(config.parentProject+'/src'),
-                '@':path.resolve(config.projectPath)
+                '@':path.resolve(`${config.mainDir}/${project}`)
             }
         },
         module:{
@@ -49,11 +61,25 @@ function getExports(entryName,which){
             noParse: [/lwh\.js/],
             rules:[
                 {
-                    test:/\.(gif|png|jpg|svg)/,
+                    test:/portal\\images\\.+\.(gif|png|jpg|svg)/,
                     use:{
                         loader:'url-loader',
                         options: {
-                            outputPath:'images',
+                            outputPath:'portal/images',
+                            // publicPath:'dist/images',
+                            name:'[name].[hash:8].[ext]',
+                            limit:1024*1//小于8KB会被转成base64
+                        }
+                    },
+                    exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
+                    //include:[path.resolve('./projects/project1/src')]//只编译src文件夹 但是node_modules除外
+                },
+                {
+                    test:/center\\images\\.+\.(gif|png|jpg|svg)/,
+                    use:{
+                        loader:'url-loader',
+                        options: {
+                            outputPath:'center/images',
                             // publicPath:'dist/images',
                             name:'[name].[hash:8].[ext]',
                             limit:1024*1//小于8KB会被转成base64
@@ -74,13 +100,58 @@ function getExports(entryName,which){
                     // 不设置这个会报错
                     exclude: /node_modules/
                 },
+                // {
+                //     test:/\.css$/,
+                //     //loader:'style-loader!css-loader'
+                //     //从右到左执行
+                //     use:[
+                //         {
+                //             loader:'style-loader'
+                //         },
+                //         {
+                //             loader:'css-loader'
+                //         },
+                //         {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
+                //     ],
+                //     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
+                //     include:[path.resolve(config.projectPath)]//只编译src文件夹 但是node_modules除外
+                // },
+                // {
+                //     test:/\.less/,
+                //     //loader:'style-loader!css-loader'
+                //     use:[
+                //         {
+                //             loader:'style-loader'
+                //         },
+                //
+                //         {
+                //             loader:'css-loader'
+                //         },
+                //         {loader:'postcss-loader'},//配合postcss.config文件来加CSS前缀
+                //         {
+                //             loader:"less-loader"
+                //         }
+                //     ],
+                //     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
+                //     include:[path.resolve(config.projectPath)]//只编译src文件夹 但是node_modules除外
+                // }
+
                 {
-                    test:/\.css$/,
+                    test:function(url){
+                        // if(/[\\/]portal[\\/](style|less)[\\/].+\.(less|css)/.test(url)){
+                        //     console.log('portal'+url);
+                        // }
+                        return /[\\/]portal[\\/](style|less)[\\/].+\.(less|css)/.test(url)
+                    },
+                    // test:/\.css$/,
                     //loader:'style-loader!css-loader'
                     //从右到左执行
                     use:[
                         {
-                            loader:'style-loader'
+                            loader: MiniCssExtractPlugin.loader,//注意这边
+                            // options: {
+                            //     publicPath:'../'//解决css下的图片路径错误问题
+                            // }
                         },
                         {
                             loader:'css-loader'
@@ -88,14 +159,23 @@ function getExports(entryName,which){
                         {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
                     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                    include:[path.resolve(config.projectPath)]//只编译src文件夹 但是node_modules除外
+                    include:[path.resolve(`${config.mainDir}/${project}`,'portal')]//只编译src文件夹 但是node_modules除外
                 },
                 {
-                    test:/\.less/,
+                    test:function(url){
+                        // if(/[\\/]center[\\/](style|less)[\\/].+\.(less|css)/.test(url)){
+                        //     console.log('center:'+url);
+                        // }
+                        return /[\\/]center[\\/](style|less)[\\/].+\.(less|css)/.test(url)
+                    },
+                    // test:/\.less/,
                     //loader:'style-loader!css-loader'
                     use:[
                         {
-                            loader:'style-loader'
+                            loader: MiniCssExtractPlugin.loader,//注意这边
+                            // options: {
+                            //     publicPath:'../'//解决css下的图片路径错误问题
+                            // }
                         },
 
                         {
@@ -107,7 +187,7 @@ function getExports(entryName,which){
                         }
                     ],
                     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                    include:[path.resolve(config.projectPath)]//只编译src文件夹 但是node_modules除外
+                    include:[path.resolve(`${config.mainDir}/${project}`,'center')]//只编译src文件夹 但是node_modules除外
                 }
             ]
         },
@@ -123,17 +203,42 @@ function getExports(entryName,which){
                 cacheGroups: {
                     vendor: {
                         chunks: 'initial',// 只对入口文件处理
-                        test: /node_modules/,
+                        test:/[\\/]node_modules[\\/]/,
                         name: 'vendor',
+                        priority: 10,
+                        enforce: true,
+                        // minChunks:1//最小被引用两次的公共库才被抽离到公共代码
+                    },
+                    // centerVendor: {
+                    //     chunks: 'initial',// 只对入口文件处理
+                    //     // test:/[\\/]node_modules[\\/]/,
+                    //     test:function(a,b,entry='centerEntry'){
+                    //         // if(/[\\/]node_modules[\\/]/.test(a.userRequest)&&recursiveIssuer(a)===entry&&a.constructor.name==='NormalModule'){
+                    //         //     console.log('父亲:'+recursiveIssuer(a));
+                    //         //     console.log(a.userRequest);
+                    //         //     console.log(a.constructor.name);
+                    //         // }
+                    //         return /[\\/]node_modules[\\/]/.test(a.userRequest)&&recursiveIssuer(a)===entry&&a.constructor.name==='NormalModule'
+                    //     },
+                    //     name: 'center/js/vendor',
+                    //     priority: 10,
+                    //     enforce: true,
+                    //     // minChunks:1//最小被引用两次的公共库才被抽离到公共代码
+                    // },
+                    portalAssets: {
+                        chunks: 'initial',// 只对入口文件处理
+                        test: path.resolve(`${config.mainDir}/${project}/portal/assets`),
+                        // test: /assets/,
+                        name: 'portal/assets',
                         priority: 10,
                         enforce: true,
                         minChunks:1//最小被引用两次的公共库才被抽离到公共代码
                     },
-                    assets: {
+                    centerAssets: {
                         chunks: 'initial',// 只对入口文件处理
-                        test: path.resolve(`${config.projectPath}/${which}/assets`),
-                        // test: /(center)\\assets/,
-                        name: 'assets',
+                        test: path.resolve(`${config.mainDir}/${project}/center/assets`),
+                        // test: /assets/,
+                        name: 'center/assets',
                         priority: 10,
                         enforce: true,
                         minChunks:1//最小被引用两次的公共库才被抽离到公共代码
@@ -151,7 +256,7 @@ function getExports(entryName,which){
             new webpack.ProvidePlugin({
                 $:'jquery'
             }),*/
-            new CleanWebpackPlugin(['./dist/'+config.project]),//删除文件夹插件
+            new CleanWebpackPlugin(['./dist/'+project]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件
             new PurifyCSSPlugin({
                 // Give paths to parse for rules. These should be absolute!
@@ -160,17 +265,32 @@ function getExports(entryName,which){
             //new uglifyjsWebpackPlugin(),//webpack4会对JS进行自动压缩
             //指定html位置指定后打包的js会自动被引入
             new HtmlWebpackPlugin({
-                filename: 'index.html',//真正输出的地址output.path+filename=./dist/index.html
-                template:`${config.projectPath}/${which}/index.html`,//INdex的模板
+                filename: 'portal/index.html',//真正输出的地址output.path+filename=./dist/index.html
+                template:`${config.mainDir}/${project}/portal/index.html`,//INdex的模板
                 inject: true,
-                hash:true,
-                title:which,
+                //hash:true,
+                title:'portal',
                 minify: {
                     removeAttributeQuotes: true, // 移除属性的引号
                     collapseWhitespace:true,//html片段变成一行
                     // removeComments: true
-                }
-                // chunks:['portalEntry']//按需映入入口JS
+                },
+                excludeChunks:['center'],
+                chunks:['portal']//按需映入入口JS
+            }),
+            new HtmlWebpackPlugin({
+                filename: 'center/index.html',//真正输出的地址output.path+filename=./dist/index.html
+                template:`${config.mainDir}/${project}/center/index.html`,//INdex的模板
+                inject: true,
+                //hash:true,
+                title:'center',
+                minify: {
+                    removeAttributeQuotes: true, // 移除属性的引号
+                    collapseWhitespace:true,//html片段变成一行
+                    // removeComments: true
+                },
+                excludeChunks:['portal'],
+                chunks:['center']//按需映入入口JS
             }),
             new ProgressBarPlugin(),
             new webpack.DefinePlugin({
@@ -202,42 +322,16 @@ function getExports(entryName,which){
             }),
             new RightEntryPlugin(),
             new webpack.HotModuleReplacementPlugin(),
-            new FriendlyErrorsPlugin()
-            // new MoveAssetsToDirPlugin()
+            new FriendlyErrorsPlugin(),
+            new MiniCssExtractPlugin({
+                filename: "[name]/css/[name]Style.css",
+                chunkFilename: "[name]/css/[name]Style.css"}),
+                //chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
+            new MoveAssetsToDirPlugin()
             //抽取CSS
         ]
     }
 }
 
-function getIndex(){
-    return {
-        entry: {
-            index: `${config.projectPath}/index.js`
-        },
-        output:{
-            path:path.resolve(__dirname,'dist',config.project),
-            filename:'[name].[hash:8].bundle.js',
-            publicPath: ""
-            //publicPath:"dist"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
-        },
-        plugins: [
-            new HtmlWebpackPlugin({
-                filename: 'index.html',//真正输出的地址output.path+filename=./dist/index.html
-                template:`${config.projectPath}/index.html`,//INdex的模板
-                inject: true,
-                hash:true,
-                title:'',
-                minify: {
-                    removeAttributeQuotes: true, // 移除属性的引号
-                    collapseWhitespace:true,//html片段变成一行
-                    removeComments: true
-                }
-                // chunks:['portalEntry']//按需映入入口JS
-            }),
-            new ProgressBarPlugin()
-        ]
-    }
-}
 
-module.exports = [getExports('portal','portal'),
-    getExports('center','center')]
+module.exports = getExports('project1')
