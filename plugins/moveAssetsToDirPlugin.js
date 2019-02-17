@@ -114,13 +114,14 @@ class moveAssetsToDirPlugin{
                     })
                     //console.log(this.vendorLoadObj.count,'vvvvv');
                     //console.log(this.maniFestLoadObj.count,'mmmmm');
+                    //如果是common的文件要等最后才能删不能用过第一次就删掉
                     if (this.HtmlWebpackPluginCount===2&&(this.vendorLoadObj.count===1||this.vendorLoadObj.count===2)) {
                         console.log(this.vendorLoadObj.count,'vvvvv');
                         if(compilation.assets[this.vendorLoadObj.fullFile]){
                             delete compilation.assets[this.vendorLoadObj.fullFile]
                         }
-                        if (compilation.assets[this.vendorLoadObj.fullFile+'map']) {
-                            delete compilation.assets[this.vendorLoadObj.fullFile+'map']
+                        if (compilation.assets[this.vendorLoadObj.fullFile+'.map']) {
+                            delete compilation.assets[this.vendorLoadObj.fullFile+'.map']
                         }
                     }
                     if (this.HtmlWebpackPluginCount===2&&this.maniFestLoadObj.count===2) {
@@ -128,8 +129,8 @@ class moveAssetsToDirPlugin{
                         if(compilation.assets[this.maniFestLoadObj.fullFile]){
                             delete compilation.assets[this.maniFestLoadObj.fullFile]
                         }
-                        if (compilation.assets[this.maniFestLoadObj.fullFile+'map']) {
-                            delete compilation.assets[this.maniFestLoadObj.fullFile+'map']
+                        if (compilation.assets[this.maniFestLoadObj.fullFile+'.map']) {
+                            delete compilation.assets[this.maniFestLoadObj.fullFile+'.map']
                         }
                     }
                     cb(null, data)

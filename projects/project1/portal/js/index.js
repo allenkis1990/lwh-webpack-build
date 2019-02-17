@@ -7,8 +7,10 @@ require('../style/style2.css');
 //let data2 = require('@/data/data2.js')
 //console.log(data2);
 require('jquery')
+console.log('我是project1的portal')
 let test = require('portal/assets/test.js')
 console.log(test);
+require('portal/style/style1.css')
 // require('portal/assets/vue.min.js')
 // let data1 = require('portal/data/data1.js')
 // console.log(data1);

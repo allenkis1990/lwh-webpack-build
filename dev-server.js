@@ -11,9 +11,9 @@ let webpackConfig = require('./webpack.dev.config')
 webpackConfig.mode = 'development'
 Object.keys(webpackConfig.entry).forEach(function (name) {
     // console.log(name);
-    if (name !== 'index') {
-        webpackConfig.entry[name] = ['./dev-client'].concat(webpackConfig.entry[name])
-    }
+    //if (name !== 'index') {
+    //    webpackConfig.entry[name] = ['./dev-client'].concat(webpackConfig.entry[name])
+    //}
 })
 var compiler = webpack(webpackConfig)
 
@@ -39,8 +39,8 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
     publicPath: '/',
     // publicPath: 'http://127.0.0.1:8080/portal',
     quiet: true,
-    noInfo: true
-    //writeToDisk:true
+    noInfo: true,
+    writeToDisk:true
 })
 // console.log(typeof devMiddleware);//fn
 // app.use(function(req,res,next){

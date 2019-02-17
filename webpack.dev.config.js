@@ -25,8 +25,8 @@ function recursiveIssuer(m) {
 function getExports(project){
     return {
         entry: {
-            portal: `${config.mainDir}/${project}/portal/js/index.js`,
-            center: `${config.mainDir}/${project}/center/js/index.js`
+            portal: [`${config.mainDir}/${project}/portal/js/index.js`,'./dev-client'],
+            center: [`${config.mainDir}/${project}/center/js/index.js`,'./dev-client']
             // [entryName]: [`${config.projectPath}/${which}/js/index.js`,'./dev-client']
         },
         output:{
@@ -100,95 +100,95 @@ function getExports(project){
                     // 不设置这个会报错
                     exclude: /node_modules/
                 },
-                // {
-                //     test:/\.css$/,
-                //     //loader:'style-loader!css-loader'
-                //     //从右到左执行
-                //     use:[
-                //         {
-                //             loader:'style-loader'
-                //         },
-                //         {
-                //             loader:'css-loader'
-                //         },
-                //         {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
-                //     ],
-                //     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                //     include:[path.resolve(config.projectPath)]//只编译src文件夹 但是node_modules除外
-                // },
-                // {
-                //     test:/\.less/,
-                //     //loader:'style-loader!css-loader'
-                //     use:[
-                //         {
-                //             loader:'style-loader'
-                //         },
-                //
-                //         {
-                //             loader:'css-loader'
-                //         },
-                //         {loader:'postcss-loader'},//配合postcss.config文件来加CSS前缀
-                //         {
-                //             loader:"less-loader"
-                //         }
-                //     ],
-                //     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                //     include:[path.resolve(config.projectPath)]//只编译src文件夹 但是node_modules除外
-                // }
-
                 {
-                    test:function(url){
-                        // if(/[\\/]portal[\\/](style|less)[\\/].+\.(less|css)/.test(url)){
-                        //     console.log('portal'+url);
-                        // }
-                        return /[\\/]portal[\\/](style|less)[\\/].+\.(less|css)/.test(url)
-                    },
-                    // test:/\.css$/,
+                    test: /\.css$/,
                     //loader:'style-loader!css-loader'
                     //从右到左执行
-                    use:[
+                    use: [
                         {
-                            loader: MiniCssExtractPlugin.loader,//注意这边
-                            // options: {
-                            //     publicPath:'../'//解决css下的图片路径错误问题
-                            // }
+                            loader: 'style-loader'
                         },
                         {
-                            loader:'css-loader'
+                            loader: 'css-loader'
                         },
-                        {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
+                        {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
-                    exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                    include:[path.resolve(`${config.mainDir}/${project}`,'portal')]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(`${config.mainDir}/${project}`)]//只编译src文件夹 但是node_modules除外
                 },
                 {
-                    test:function(url){
-                        // if(/[\\/]center[\\/](style|less)[\\/].+\.(less|css)/.test(url)){
-                        //     console.log('center:'+url);
-                        // }
-                        return /[\\/]center[\\/](style|less)[\\/].+\.(less|css)/.test(url)
-                    },
-                    // test:/\.less/,
+                    test: /\.less/,
                     //loader:'style-loader!css-loader'
-                    use:[
+                    use: [
                         {
-                            loader: MiniCssExtractPlugin.loader,//注意这边
-                            // options: {
-                            //     publicPath:'../'//解决css下的图片路径错误问题
-                            // }
+                            loader: 'style-loader'
                         },
 
                         {
-                            loader:'css-loader'
+                            loader: 'css-loader'
                         },
-                        {loader:'postcss-loader'},//配合postcss.config文件来加CSS前缀
+                        {loader: 'postcss-loader'},//配合postcss.config文件来加CSS前缀
                         {
-                            loader:"less-loader"
+                            loader: "less-loader"
                         }
                     ],
-                    exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                    include:[path.resolve(`${config.mainDir}/${project}`,'center')]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(`${config.mainDir}/${project}`)]//只编译src文件夹 但是node_modules除外
                 }
+
+                //{
+                //    test:function(url){
+                //        // if(/[\\/]portal[\\/](style|less)[\\/].+\.(less|css)/.test(url)){
+                //        //     console.log('portal'+url);
+                //        // }
+                //        return /[\\/]portal[\\/](style|less)[\\/].+\.(less|css)/.test(url)
+                //    },
+                //    // test:/\.css$/,
+                //    //loader:'style-loader!css-loader'
+                //    //从右到左执行
+                //    use:[
+                //        {
+                //            loader: MiniCssExtractPlugin.loader,//注意这边
+                //            // options: {
+                //            //     publicPath:'../'//解决css下的图片路径错误问题
+                //            // }
+                //        },
+                //        {
+                //            loader:'css-loader'
+                //        },
+                //        {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
+                //    ],
+                //    exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
+                //    include:[path.resolve(`${config.mainDir}/${project}`,'portal')]//只编译src文件夹 但是node_modules除外
+                //},
+                //{
+                //    test:function(url){
+                //        // if(/[\\/]center[\\/](style|less)[\\/].+\.(less|css)/.test(url)){
+                //        //     console.log('center:'+url);
+                //        // }
+                //        return /[\\/]center[\\/](style|less)[\\/].+\.(less|css)/.test(url)
+                //    },
+                //    // test:/\.less/,
+                //    //loader:'style-loader!css-loader'
+                //    use:[
+                //        {
+                //            loader: MiniCssExtractPlugin.loader,//注意这边
+                //            // options: {
+                //            //     publicPath:'../'//解决css下的图片路径错误问题
+                //            // }
+                //        },
+                //
+                //        {
+                //            loader:'css-loader'
+                //        },
+                //        {loader:'postcss-loader'},//配合postcss.config文件来加CSS前缀
+                //        {
+                //            loader:"less-loader"
+                //        }
+                //    ],
+                //    exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
+                //    include:[path.resolve(`${config.mainDir}/${project}`,'center')]//只编译src文件夹 但是node_modules除外
+                //}
             ]
         },
         devtool:'source-map',//在--mode production模式下也能精准定位报错位置
@@ -323,10 +323,10 @@ function getExports(project){
             new RightEntryPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new FriendlyErrorsPlugin(),
-            new MiniCssExtractPlugin({
-                filename: "[name]/css/[name]Style.css",
-                chunkFilename: "[name]/css/[name]Style.css"}),
-                //chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
+            //new MiniCssExtractPlugin({
+            //    filename: "[name]/css/[name]Style.css",
+            //    chunkFilename: "[name]/css/[name]Style.css"}),
+            //    //chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
             new MoveAssetsToDirPlugin()
             //抽取CSS
         ]
