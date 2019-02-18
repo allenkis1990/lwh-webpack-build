@@ -5,13 +5,17 @@
  * 把asset entry vendor manifest都分配到center或者portal里面去
  * 相应更改生成的index.html引资源的位置
  */
+let env = process.env.NODE_ENV
+let developmentReg = /development/ig
+let centerStart = developmentReg.test(env)?'center/':'/center/'
+let portalStart = developmentReg.test(env)?'portal/':'/portal/'
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 class moveAssetsToDirPlugin{
     //处理manifest和vendor等通用的
     processCommon(itemTag,compilation){
         this.oldAssetFullFile = `js/${this.assetFileName}`
-        this.assetFileFullName1 = `center/js/${this.assetFileName}`
-        this.assetFileFullName2 = `portal/js/${this.assetFileName}`
+        this.assetFileFullName1 = `${centerStart}js/${this.assetFileName}`
+        this.assetFileFullName2 = `${portalStart}js/${this.assetFileName}`
         //console.log(compilation.assets[oldAssetFullFile],1212);
         compilation.assets[this.assetFileFullName1] = compilation.assets[this.oldAssetFullFile]
         compilation.assets[this.assetFileFullName2] = compilation.assets[this.oldAssetFullFile]
@@ -19,7 +23,7 @@ class moveAssetsToDirPlugin{
             compilation.assets[this.assetFileFullName1 + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
             compilation.assets[this.assetFileFullName2 + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
         }
-        itemTag.attributes.src = `$$$$dir$$$$/js/${this.assetFileName}${this.hash}`
+        itemTag.attributes.src = `$$$$dir$$$$js/${this.assetFileName}${this.hash}`
         //console.log(src,1212);
         //console.log(this.HtmlWebpackPluginCount);
         //if (this.HtmlWebpackPluginCount === 2) {
@@ -32,9 +36,9 @@ class moveAssetsToDirPlugin{
         //}
     }
     //处理assets下的文件
-    processAssets(dir,itemTag,compilation){
+    processAssets(dir,itemTag,compilation,which){
         this.oldAssetFullFile = `js/${dir}/${this.assetFileName}`
-        this.assetFileFullName = `${dir}/js/${this.assetFileName}`
+        this.assetFileFullName = `${which}js/${this.assetFileName}`
         itemTag.attributes.src = this.assetFileFullName+this.hash
         compilation.assets[this.assetFileFullName] = compilation.assets[this.oldAssetFullFile]
         if(compilation.assets[this.oldAssetFullFile+'.map']){
@@ -48,7 +52,7 @@ class moveAssetsToDirPlugin{
     //处理入口文件
     processEntry(dir,itemTag,compilation){
         this.oldAssetFullFile = `js/${this.assetFileName}`
-        this.assetFileFullName = `${dir}/js/${this.assetFileName}`
+        this.assetFileFullName = `${dir}js/${this.assetFileName}`
         itemTag.attributes.src = this.assetFileFullName + this.hash
         compilation.assets[this.assetFileFullName] = compilation.assets[this.oldAssetFullFile]
         if (compilation.assets[this.oldAssetFullFile + '.map']) {
@@ -91,13 +95,13 @@ class moveAssetsToDirPlugin{
                         this.assetFileName = beforeHashSrc.split('/').pop()
                         //let assetFileFullName,oldAssetFullFile,assetFileFullName1,assetFileFullName2
                         if(portalReg1.test(src)){
-                            this.processAssets('portal',itemTag,compilation)
+                            this.processAssets('portal',itemTag,compilation,`${portalStart}`)
                         }else if(portalReg2.test(src)&&!hotUpdateReg.test(src)){
-                            this.processEntry('portal',itemTag,compilation)
+                            this.processEntry(`${portalStart}`,itemTag,compilation)
                         } else if(centerReg1.test(src)){
-                            this.processAssets('center',itemTag,compilation)
+                            this.processAssets('center',itemTag,compilation,`${centerStart}`)
                         }else if(centerReg2.test(src)&&!hotUpdateReg.test(src)){
-                            this.processEntry('center',itemTag,compilation)
+                            this.processEntry(`${centerStart}`,itemTag,compilation)
                         }else if(vendorReg.test(src)){
                             //console.log(222222);
                             //this.oldAssetFullFile = `js/${this.assetFileName}`
@@ -140,15 +144,15 @@ class moveAssetsToDirPlugin{
             HtmlWebpackPlugin.getHooks(compilation).beforeEmit.tapAsync(
                 'beforeEmit',
                 (data, cb) => {
-                    function replace(which){
-                        let reg = new RegExp(which,'img')
+                    function replace(regStr,which){
+                        let reg = new RegExp(regStr,'img')
                         if(reg.test(data.plugin.options.filename)){
                             // console.log(data.html);
                             data.html = data.html.replace(/\$\$\$\$dir\$\$\$\$/ig,which)
                         }
                     }
-                    replace('portal')
-                    replace('center')
+                    replace('portal',`${portalStart}`)
+                    replace('center',`${centerStart}`)
                     cb(null, data)
                 }
             )

@@ -43,7 +43,7 @@ class rightEntryPlugin{
                     if (!centerIsExist) {
                         entry.center = [`${config.parentMainDir}/center/js/index.js`]
                     }
-                    console.log(entry,'entry');
+                    // console.log(entry,'entry');
                 })
             }
             //console.log(config);

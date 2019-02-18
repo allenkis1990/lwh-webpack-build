@@ -56,7 +56,7 @@ function getExports(project){
                     use:{
                         loader:'url-loader',
                         options: {
-                            outputPath:'portal/images',
+                            outputPath:'/portal/images',
                             // publicPath:'dist/images',
                             name:'[name].[hash:8].[ext]',
                             limit:1024*1//小于8KB会被转成base64
@@ -70,7 +70,7 @@ function getExports(project){
                     use:{
                         loader:'url-loader',
                         options: {
-                            outputPath:'center/images',
+                            outputPath:'/center/images',
                             // publicPath:'dist/images',
                             name:'[name].[hash:8].[ext]',
                             limit:1024*1//小于8KB会被转成base64
