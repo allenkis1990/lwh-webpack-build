@@ -83,12 +83,12 @@ class moveAssetsToDirPlugin{
                     //})
                     //console.log(222222222);
                     this.HtmlWebpackPluginCount++
-                    console.log(this.HtmlWebpackPluginCount);
+                    // console.log(this.HtmlWebpackPluginCount);
                     data.bodyTags.forEach((itemTag)=>{
                         // console.log(itemTag);
                         let tagSrcReg = /.+\?(.+)/
                         let src = itemTag.attributes.src
-                        console.log(src,this.HtmlWebpackPluginCount);
+                        // console.log(src,this.HtmlWebpackPluginCount);
                         let beforeHashSrc = itemTag.attributes.src.replace(/\?(.+)/,'')
                         this.hash = src.match(tagSrcReg)?'?'+src.match(tagSrcReg)[1]:''
                         // console.log(hash);
@@ -120,7 +120,7 @@ class moveAssetsToDirPlugin{
                     //console.log(this.maniFestLoadObj.count,'mmmmm');
                     //如果是common的文件要等最后才能删不能用过第一次就删掉
                     if (this.HtmlWebpackPluginCount===2&&(this.vendorLoadObj.count===1||this.vendorLoadObj.count===2)) {
-                        console.log(this.vendorLoadObj.count,'vvvvv');
+                        // console.log(this.vendorLoadObj.count,'vvvvv');
                         if(compilation.assets[this.vendorLoadObj.fullFile]){
                             delete compilation.assets[this.vendorLoadObj.fullFile]
                         }
@@ -129,7 +129,7 @@ class moveAssetsToDirPlugin{
                         }
                     }
                     if (this.HtmlWebpackPluginCount===2&&this.maniFestLoadObj.count===2) {
-                        console.log(this.maniFestLoadObj.count,'mmmmm');
+                        // console.log(this.maniFestLoadObj.count,'mmmmm');
                         if(compilation.assets[this.maniFestLoadObj.fullFile]){
                             delete compilation.assets[this.maniFestLoadObj.fullFile]
                         }

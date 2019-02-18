@@ -11,6 +11,10 @@ console.log('我是project1的portal')
 let test = require('portal/assets/test.js')
 console.log(test);
 require('portal/style/style1.css')
+
+
+require('portal/js/require.js')
+import aa from 'portal/js/import.js'
 // require('portal/assets/vue.min.js')
 // let data1 = require('portal/data/data1.js')
 // console.log(data1);

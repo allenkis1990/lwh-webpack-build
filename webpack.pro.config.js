@@ -11,6 +11,7 @@ const Happypack = require('happypack')
 const config = require('./config/config.js')
 const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
 const RightEntryPlugin = require('./plugins/rightEntryPlugin.js')
+const NotFoudPlugin = require('./plugins/notFoudPlugin.js')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
@@ -46,6 +47,13 @@ function getExports(project){
                 //'@':path.resolve(config.parentProject+'/src'),
                 '@':path.resolve(`${config.mainDir}/${project}`)
             }
+        },
+        resolveLoader: {
+            // alias: {
+            //     testLoader:path.resolve('./loaders/testLoader.js')
+            // },
+            mainFields:['main'],
+            modules: [path.resolve("node_modules"),path.resolve("loaders")]
         },
         module:{
             //不去解析的文件
@@ -143,6 +151,14 @@ function getExports(project){
                     ],
                     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
                     include:[path.resolve(`${config.mainDir}/${project}`,'center')]//只编译src文件夹 但是node_modules除外
+                },
+                {
+                    test:/(\.js)/,
+                    use:{
+                        loader:'notFoudLoader'
+                    },
+                    exclude:[path.resolve('./dist'),/node_modules/],
+                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
                 }
             ]
         },
@@ -273,7 +289,8 @@ function getExports(project){
                     }
                 }
             }),
-            new MoveAssetsToDirPlugin()
+            new MoveAssetsToDirPlugin(),
+            new NotFoudPlugin()
             //抽取CSS
         ]
     }
