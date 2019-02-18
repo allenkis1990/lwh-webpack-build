@@ -1,24 +1,19 @@
 
 console.log('当前是否开发环境'+dev);
 console.log('project1的9999999999')
-require('../style/style2.css');
-//require('@/less/style1.less');
-//let data1 = require('data/data1.js')
-//let data2 = require('@/data/data2.js')
-//console.log(data2);
 require('jquery')
 console.log('我是project1的portal')
 let test = require('portal/assets/test.js')
 console.log(test);
-require('portal/style/style1.css')
+require('portal/style/color.css')
+//let color = require('portal/style/style1.css')
+//let color = require('E:\\webpack-test\\lwh-webpack-build\\parentProject\\portal\\style\\color.css')
+
+//alert(color,1)
 
 
-require('portal/js/require.js')
-import aa from 'portal/js/import.js'
-// require('portal/assets/vue.min.js')
-// let data1 = require('portal/data/data1.js')
-// console.log(data1);
-//require('portal/assets/vueAll_dll.js')
+//let data = require('portal/data/require.js')
+//alert(data.name);
 if(module.hot){
     module.hot.accept();
 }

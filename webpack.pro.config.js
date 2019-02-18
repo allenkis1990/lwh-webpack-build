@@ -122,7 +122,7 @@ function getExports(project){
                         {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
                     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                    include:[path.resolve(`${config.mainDir}/${project}`,'portal')]//只编译src文件夹 但是node_modules除外
+                    include:[path.resolve(`${config.mainDir}/${project}`,'portal'),path.resolve(`${config.parentMainDir}`,'portal')]//只编译src文件夹 但是node_modules除外
                 },
                 {
                     test:function(url){
@@ -150,15 +150,15 @@ function getExports(project){
                         }
                     ],
                     exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-                    include:[path.resolve(`${config.mainDir}/${project}`,'center')]//只编译src文件夹 但是node_modules除外
+                    include:[path.resolve(`${config.mainDir}/${project}`,'center'),path.resolve(`${config.parentMainDir}`,'center')]//只编译src文件夹 但是node_modules除外
                 },
                 {
                     test:/(\.js)/,
                     use:{
                         loader:'notFoudLoader'
                     },
-                    exclude:[path.resolve('./dist'),/node_modules/],
-                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
+                    exclude:[path.resolve('./dist'),/node_modules/,path.resolve(`${config.parentMainDir}`)],
+                    include:[path.resolve(`${config.mainDir}`)]
                 }
             ]
         },
