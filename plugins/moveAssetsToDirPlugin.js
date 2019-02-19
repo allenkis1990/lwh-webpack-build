@@ -6,9 +6,13 @@
  * 相应更改生成的index.html引资源的位置
  */
 let env = process.env.NODE_ENV
-let developmentReg = /development/ig
-let centerStart = developmentReg.test(env)?'center/':'/center/'
+let developmentReg = /development/
 let portalStart = developmentReg.test(env)?'portal/':'/portal/'
+// console.log(developmentReg.test(env),1);
+let centerStart = developmentReg.test(env)?'center/':'/center/'
+// console.log(developmentReg.test(env),2);
+// console.log(portalStart,221);
+// console.log(centerStart,221);
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 class moveAssetsToDirPlugin{
     //处理manifest和vendor等通用的
@@ -96,8 +100,10 @@ class moveAssetsToDirPlugin{
                         //let assetFileFullName,oldAssetFullFile,assetFileFullName1,assetFileFullName2
                         if(portalReg1.test(src)){
                             this.processAssets('portal',itemTag,compilation,`${portalStart}`)
+                            console.log(this.assetFileFullName,123);
                         }else if(portalReg2.test(src)&&!hotUpdateReg.test(src)){
                             this.processEntry(`${portalStart}`,itemTag,compilation)
+                            console.log(this.assetFileFullName,123);
                         } else if(centerReg1.test(src)){
                             this.processAssets('center',itemTag,compilation,`${centerStart}`)
                         }else if(centerReg2.test(src)&&!hotUpdateReg.test(src)){

@@ -16,18 +16,18 @@ function loader(source){
             let filename = item.match(/['"](.*)['"]/g)[0].replace(/\//g,'\\').replace(/('|")/g,'')
             try{
                 let requireUrl = require.resolve(filename)
-                console.log(requireUrl,'node_modules');
+                // console.log(requireUrl,'node_modules');
             }catch(e){
                 let fullFilePath = `${projectBaseSrc}projects\\${project}\\${filename}`
                 try{
                     let requireUrl = require.resolve(fullFilePath)
-                    console.log(requireUrl,'normal');
+                    // console.log(requireUrl,'normal');
                 }catch(err){
                     console.log(item,'err');
-                    console.log(item.match(/['"](.*)['"]/)[1].replace('/','\\'));
+                    // console.log(item.match(/['"](.*)['"]/)[1].replace('/','\\'));
                     let replaceStr = `${projectBaseSrc}parentProject\\${filename}`
                     replaceStr = replaceStr.replace(/\\/g,'\\\\')
-                    console.log(replaceStr,'ee');
+                    console.log(replaceStr,'parent');
                     source = source.replace(filename,replaceStr)
                 }
                 //console.log(requireUrl,1212);

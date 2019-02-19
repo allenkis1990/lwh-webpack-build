@@ -48,5 +48,6 @@ module.exports = {
     project:_project,
     parentMainDir:'./parentProject',
     portal:'portal',
-    center:'center'
+    center:'center',
+    apps:['portal','center']
 }

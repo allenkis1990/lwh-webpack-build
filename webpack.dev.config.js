@@ -53,7 +53,8 @@ function getExports(project){
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:{
                 //'@':path.resolve(config.parentProject+'/src'),
-                '@':path.resolve(`${config.mainDir}/${project}`)
+                '@':path.resolve(`${config.mainDir}/${project}`),
+                '@parent':path.resolve(`${config.parentMainDir}`)
             }
         },
         module:{
@@ -334,4 +335,4 @@ function getExports(project){
 }
 
 
-module.exports = getExports('project1')
+module.exports = getExports(config.project)

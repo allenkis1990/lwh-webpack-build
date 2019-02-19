@@ -16,13 +16,17 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到�
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 
+
 function getExports(project){
+
+    let entry = {}
+    config.apps.forEach((app)=>{
+        entry[app] = `${config.mainDir}/${project}/${app}/js/index.js`
+    })
+
+
     return {
-        entry: {
-            portal: `${config.mainDir}/${project}/portal/js/index.js`,
-            //center: `${config.parentMainDir}/center/js/index.js`
-            center: `${config.mainDir}/${project}/center/js/index.js`
-        },
+        entry: Object.assign(entry,{}),
         output:{
             path:path.resolve(__dirname,'dist',project),
             filename:'js/[name].[hash:8].bundle.js',
@@ -39,7 +43,8 @@ function getExports(project){
             extensions: ['.js', '.vue', '.json','.less'],
             //require('xxx')先去src目录下找没有才去node_modules从左到右
             //作用于项目中，webpack配置文件中无法使用
-            modules: [path.resolve("node_modules"),path.resolve(`${config.mainDir}/${project}`),path.resolve(config.parentMainDir)],
+            // path.resolve(config.parentMainDir)
+            modules: [path.resolve("node_modules"),path.resolve(`${config.mainDir}/${project}`)],
             //原本在文件夹里去找package.json只会找main和module现在fuck和shit也会去找优先级从左到右
             mainFields:['main','module','fuck','shit'], 
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
@@ -157,8 +162,8 @@ function getExports(project){
                     use:{
                         loader:'notFoudLoader'
                     },
-                    exclude:[path.resolve('./dist'),/node_modules/,path.resolve(`${config.parentMainDir}`)],
-                    include:[path.resolve(`${config.mainDir}`)]
+                    exclude:[path.resolve('./dist'),/node_modules/],
+                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
                 }
             ]
         },
