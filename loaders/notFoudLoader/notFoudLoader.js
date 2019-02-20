@@ -1,5 +1,8 @@
 module.exports = loader
 let path = require('path')
+let buildAll = require('yargs').argv.all
+
+
 function loader(source){
     let moduleMatchs = []
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
@@ -9,7 +12,26 @@ function loader(source){
     let project = this.resourcePath.replace(/.+\\projects\\/,'').split(path.sep)[0]
     //console.log(project);
     if(requireMatchs.length||importMatchs.length){
-        let alias = require('../../webpack.pro.config.js').resolve.alias
+        let alias
+        if(!buildAll){
+            //非build-all的时候就直接取alias
+            alias = require('../../webpack.pro.config.js').resolve.alias
+        } else {
+            //build-all的时候根据是哪个project来取相应的alias
+            let webpackConfigArr = require('../../webpack.buildAll.config.js')
+            function findCurrentWebpackConfig(configArr){
+                let currentWebpackConfig = configArr.find((config)=>{
+                    return config.output.path.includes(project)
+                })
+                return currentWebpackConfig
+            }
+            let currentWebpackConfig = findCurrentWebpackConfig(webpackConfigArr)
+            // console.log(currentWebpackConfig,3333);
+            if(currentWebpackConfig){
+                alias = currentWebpackConfig.resolve.alias
+                // console.log(alias,12311);
+            }
+        }
         //console.log(alias);
         moduleMatchs = moduleMatchs.concat(requireMatchs)
         moduleMatchs = moduleMatchs.concat(importMatchs)
@@ -24,9 +46,9 @@ function loader(source){
                 let fullPath = aliasKeyPath + path.replace(/\//g,'\\')
                 try{
                     let aa = require.resolve(fullPath)
-                    console.log(aa,'normal');
+                    // console.log(aa,'normal');
                 }catch (e){
-                    console.log(fullPath,'err')
+                    // console.log(fullPath,'err')
                     let parentPath = `@parent/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
                     source = source.replace(filePath,parentPath)
