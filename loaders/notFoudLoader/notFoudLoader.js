@@ -1,7 +1,12 @@
 module.exports = loader
 let path = require('path')
 let buildAll = require('yargs').argv.all
-
+function findCurrentWebpackConfig(configArr){
+    let currentWebpackConfig = configArr.find((config)=>{
+        return config.output.path.includes(project)
+    })
+    return currentWebpackConfig
+}
 
 function loader(source){
     let moduleMatchs = []
@@ -19,12 +24,6 @@ function loader(source){
         } else {
             //build-all的时候根据是哪个project来取相应的alias
             let webpackConfigArr = require('../../webpack.buildAll.config.js')
-            function findCurrentWebpackConfig(configArr){
-                let currentWebpackConfig = configArr.find((config)=>{
-                    return config.output.path.includes(project)
-                })
-                return currentWebpackConfig
-            }
             let currentWebpackConfig = findCurrentWebpackConfig(webpackConfigArr)
             // console.log(currentWebpackConfig,3333);
             if(currentWebpackConfig){
