@@ -5,39 +5,29 @@
  * 把asset entry vendor manifest都分配到center或者portal里面去
  * 相应更改生成的index.html引资源的位置
  */
+const config = require('../config/config.js')
 let env = process.env.NODE_ENV
 let developmentReg = /development/
-let portalStart = developmentReg.test(env)?'portal/':'/portal/'
-// console.log(developmentReg.test(env),1);
-let centerStart = developmentReg.test(env)?'center/':'/center/'
-// console.log(developmentReg.test(env),2);
-// console.log(portalStart,221);
-// console.log(centerStart,221);
+let startObj = {}
+config.apps.forEach((app)=>{
+    startObj[app+'Start'] = developmentReg.test(env)?`${app}/`:`/${app}/`
+})
+// let portalStart = developmentReg.test(env)?'portal/':'/portal/'
+// let centerStart = developmentReg.test(env)?'center/':'/center/'
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 class moveAssetsToDirPlugin{
     //处理manifest和vendor等通用的
     processCommon(itemTag,compilation){
         this.oldAssetFullFile = `js/${this.assetFileName}`
-        this.assetFileFullName1 = `${centerStart}js/${this.assetFileName}`
-        this.assetFileFullName2 = `${portalStart}js/${this.assetFileName}`
-        //console.log(compilation.assets[oldAssetFullFile],1212);
-        compilation.assets[this.assetFileFullName1] = compilation.assets[this.oldAssetFullFile]
-        compilation.assets[this.assetFileFullName2] = compilation.assets[this.oldAssetFullFile]
-        if (compilation.assets[this.oldAssetFullFile + '.map']) {
-            compilation.assets[this.assetFileFullName1 + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
-            compilation.assets[this.assetFileFullName2 + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
-        }
+        config.apps.forEach((app,no)=>{
+            this['assetFileFullName'+no] = `${startObj[app+'Start']}js/${this.assetFileName}`
+            compilation.assets[this['assetFileFullName'+no]] = compilation.assets[this.oldAssetFullFile]
+            if (compilation.assets[this.oldAssetFullFile + '.map']) {
+                compilation.assets[this['assetFileFullName'+no] + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
+            }
+        })
         itemTag.attributes.src = `$$$$dir$$$$js/${this.assetFileName}${this.hash}`
-        //console.log(src,1212);
-        //console.log(this.HtmlWebpackPluginCount);
-        //if (this.HtmlWebpackPluginCount === 2) {
-        //    if(compilation.assets[this.oldAssetFullFile]){
-        //        delete compilation.assets[this.oldAssetFullFile]
-        //    }
-        //    if (compilation.assets[this.oldAssetFullFile + '.map']) {
-        //        delete compilation.assets[this.oldAssetFullFile + '.map']
-        //    }
-        //}
     }
     //处理assets下的文件
     processAssets(dir,itemTag,compilation,which){
@@ -69,10 +59,15 @@ class moveAssetsToDirPlugin{
     }
     apply(compiler){
         compiler.hooks.compilation.tap('moveAssetsToDirPlugin',(compilation)=>{
-            let portalReg1 = /([\\/]portal[\\/])/
-            let portalReg2 = /([\\/]portal\.)/
-            let centerReg1 = /([\\/]center[\\/])/
-            let centerReg2 = /([\\/]center\.)/
+            let appRegs = {}
+            config.apps.forEach((app)=>{
+                appRegs[app+'Reg1'] = new RegExp(`[\\\\/]${app}[\\\\/]`)
+                appRegs[app+'Reg2'] = new RegExp(`[\\\\/]${app}\\.`)
+            })
+            // let portalReg1 = /([\\/]portal[\\/])/
+            // let portalReg2 = /([\\/]portal\.)/
+            // let centerReg1 = /([\\/]center[\\/])/
+            // let centerReg2 = /([\\/]center\.)/
             let vendorReg = /([\\/]vendor\.)/
             let manifestReg = /([\\/]manifest\.)/
             let hotUpdateReg = /hot-update/
@@ -98,28 +93,29 @@ class moveAssetsToDirPlugin{
                         // console.log(hash);
                         this.assetFileName = beforeHashSrc.split('/').pop()
                         //let assetFileFullName,oldAssetFullFile,assetFileFullName1,assetFileFullName2
-                        if(portalReg1.test(src)){
-                            this.processAssets('portal',itemTag,compilation,`${portalStart}`)
-                            console.log(this.assetFileFullName,123);
-                        }else if(portalReg2.test(src)&&!hotUpdateReg.test(src)){
-                            this.processEntry(`${portalStart}`,itemTag,compilation)
-                            console.log(this.assetFileFullName,123);
-                        } else if(centerReg1.test(src)){
-                            this.processAssets('center',itemTag,compilation,`${centerStart}`)
-                        }else if(centerReg2.test(src)&&!hotUpdateReg.test(src)){
-                            this.processEntry(`${centerStart}`,itemTag,compilation)
-                        }else if(vendorReg.test(src)){
+                        config.apps.forEach((app)=>{
+                            // appRegs[app+'Reg1'] = new RegExp(`[\\\\/]${app}[\\\\/]`)
+                            // appRegs[app+'Reg2'] = new RegExp(`[\\\\/]portal\\.`)
+                            if(appRegs[app+'Reg1'].test(src)){
+                                this.processAssets(app,itemTag,compilation,`${startObj[app+'Start']}`)
+                                console.log(this.assetFileFullName,123);
+                            }
+                            if(appRegs[app+'Reg2'].test(src)&&!hotUpdateReg.test(src)){
+                                this.processEntry(`${startObj[app+'Start']}`,itemTag,compilation)
+                                console.log(this.assetFileFullName,123);
+                            }
+                        })
+                        if(vendorReg.test(src)){
                             //console.log(222222);
                             //this.oldAssetFullFile = `js/${this.assetFileName}`
                             this.processCommon(itemTag,compilation)
                             this.vendorLoadObj.fullFile = this.oldAssetFullFile
                             this.vendorLoadObj.count ++
-                        }else if(manifestReg.test(src)){
+                        }
+                        if(manifestReg.test(src)){
                             this.processCommon(itemTag,compilation)
                             this.maniFestLoadObj.fullFile = this.oldAssetFullFile
                             this.maniFestLoadObj.count ++
-                        } else{
-
                         }
                     })
                     //console.log(this.vendorLoadObj.count,'vvvvv');
@@ -157,8 +153,11 @@ class moveAssetsToDirPlugin{
                             data.html = data.html.replace(/\$\$\$\$dir\$\$\$\$/ig,which)
                         }
                     }
-                    replace('portal',`${portalStart}`)
-                    replace('center',`${centerStart}`)
+                    config.apps.forEach((app)=>{
+                        replace(app,`${startObj[app+'Start']}`)
+                    })
+                    // replace('portal',`${portalStart}`)
+                    // replace('center',`${centerStart}`)
                     cb(null, data)
                 }
             )

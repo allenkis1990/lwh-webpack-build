@@ -1,7 +1,9 @@
 module.exports = loader
 let path = require('path')
 let buildAll = require('yargs').argv.all
-function findCurrentWebpackConfig(configArr){
+let loaderUtils = require('loader-utils')
+
+function findCurrentWebpackConfig(configArr,project){
     let currentWebpackConfig = configArr.find((config)=>{
         return config.output.path.includes(project)
     })
@@ -9,12 +11,13 @@ function findCurrentWebpackConfig(configArr){
 }
 
 function loader(source){
+    let options = loaderUtils.getOptions(this)
     let moduleMatchs = []
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
     let importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
     //let projectBaseSrc = this.resourcePath.match(/(.+\\)projects\\/)[1]
     //console.log(projectBaseSrc);
-    let project = this.resourcePath.replace(/.+\\projects\\/,'').split(path.sep)[0]
+    let project = this.resourcePath.replace(new RegExp(`.+\\\\${options.mainDir}\\\\`),'').split(path.sep)[0]
     //console.log(project);
     if(requireMatchs.length||importMatchs.length){
         let alias
@@ -24,7 +27,7 @@ function loader(source){
         } else {
             //build-all的时候根据是哪个project来取相应的alias
             let webpackConfigArr = require('../../webpack.buildAll.config.js')
-            let currentWebpackConfig = findCurrentWebpackConfig(webpackConfigArr)
+            let currentWebpackConfig = findCurrentWebpackConfig(webpackConfigArr,project)
             // console.log(currentWebpackConfig,3333);
             if(currentWebpackConfig){
                 alias = currentWebpackConfig.resolve.alias

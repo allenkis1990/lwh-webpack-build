@@ -43,9 +43,9 @@ function getExports(project){
             hash:true,
             title:app,
             minify: {
-                //removeAttributeQuotes: true, // 移除属性的引号
-                //collapseWhitespace:true,//html片段变成一行
-                //removeComments: true
+                removeAttributeQuotes: true, // 移除属性的引号
+                collapseWhitespace:true,//html片段变成一行
+                removeComments: true
             },
             excludeChunks: config.apps.filter((item)=> {
                 return item !== app
@@ -149,7 +149,10 @@ function getExports(project){
                 {
                     test:/(\.js)/,
                     use:{
-                        loader:'notFoudLoader'
+                        loader:'notFoudLoader',
+                        options:{
+                            mainDir:config.mainDir.replace('./','')
+                        }
                     },
                     exclude:[path.resolve('./dist'),/node_modules/],
                     include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
