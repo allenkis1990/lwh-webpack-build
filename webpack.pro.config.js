@@ -10,8 +10,7 @@ const copyWebpackPlugin = require('copy-webpack-plugin');
 const Happypack = require('happypack')
 const config = require('./config/config.js')
 const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
-const RightEntryPlugin = require('./plugins/rightEntryPlugin.js')
-const NotFoudPlugin = require('./plugins/notFoudPlugin.js')
+const NotFoudEntryPlugin = require('./plugins/notFoudEntryPlugin.js')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
@@ -24,7 +23,7 @@ function getExports(project){
     let plugins = []
     let alias = {}
     config.apps.forEach((app)=>{
-        entry[app] = `${config.mainDir}/${project}/${app}/js/index.js`
+        entry[app] = `${config.mainDir}/${project}/${app}/main.js`
         cacheGroups[`${app}Assets`] = {
             chunks: 'initial',// 只对入口文件处理
             test: path.resolve(`${config.mainDir}/${project}/${app}/assets`),
@@ -222,7 +221,10 @@ function getExports(project){
                 threads: 3,//你要开启多少个子进程去处理这一类型的文件
                 verbose: true//是否要输出详细的日志 verbose
             }),
-            new RightEntryPlugin(),
+            new NotFoudEntryPlugin({
+                mainDir:config.mainDir,
+                parentDir:config.parentMainDir
+            }),
             new MiniCssExtractPlugin({
                 filename: "[name]/css/[name]Style.css",
                 chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
@@ -240,8 +242,7 @@ function getExports(project){
                     }
                 }
             }),
-            new MoveAssetsToDirPlugin(),
-            new NotFoudPlugin()
+            new MoveAssetsToDirPlugin()
             //抽取CSS
         ])
     }

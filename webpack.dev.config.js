@@ -9,10 +9,11 @@ const PurifyCSSPlugin = require('purifycss-webpack');
 const copyWebpackPlugin = require('copy-webpack-plugin');
 const Happypack = require('happypack')
 const config = require('./config/config.js')
-const RightEntryPlugin = require('./plugins/rightEntryPlugin.js')
+const NotFoudEntryPlugin = require('./plugins/notFoudEntryPlugin.js')
 const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
+const AddMainDirFilePlugin = require('./plugins/addMainDirFilePlugin.js')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 function recursiveIssuer(m) {
     if (m.issuer) {
         return recursiveIssuer(m.issuer);
@@ -30,7 +31,7 @@ function getExports(project){
     let alias = {}
     let rules = []
     config.apps.forEach((app)=>{
-        entry[app] = [`${config.mainDir}/${project}/${app}/js/index.js`,'./dev-client.js']
+        entry[app] = [`${config.mainDir}/${project}/${app}/main.js`]
 
         let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg)`)
         rules.push(
@@ -103,20 +104,42 @@ function getExports(project){
             mainFields:['main','module','fuck','shit'],
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:Object.assign(alias,{
-                '@parent':path.resolve(config.parentMainDir)
+                '@parent':path.resolve(config.parentMainDir),
+                'vue$': 'vue/dist/vue.esm.js'
             })
         },
         resolveLoader: {
             // alias: {
             //     testLoader:path.resolve('./loaders/testLoader.js')
             // },
-            mainFields:['main'],
+            //mainFields:['main'],
             modules: [path.resolve("node_modules"),path.resolve("loaders")]
         },
         module:{
             //不去解析的文件
-            noParse: [/lwh\.js/],
+            //noParse: [/lwh\.js/],
             rules:rules.concat([
+                {
+                    test: /\.vue$/,
+                    use: {
+                        loader:'vue-loader'
+                    }
+                },
+                {
+                    test:/\.(js)$/,
+                    //test: /\.(js|vue)(\?.*)?$/,
+                    use:{
+                        loader:'notFoudLoader',
+                        options:{
+                            mainDir:config.mainDir.replace('./','')
+                        }
+                    },
+                    exclude:[path.resolve('./dist'),/node_modules/],
+                    //exclude: file => (
+                    //    /node_modules/.test(file) && !/\.vue\.js/.test(file)
+                    //),
+                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
+                },
                 {
                     test:/\.(html|htm)/,
                     loader:'html-withimg-loader'
@@ -129,23 +152,13 @@ function getExports(project){
                     exclude: /node_modules/
                 },
                 {
-                    test:/(\.js)/,
-                    use:{
-                        loader:'notFoudLoader',
-                        options:{
-                            mainDir:config.mainDir.replace('./','')
-                        }
-                    },
-                    exclude:[path.resolve('./dist'),/node_modules/],
-                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
-                },
-                {
                     test: /\.css$/,
                     //loader:'style-loader!css-loader'
                     //从右到左执行
                     use: [
                         {
-                            loader: 'style-loader'
+                            //loader: 'style-loader'
+                            loader: 'vue-style-loader'
                         },
                         {
                             loader: 'css-loader'
@@ -160,7 +173,8 @@ function getExports(project){
                     //loader:'style-loader!css-loader'
                     use: [
                         {
-                            loader: 'style-loader'
+                            //loader: 'style-loader'
+                            loader: 'vue-style-loader'
                         },
 
                         {
@@ -202,7 +216,7 @@ function getExports(project){
             }
         },
         plugins:plugins.concat([
-
+            new VueLoaderPlugin(),
             /*//在这边配置全局引入后哪个模块不用require都可以用
             new webpack.ProvidePlugin({
                 $:'jquery'
@@ -242,7 +256,14 @@ function getExports(project){
                 threads: 3,//你要开启多少个子进程去处理这一类型的文件
                 verbose: true//是否要输出详细的日志 verbose
             }),
-            new RightEntryPlugin(),
+            new NotFoudEntryPlugin({
+                mainDir:config.mainDir,
+                parentDir:config.parentMainDir
+            }),
+            //new AddMainDirFilePlugin({
+            //    mainDir:config.mainDir,
+            //    parentDir:config.parentMainDir
+            //}),
             new webpack.HotModuleReplacementPlugin(),
             new FriendlyErrorsPlugin(),
             new MoveAssetsToDirPlugin()

@@ -11,6 +11,7 @@ function findCurrentWebpackConfig(configArr,project){
 }
 
 function loader(source){
+    console.log(this.resourcePath,123444);
     let options = loaderUtils.getOptions(this)
     let moduleMatchs = []
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
@@ -50,7 +51,7 @@ function loader(source){
                     let aa = require.resolve(fullPath)
                     // console.log(aa,'normal');
                 }catch (e){
-                    // console.log(fullPath,'err')
+                     console.log(fullPath,'err')
                     let parentPath = `@parent/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
                     source = source.replace(filePath,parentPath)
