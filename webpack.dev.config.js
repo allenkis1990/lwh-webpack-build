@@ -260,10 +260,10 @@ function getExports(project){
                 mainDir:config.mainDir,
                 parentDir:config.parentMainDir
             }),
-            //new AddMainDirFilePlugin({
-            //    mainDir:config.mainDir,
-            //    parentDir:config.parentMainDir
-            //}),
+            new AddMainDirFilePlugin({
+               mainDir:config.mainDir,
+               parentDir:config.parentMainDir
+            }),
             new webpack.HotModuleReplacementPlugin(),
             new FriendlyErrorsPlugin(),
             new MoveAssetsToDirPlugin()

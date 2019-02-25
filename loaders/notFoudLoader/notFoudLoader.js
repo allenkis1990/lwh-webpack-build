@@ -11,7 +11,7 @@ function findCurrentWebpackConfig(configArr,project){
 }
 
 function loader(source){
-    console.log(this.resourcePath,123444);
+    console.log(this.resourcePath,88888888888888);
     let options = loaderUtils.getOptions(this)
     let moduleMatchs = []
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []

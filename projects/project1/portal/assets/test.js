@@ -1,3 +1,5 @@
-module.exports = function(){
-    return 'fn222222222222'
+module.exports = {
+    fn() {
+        return '222';
+    }
 }
