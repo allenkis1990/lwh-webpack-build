@@ -127,7 +127,7 @@ function getExports(project){
                 },
                 {
                     test:/\.(js)$/,
-                    //test: /\.(js|vue)(\?.*)?$/,
+                    //test: /\.(js)(\?.*)?$/,
                     use:{
                         loader:'notFoudLoader',
                         options:{
