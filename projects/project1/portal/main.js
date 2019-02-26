@@ -2,11 +2,11 @@
 console.log('当前是否开发环境'+dev);
 import Vue from 'vue'
 import App from '@portal/App.vue'
-import data from '@portal/data.js'
-
-console.log(data,111111111);
+import router from '@portal/router/router.js'
+console.log(router);
 new Vue({
     el:'#app',
+    router,
     template:'<App/>',
     components:{App}
 });

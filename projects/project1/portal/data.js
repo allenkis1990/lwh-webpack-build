@@ -1,1 +1,0 @@
-module.exports='portal data111111'

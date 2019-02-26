@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    hello world!
+    <transition name="fuck" appear>
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
-import data from '@portal/data/data1.js';
-console.log(data);
 export default {
   data:function(){
     return {

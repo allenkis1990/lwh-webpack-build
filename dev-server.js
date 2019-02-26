@@ -17,7 +17,6 @@ Object.keys(webpackConfig.entry).forEach(function (name) {
 })
 var compiler = webpack(webpackConfig)
 
-
 //////////////////////热更新////////////////////////////
 // 开发环境下加自动刷新的entry
 // index.html无法热更新
@@ -47,6 +46,40 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 //     console.log(1);
 //     next()
 // })
+
+let history = require('connect-history-api-fallback')
+app.use(history({
+    //index:'/portal'
+    rewrites: [
+        {
+            from: /^\/portal$/,
+            to: function(context) {
+                //console.log(context.parsedUrl.pathname)
+                return '/portal';
+            }
+        },
+        {
+            from: /\/portal\/.+$/,
+            to: function(context) {
+                if(!/\.js/.test(context.parsedUrl.pathname)&&!/\.css/.test(context.parsedUrl.pathname)){
+                    console.log(context.parsedUrl.pathname)
+                    return '/portal';
+                } else {
+                    if(/\.js/.test(context.parsedUrl.pathname)){
+                        let arr = context.parsedUrl.pathname.split('/')
+                        let fileName = arr[arr.length-1]
+                        return `/portal/js/${fileName}`
+                    }
+                    if(/\.css/.test(context.parsedUrl.pathname)){
+                        let arr = context.parsedUrl.pathname.split('/')
+                        let fileName = arr[arr.length-1]
+                        return `/portal/css/${fileName}`
+                    }
+                }
+            }
+        }
+    ]
+}))
 app.use(devMiddleware);
 //////////////////////开发服务器配置////////////////////////////
 
@@ -85,5 +118,9 @@ Object.keys(proxyList).forEach(function (context) {
 //     }
 //     // res.send('111')
 // })
+//开发环境/直接重定向到/portal
+/*app.get('/',function(req,res){
+    res.redirect('/portal');
+})*/
 // 启动服务
 app.listen('8080','127.0.0.1');
