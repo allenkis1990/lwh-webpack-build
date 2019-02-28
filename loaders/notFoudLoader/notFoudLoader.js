@@ -16,11 +16,13 @@ function loader(source){
     let moduleMatchs = []
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
     let importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
+    let importStyleMatchs = source.match(/@import.*?['"].*?['"]/g) || []
+    let srcMatchs = source.match(/src.*?=.*?['"].*?['"]/g) || []
     //let projectBaseSrc = this.resourcePath.match(/(.+\\)projects\\/)[1]
     //console.log(projectBaseSrc);
     let project = this.resourcePath.replace(new RegExp(`.+\\\\${options.mainDir}\\\\`),'').split(path.sep)[0]
     //console.log(project);
-    if(requireMatchs.length||importMatchs.length){
+    if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length){
         let alias
         if(!buildAll){
             //非build-all的时候就直接取alias
@@ -38,26 +40,39 @@ function loader(source){
         //console.log(alias);
         moduleMatchs = moduleMatchs.concat(requireMatchs)
         moduleMatchs = moduleMatchs.concat(importMatchs)
+        moduleMatchs = moduleMatchs.concat(importStyleMatchs)
+        moduleMatchs = moduleMatchs.concat(srcMatchs)
         moduleMatchs.forEach((item)=>{
+            console.log(item,'kkk');
             let filePath = item.match(/['"](.*)['"]/g)[0].replace(/('|")/g,'')
             let aliasKeys = Object.keys(alias)
-            let aliasKeysIndex = aliasKeys.indexOf(filePath.split('/')[0])
+            let firstWord = filePath.split('/')[0]
+            let aliasKeysIndex
+            let parentAliasKey
+            if(firstWord.indexOf('~')>-1){
+                aliasKeysIndex = aliasKeys.indexOf(firstWord.replace('~',''))
+                parentAliasKey = '~@parent'
+            } else {
+                aliasKeysIndex = aliasKeys.indexOf(firstWord)
+                parentAliasKey = '@parent'
+            }
             if(aliasKeysIndex>-1){
                 let aliasKey = aliasKeys[aliasKeysIndex]
                 let aliasKeyPath = alias[aliasKey]
-                let path = filePath.replace(aliasKey,'')
+                let path = filePath.replace((firstWord.indexOf('~')>-1?`~${aliasKey}`:aliasKey),'')
                 let fullPath = aliasKeyPath + path.replace(/\//g,'\\')
                 try{
                     let aa = require.resolve(fullPath)
                     // console.log(aa,'normal');
                 }catch (e){
-                     console.log(fullPath,'err')
-                    let parentPath = `@parent/${aliasKey.replace('@','')}${path}`
+                    console.log(fullPath,'err')
+                    let parentPath = `${parentAliasKey}/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
                     source = source.replace(filePath,parentPath)
                 }
                 //console.log(fullPath);
             }
+
             //console.log(aliasKeys.indexOf(filePath.split('/')[0]),'index');
             //let app = filePath.match()
             //try{

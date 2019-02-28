@@ -10,7 +10,8 @@ let env = process.env.NODE_ENV
 let developmentReg = /development/
 let startObj = {}
 config.apps.forEach((app)=>{
-    startObj[app+'Start'] = developmentReg.test(env)?`${app}/`:`/${app}/`
+    // startObj[app+'Start'] = developmentReg.test(env)?`${app}/`:`/${app}/`
+    startObj[app+'Start'] = `/${app}/`
 })
 // let portalStart = developmentReg.test(env)?'portal/':'/portal/'
 // let centerStart = developmentReg.test(env)?'center/':'/center/'
@@ -21,7 +22,8 @@ class moveAssetsToDirPlugin{
     processCommon(itemTag,compilation){
         this.oldAssetFullFile = `js/${this.assetFileName}`
         config.apps.forEach((app,no)=>{
-            this['assetFileFullName'+no] = `${startObj[app+'Start']}js/${this.assetFileName}`
+            let outputWhich = startObj[app+'Start'].replace('/','')
+            this['assetFileFullName'+no] = `${outputWhich}js/${this.assetFileName}`
             compilation.assets[this['assetFileFullName'+no]] = compilation.assets[this.oldAssetFullFile]
             if (compilation.assets[this.oldAssetFullFile + '.map']) {
                 compilation.assets[this['assetFileFullName'+no] + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
@@ -33,10 +35,11 @@ class moveAssetsToDirPlugin{
     processAssets(dir,itemTag,compilation,which){
         this.oldAssetFullFile = `js/${dir}/${this.assetFileName}`
         this.assetFileFullName = `${which}js/${this.assetFileName}`
+        let outputWhich = this.assetFileFullName.replace('/','')
         itemTag.attributes.src = this.assetFileFullName+this.hash
-        compilation.assets[this.assetFileFullName] = compilation.assets[this.oldAssetFullFile]
+        compilation.assets[outputWhich] = compilation.assets[this.oldAssetFullFile]
         if(compilation.assets[this.oldAssetFullFile+'.map']){
-            compilation.assets[this.assetFileFullName+'.map'] = compilation.assets[this.oldAssetFullFile+'.map']
+            compilation.assets[outputWhich+'.map'] = compilation.assets[this.oldAssetFullFile+'.map']
             delete compilation.assets[this.oldAssetFullFile+'.map']
         }
         if(compilation.assets[this.oldAssetFullFile]){
@@ -47,10 +50,11 @@ class moveAssetsToDirPlugin{
     processEntry(dir,itemTag,compilation){
         this.oldAssetFullFile = `js/${this.assetFileName}`
         this.assetFileFullName = `${dir}js/${this.assetFileName}`
+        let outputWhich = this.assetFileFullName.replace('/','')
         itemTag.attributes.src = this.assetFileFullName + this.hash
-        compilation.assets[this.assetFileFullName] = compilation.assets[this.oldAssetFullFile]
+        compilation.assets[outputWhich] = compilation.assets[this.oldAssetFullFile]
         if (compilation.assets[this.oldAssetFullFile + '.map']) {
-            compilation.assets[this.assetFileFullName + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
+            compilation.assets[outputWhich + '.map'] = compilation.assets[this.oldAssetFullFile + '.map']
             delete compilation.assets[this.oldAssetFullFile + '.map']
         }
         if(compilation.assets[this.oldAssetFullFile]){
@@ -100,19 +104,22 @@ class moveAssetsToDirPlugin{
                                 this.processAssets(app,itemTag,compilation,`${startObj[app+'Start']}`)
                                 console.log(this.assetFileFullName,123);
                             }
+                            //hotUpdate文件不需要处理
                             if(appRegs[app+'Reg2'].test(src)&&!hotUpdateReg.test(src)){
                                 this.processEntry(`${startObj[app+'Start']}`,itemTag,compilation)
                                 console.log(this.assetFileFullName,123);
                             }
                         })
-                        if(vendorReg.test(src)){
+                        //hotUpdate文件不需要处理
+                        if(vendorReg.test(src)&&!hotUpdateReg.test(src)){
                             //console.log(222222);
                             //this.oldAssetFullFile = `js/${this.assetFileName}`
                             this.processCommon(itemTag,compilation)
                             this.vendorLoadObj.fullFile = this.oldAssetFullFile
                             this.vendorLoadObj.count ++
                         }
-                        if(manifestReg.test(src)){
+                        //hotUpdate文件不需要处理
+                        if(manifestReg.test(src)&&!hotUpdateReg.test(src)){
                             this.processCommon(itemTag,compilation)
                             this.maniFestLoadObj.fullFile = this.oldAssetFullFile
                             this.maniFestLoadObj.count ++

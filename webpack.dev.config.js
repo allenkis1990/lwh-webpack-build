@@ -31,7 +31,7 @@ function getExports(project){
     let alias = {}
     let rules = []
     config.apps.forEach((app)=>{
-        entry[app] = [`${config.mainDir}/${project}/${app}/main.js`]
+        entry[app] = [`${config.mainDir}/${project}/${app}/main.js`,'./dev-client.js']
 
         let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg)`)
         rules.push(
@@ -126,7 +126,7 @@ function getExports(project){
                     }
                 },
                 {
-                    test:/\.(js)$/,
+                    test:/\.(js|vue)$/,
                     //test: /\.(js)(\?.*)?$/,
                     use:{
                         loader:'notFoudLoader',

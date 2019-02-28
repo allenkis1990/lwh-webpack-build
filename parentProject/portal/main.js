@@ -6,7 +6,6 @@ alert('parent的portal')
 //let data1 = require('data/data1.js')
 //let data2 = require('@/data/data2.js')
 //console.log(data2);
-let reg = /(?=href=").*?(?:\?download)/gi
 if(module.hot){
     module.hot.accept();
 }
