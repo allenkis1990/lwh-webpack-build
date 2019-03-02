@@ -14,7 +14,7 @@ const NotFoudEntryPlugin = require('./plugins/notFoudEntryPlugin.js')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
-
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 function getExports(project){
 
@@ -72,7 +72,7 @@ function getExports(project){
             }
         )
     })
-    config.apps.forEach((app)=>{
+    /*config.apps.forEach((app)=>{
         let reg = new RegExp(`[\\\\/]${app}[\\\\/](style|less)[\\\\/].+\\.(less|css)`)
         rules.push({
             test:function(url){
@@ -91,9 +91,9 @@ function getExports(project){
                 {loader:'postcss-loader'}//配合postcss.config文件来加CSS前缀
             ],
             exclude:[path.resolve('./dist'),/node_modules/],//排除解析dist文件夹
-            include:[path.resolve(`${config.mainDir}/${project}`,app),path.resolve(`${config.parentMainDir}`,app)]//只编译src文件夹 但是node_modules除外
+            include:[path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
         })
-    })
+    })*/
 
     return {
         entry: Object.assign(entry,{}),
@@ -119,7 +119,8 @@ function getExports(project){
             mainFields:['main','module','fuck','shit'], 
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:Object.assign(alias,{
-                '@parent':path.resolve(config.parentMainDir)
+                '@parent':path.resolve(config.parentMainDir),
+                'vue$': 'vue/dist/vue.esm.js'
             })
         },
         resolveLoader: {
@@ -133,6 +134,30 @@ function getExports(project){
             //不去解析的文件
             noParse: [/lwh\.js/],
             rules:rules.concat([
+
+                {
+                    test: /\.vue$/,
+                    use: {
+                        loader:'vue-loader'
+                    }
+                },
+
+                {
+                    test:/\.(js|vue)$/,
+                    //test: /\.(js)(\?.*)?$/,
+                    use:{
+                        loader:'notFoudLoader',
+                        options:{
+                            mainDir:config.mainDir.replace('./','')
+                        }
+                    },
+                    exclude:[path.resolve('./dist'),/node_modules/],
+                    //exclude: file => (
+                    //    /node_modules/.test(file) && !/\.vue\.js/.test(file)
+                    //),
+                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
+                },
+
                 //解析html页面上的img标签 但是htmlWebpackPlugin.options.title无法读取 可用express静态资源解决
                 {
                     test:/\.(html|htm)/,
@@ -146,15 +171,45 @@ function getExports(project){
                     exclude: /node_modules/
                 },
                 {
-                    test:/(\.js)/,
-                    use:{
-                        loader:'notFoudLoader',
-                        options:{
-                            mainDir:config.mainDir.replace('./','')
+                    test: /\.css$/,
+                    //loader:'style-loader!css-loader'
+                    //从右到左执行
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,//注意这边
+                            options: {
+                                publicPath: '../'//解决css下的图片路径错误问题
+                            }
+                        },
+                        {
+                            loader: 'css-loader'
+                        },
+                        {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
+                    ],
+                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                },
+                {
+                    test: /\.less/,
+                    //loader:'style-loader!css-loader'
+                    use: [
+                        {
+                            loader: MiniCssExtractPlugin.loader,//注意这边
+                            options: {
+                                publicPath: '../'//解决css下的图片路径错误问题
+                            }
+                        },
+
+                        {
+                            loader: 'css-loader'
+                        },
+                        {loader: 'postcss-loader'},//配合postcss.config文件来加CSS前缀
+                        {
+                            loader: "less-loader"
                         }
-                    },
-                    exclude:[path.resolve('./dist'),/node_modules/],
-                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
+                    ],
+                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
                 }
             ])
         },
@@ -180,7 +235,7 @@ function getExports(project){
             ]
         },
         plugins: plugins.concat([
-
+            new VueLoaderPlugin(),
             /*//在这边配置全局引入后哪个模块不用require都可以用
              new webpack.ProvidePlugin({
              $:'jquery'

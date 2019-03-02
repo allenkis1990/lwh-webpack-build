@@ -152,23 +152,6 @@ function getExports(project){
                     exclude: /node_modules/
                 },
                 {
-                    test: /\.css$/,
-                    //loader:'style-loader!css-loader'
-                    //从右到左执行
-                    use: [
-                        {
-                            //loader: 'style-loader'
-                            loader: 'vue-style-loader'
-                        },
-                        {
-                            loader: 'css-loader'
-                        },
-                        {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
-                    ],
-                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
-                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
-                },
-                {
                     test: /\.less/,
                     //loader:'style-loader!css-loader'
                     use: [
@@ -184,6 +167,23 @@ function getExports(project){
                         {
                             loader: "less-loader"
                         }
+                    ],
+                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                },
+                {
+                    test: /\.css$/,
+                    //loader:'style-loader!css-loader'
+                    //从右到左执行
+                    use: [
+                        {
+                            //loader: 'style-loader'
+                            loader: 'vue-style-loader'
+                        },
+                        {
+                            loader: 'css-loader'
+                        },
+                        {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
                     exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
                     include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
