@@ -242,10 +242,10 @@ function getExports(project){
              }),*/
             new CleanWebpackPlugin(['./dist/'+project]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件
-            new PurifyCSSPlugin({
+            /*new PurifyCSSPlugin({
                 // Give paths to parse for rules. These should be absolute!
-                paths: glob.sync(path.join(__dirname, './*.html')),
-            }),
+                paths: glob.sync(path.join(__dirname, './!*.html')),
+            }),*/
             //new uglifyjsWebpackPlugin(),//webpack4会对JS进行自动压缩
             //指定html位置指定后打包的js会自动被引入
             new ProgressBarPlugin(),
