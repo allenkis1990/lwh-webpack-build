@@ -11,18 +11,24 @@ function findCurrentWebpackConfig(configArr,project){
 }
 
 function loader(source){
-    console.log(this.resourcePath,88888888888888);
+    // console.log(this.resourcePath,88888888888888);
     let options = loaderUtils.getOptions(this)
     let moduleMatchs = []
+    //匹配require('xxx')
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
+    //匹配import xxx from 'xxx'
     let importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
+    //匹配@import 'xxx'
     let importStyleMatchs = source.match(/@import.*?['"].*?['"]/g) || []
+    //匹配src = 'xxx'
     let srcMatchs = source.match(/src.*?=.*?['"].*?['"]/g) || []
+    //匹配url('xxx')
+    let bgMatchs = source.match(/url.*?\(.*?['"].*?['"].*?\)/g) || []
     //let projectBaseSrc = this.resourcePath.match(/(.+\\)projects\\/)[1]
     //console.log(projectBaseSrc);
     let project = this.resourcePath.replace(new RegExp(`.+\\\\${options.mainDir}\\\\`),'').split(path.sep)[0]
     //console.log(project);
-    if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length){
+    if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length||bgMatchs.length){
         let alias
         if(!buildAll){
             //非build-all的时候就直接取alias
@@ -42,8 +48,9 @@ function loader(source){
         moduleMatchs = moduleMatchs.concat(importMatchs)
         moduleMatchs = moduleMatchs.concat(importStyleMatchs)
         moduleMatchs = moduleMatchs.concat(srcMatchs)
+        moduleMatchs = moduleMatchs.concat(bgMatchs)
         moduleMatchs.forEach((item)=>{
-            console.log(item,'kkk');
+            // console.log(item,'kkk');
             let filePath = item.match(/['"](.*)['"]/g)[0].replace(/('|")/g,'')
             let aliasKeys = Object.keys(alias)
             let firstWord = filePath.split('/')[0]
@@ -65,7 +72,7 @@ function loader(source){
                     let aa = require.resolve(fullPath)
                     // console.log(aa,'normal');
                 }catch (e){
-                    console.log(fullPath,'err')
+                    // console.log(fullPath,'err')
                     let parentPath = `${parentAliasKey}/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
                     source = source.replace(filePath,parentPath)
@@ -80,7 +87,7 @@ function loader(source){
             //}catch(e){
             //
             //}
-            console.log(filePath,12);
+            // console.log(filePath,12);
         })
     }
     //console.log(this.context);

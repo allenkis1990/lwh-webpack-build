@@ -102,12 +102,12 @@ class moveAssetsToDirPlugin{
                             // appRegs[app+'Reg2'] = new RegExp(`[\\\\/]portal\\.`)
                             if(appRegs[app+'Reg1'].test(src)){
                                 this.processAssets(app,itemTag,compilation,`${startObj[app+'Start']}`)
-                                console.log(this.assetFileFullName,123);
+                                // console.log(this.assetFileFullName,123);
                             }
                             //hotUpdate文件不需要处理
                             if(appRegs[app+'Reg2'].test(src)&&!hotUpdateReg.test(src)){
                                 this.processEntry(`${startObj[app+'Start']}`,itemTag,compilation)
-                                console.log(this.assetFileFullName,123);
+                                // console.log(this.assetFileFullName,123);
                             }
                         })
                         //hotUpdate文件不需要处理

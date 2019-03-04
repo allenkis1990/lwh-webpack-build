@@ -29,17 +29,17 @@ class addMainDirFilePlugin{
             if(!this.watching){
                 //原来被删除的文件又恢复了
                 watcher.on('add',(url)=>{
-                    console.log(url,'新增');
+                    // console.log(url,'新增');
                     let basePath = path.resolve(this.mainDir,config.project)
                     let addFullPath = `${basePath}${path.sep}${url}`
                     let module = this.findModule(addFullPath,compilation.modules)
                     //console.log(moduleIndex,'index')
                     if(module){
-                        console.log(addFullPath,1111);
-                        console.log(module.userRequest,'u');
-                        console.log(module.resource,'r');
+                        // console.log(addFullPath,1111);
+                        // console.log(module.userRequest,'u');
+                        // console.log(module.resource,'r');
                         module.resource = addFullPath
-                        console.log(module.resource,'h');
+                        // console.log(module.resource,'h');
                         //compilation.modules[moduleIndex].resource = addFullPath
                         //console.log(compilation.modules[moduleIndex].resource);
                     }
@@ -55,7 +55,7 @@ class addMainDirFilePlugin{
                     if(!fs.existsSync(module.resource)&&!(/\.vue\?.+/.test(module.resource))){
                         // console.log(1010101);
                         module.resource = module.resource.replace(`${mainDir}${path.sep}${config.project}`,parentDir)
-                        console.log(module.resource,6666);
+                        // console.log(module.resource,6666);
                     }
                 }
             })

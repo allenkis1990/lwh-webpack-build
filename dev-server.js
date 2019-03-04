@@ -39,7 +39,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
     // publicPath: 'http://127.0.0.1:8080/portal',
     quiet: true,
     noInfo: true,
-    // writeToDisk:true
+    writeToDisk:true
 })
 
 //mork

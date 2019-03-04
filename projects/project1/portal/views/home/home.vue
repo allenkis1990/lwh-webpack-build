@@ -1,14 +1,15 @@
 <template>
   <div class="main">
     <div>Hello Home!11112</div>
-    <a href="javascript:void(0)" @click="goState('test1')">home/test1</a>
-    <a href="javascript:void(0)" @click="goPath('/test1')">test1</a>
-    <a href="javascript:void(0)" @click="goPath('/')">/</a>
+    <ul>
+      <li><a href="javascript:void(0)" @click="goPath('/portal')">/portal</a></li>
+      <li><a href="javascript:void(0)" @click="goState('test1')">home/test1</a></li>
+      <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
+    </ul>
     <!--<img src="@portal/images/afei.jpg">
     <img src="@portal/images/皮卡22.jpg">-->
-    111
-    <router-view></router-view>
     <div class="lwh">lwh</div>
+    <div class="bgImg"></div>
   </div>
 </template>
 
@@ -33,6 +34,7 @@ export default {
   color:green;
   .lwh{color:red;}
 }
+.bgImg{width:850px;height:700px;background:url('~@portal/images/皮卡22.jpg');background-size:cover;background-repeat:no-repeat;}
 </style>
 <!--要想全局的body能吃到样式就必须再开一个不带scope的style标签-->
 <style lang="less">

@@ -40,9 +40,9 @@ function getExports(project){
                 use:{
                     loader:'url-loader',
                     options: {
-                        outputPath:`${app}/images`,
-                        // publicPath:'dist/images',
-                        name:'[name].[hash:8].[ext]',
+                        // outputPath:`${app}/images`,
+                        publicPath:'/',
+                        name:`${app}/images/[name].[hash:8].[ext]`,
                         limit:1024*1//小于8KB会被转成base64
                     }
                 },
