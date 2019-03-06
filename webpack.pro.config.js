@@ -23,7 +23,7 @@ function getExports(project){
     let plugins = []
     let alias = {}
     config.apps.forEach((app)=>{
-        entry[app] = `${config.mainDir}/${project}/${app}/main.js`
+        entry[`${app}/app`] = `${config.mainDir}/${project}/${app}/main.js`
         cacheGroups[`${app}Assets`] = {
             chunks: 'initial',// 只对入口文件处理
             test: path.resolve(`${config.mainDir}/${project}/${app}/assets`),
@@ -48,8 +48,10 @@ function getExports(project){
             },
             excludeChunks: config.apps.filter((item)=> {
                 return item !== app
+            }).map((item)=>{
+                return `${item}/app`
             }),
-            chunks:[app]//按需映入入口JS
+            chunks:[`${app}/app`]//按需映入入口JS
         }))
     })
     let rules = []
@@ -61,9 +63,9 @@ function getExports(project){
                 use:{
                     loader:'url-loader',
                     options: {
-                        outputPath:`/${app}/images`,
-                        // publicPath:'dist/images',
-                        name:'[name].[hash:8].[ext]',
+                        // outputPath:`/${app}/images`,
+                        publicPath:'/',
+                        name:`${app}/images/[name].[hash:8].[ext]`,
                         limit:1024*1//小于8KB会被转成base64
                     }
                 },
@@ -99,8 +101,8 @@ function getExports(project){
         entry: Object.assign(entry,{}),
         output:{
             path:path.resolve(__dirname,'dist',project),
-            filename:'js/[name].[hash:8].bundle.js',
-            publicPath: ""
+            filename:'[name].[hash:8].bundle.js',
+            publicPath: "/"
             //publicPath:"dist"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
         },
         externals: {
@@ -210,6 +212,13 @@ function getExports(project){
                     ],
                     exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
                     include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                },
+
+                //解析打包json文件
+                {
+                    test:/\.json/i,
+                    type: 'javascript/auto',
+                    loader:'json-loader'
                 }
             ])
         },
@@ -235,6 +244,9 @@ function getExports(project){
             ]
         },
         plugins: plugins.concat([
+            /*new copyWebpackPlugin([
+                {from:path.resolve(__dirname,`${config.mainDir}/${config.project}/portal/static`),to:path.resolve(__dirname,`./dist/${config.project}/portal/static`)}
+            ])*/
             new VueLoaderPlugin(),
             /*//在这边配置全局引入后哪个模块不用require都可以用
              new webpack.ProvidePlugin({
@@ -281,8 +293,8 @@ function getExports(project){
                 parentDir:config.parentMainDir
             }),
             new MiniCssExtractPlugin({
-                filename: "[name]/css/[name]Style.css",
-                chunkFilename: "[name]/css/[name]Style.[hash:8].css"}),
+                filename: "[name]Style/style.css",
+                chunkFilename: "[name]Style/style.[hash:8].css"}),
             new WebpackParallelUglifyPlugin({
                 uglifyJS: {
                     output: {
@@ -298,7 +310,6 @@ function getExports(project){
                 }
             }),
             new MoveAssetsToDirPlugin()
-            //抽取CSS
         ])
     }
 }

@@ -12,6 +12,7 @@ const config = require('./config/config.js')
 const NotFoudEntryPlugin = require('./plugins/notFoudEntryPlugin.js')
 const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
 const AddMainDirFilePlugin = require('./plugins/addMainDirFilePlugin.js')
+const ProcessChunkPlugin = require('./plugins/processChunkPlugin.js')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 function recursiveIssuer(m) {
@@ -31,7 +32,7 @@ function getExports(project){
     let alias = {}
     let rules = []
     config.apps.forEach((app)=>{
-        entry[app] = [`${config.mainDir}/${project}/${app}/main.js`,'./dev-client.js']
+        entry[`${app}/app`] = [`${config.mainDir}/${project}/${app}/main.js`,'./dev-client.js']
 
         let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg)`)
         rules.push(
@@ -75,19 +76,21 @@ function getExports(project){
             },
             excludeChunks: config.apps.filter((item)=> {
                 return item !== app
+            }).map((item)=>{
+                return `${item}/app`
             }),
-            chunks:[app]//按需映入入口JS
+            chunks:[`${app}/app`]//按需映入入口JS
         }))
     })
     return {
         entry: Object.assign(entry,{}),
         output:{
             path:path.resolve(__dirname,'dist',project),
-            filename:'js/[name].bundle.js',
+            filename:'[name].bundle.js',
             //filename:'js/[name].[hash:8].bundle.js',
             // publicPath: 'http://127.0.0.1:8080/'+which+'/'
             // publicPath: which+'/'
-            publicPath:""//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
+            publicPath:"/"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
         },
         externals: {
             // 使用动态连接库的VUE模块，这样就可以直接在项目中require('Vue')使用 webpack不会进行打包
@@ -96,7 +99,7 @@ function getExports(project){
         resolve: {
             //import时可以省去后缀名js vue json默认require先找.js从左到右
             //作用于项目中，webpack配置文件中无法使用
-            extensions: ['.js', '.vue', '.json','.less'],
+            extensions: ['.js', '.vue', '.json'],
             //require('xxx')先去src目录下找没有才去node_modules从左到右
             //作用于项目中，webpack配置文件中无法使用
             modules: [path.resolve("node_modules")],
@@ -187,6 +190,12 @@ function getExports(project){
                     ],
                     exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
                     include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                },
+                //解析打包json文件
+                {
+                    test:/\.json/i,
+                    type: 'javascript/auto',
+                    loader:'json-loader'
                 }
             ])
         },

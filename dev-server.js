@@ -9,6 +9,7 @@ const path = require('path')
 let webpackConfig = require('./webpack.dev.config')
 // webpackConfig.mode = 'development'
 webpackConfig.mode = 'development'
+let config = require('./config/config')
 Object.keys(webpackConfig.entry).forEach(function (name) {
     // console.log(name);
     //if (name !== 'index') {
@@ -70,23 +71,11 @@ Object.keys(proxyList).forEach(function (context) {
 })
 //////////////////////代理////////////////////////////
 
-// 静态资源
-// app.use('/js',express.static(path.join(__dirname,'dist/project1/portal/js')))
-// app.use(function (req,res) {
-//     if(/hot-update.json/.test(req.url)){
-//         console.log(req.url);
-//         console.log(req.statusCode);
-//         console.log(req.statusMessage);
-//         console.log(Object.keys(req))
-//         if(!req.statusCode){
-//             res.send({"h":"389482d4f86b2024450b","c":{"portalEntry":true}})
-//         }
-//     }
-//     if(/hot-update.js/.test(req.url)){
-//         res.send(1)
-//     }
-//     // res.send('111')
+//静态资源
+// let findStaticPath = require('./task/findStaticPath.js')
+// config.apps.forEach(($app)=>{
+//     let requestBase = `/${$app}/static`
+//     app.use(requestBase,findStaticPath(requestBase))
 // })
-//开发环境/直接重定向到/portal
-// 启动服务
+
 app.listen('8080','127.0.0.1');

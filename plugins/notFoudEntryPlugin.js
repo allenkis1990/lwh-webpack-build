@@ -13,10 +13,12 @@ class notFoudEntryPlugin{
         this.parentDir = options.parentDir
     }
     apply(compiler){
+        console.log(this.mainDir,123);
+        let _this = this
         function getDirs(){
             let dirs
-            try {dirs = fs.readdirSync(this.mainDir)}catch(e){
-                throw new Error(colors.red(`项目主文件夹${this.mainDir.replace('./','')}没建！！！`))
+            try {dirs = fs.readdirSync(_this.mainDir)}catch(e){
+                throw new Error(colors.red(`项目主文件夹${_this.mainDir.replace('./','')}没建！！！`))
                 //console.log(colors.red('项目主文件夹projects没建！！！'));
                 return
             }
@@ -31,18 +33,18 @@ class notFoudEntryPlugin{
             let appIsExist = {}
             if(!buildAll){
                 config.apps.forEach((app)=>{
-                    appIsExist[app+'IsExist'] = fs.existsSync(`${this.mainDir}/${config.project}/${app}/main.js`)
+                    appIsExist[app+'IsExist'] = fs.existsSync(`${_this.mainDir}/${config.project}/${app}/main.js`)
                     if (!appIsExist[app+'IsExist']) {
-                        entry[app] = [`${this.parentDir}/${app}/js/index.js`]
+                        entry[app] = [`${_this.parentDir}/${app}/main.js`]
                     }
                 })
             } else {
                 let dirs = getDirs()
                 dirs.forEach((dir)=>{
                     config.apps.forEach((app)=>{
-                        appIsExist[app+'IsExist'] = fs.existsSync(`${this.mainDir}/${dir}/${app}/js/index.js`)
+                        appIsExist[app+'IsExist'] = fs.existsSync(`${_this.mainDir}/${dir}/${app}/main.js`)
                         if (!appIsExist[app+'IsExist']) {
-                            entry[app] = [`${this.parentDir}/${app}/index.js`]
+                            entry[app] = [`${_this.parentDir}/${app}/main.js`]
                         }
                     })
                 })

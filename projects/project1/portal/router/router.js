@@ -3,8 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 import Home from '@portal/views/home/home.vue'
-import Test1 from '@portal/views/test1/test1.vue'
-import Test2 from '@portal/views/test2/test2.vue'
+
 
 export default new VueRouter({
     mode: 'history',
@@ -24,12 +23,15 @@ export default new VueRouter({
         {
             name: 'test1',
             path: '/portal/test1',
-            component: Test1
+            // component: Test1
+            // component: () => import(/* webpackChunkName: "portalChunk@test1" */'@portal/views/test1/test1.vue')
+            component: () => import(/* webpackChunkName: "portal/chunk/test1" */'@portal/views/test1/test1.vue')
         },
         {
             name:'test2',
             path: '/portal/test2',
-            component: Test2
+            // component: () => import(/* webpackChunkName: "portalChunk@test2" */'@portal/views/test2/test2.vue')
+            component: () => import(/* webpackChunkName: "portal/chunk/test2" */'@portal/views/test2/test2.vue')
         }
     ]
 });
