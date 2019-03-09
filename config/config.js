@@ -8,6 +8,8 @@ let colors = require('colors/safe');
 let dirs
 let _project
 let isBuildAll = argv.all
+console.log(argv.design,111121212);
+let projects = !argv.design?'projects':'design'
 if(argv.project&&typeof argv.project==='string'){
     dirs = getDirs()
     if(dirs){
@@ -26,8 +28,8 @@ if(argv.project&&typeof argv.project==='string'){
 }
 function getDirs(){
     let dirs
-    try {dirs = fs.readdirSync('./projects')}catch(e){
-        throw new Error(colors.red('项目主文件夹projects没建！！！'))
+    try {dirs = fs.readdirSync(`./${projects}`)}catch(e){
+        throw new Error(colors.red('项目主文件夹没建！！！'))
         //console.log(colors.red('项目主文件夹projects没建！！！'));
         return
     }
@@ -41,12 +43,14 @@ function getDirs(){
 if(!isBuildAll){
     console.log(colors.green(`现在开始构建项目：${_project}   >>>>>>>>>>>>>>>>>>>>>>>>>`));
 } else {
-    console.log(colors.green(`现在开始构建projects下的所有项目   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+    console.log(colors.green(`现在开始构建${projects}下的所有项目   >>>>>>>>>>>>>>>>>>>>>>>>>`));
 }
 module.exports = {
     mainDir:'./projects',
+    designMainDir:'./design',
     project:_project,
     parentMainDir:'./parentProject',
+    parentDesignDir:'./designParent',
     portal:'portal',
     center:'center',
     apps:['portal','center']

@@ -1,4 +1,9 @@
-
+const rimraf = require('rimraf');
+rimraf('./dist', function (err) {
+    if(err){
+        console.log(err);
+    }
+});
 const express = require('express')
 const merge = require('webpack-merge')
 const app = express()
@@ -6,7 +11,7 @@ const webpack  = require('webpack')
 const path = require('path')
 //console.log(path.resolve(__dirname,'projects/project1/src'),12121212);
 // let webpackConfig = require('./webpack.dev.config')
-let webpackConfig = require('./webpack.dev.config')
+let webpackConfig = require('./webpack.design.config')
 // webpackConfig.mode = 'development'
 webpackConfig.mode = 'development'
 let config = require('./config/config')
@@ -44,10 +49,10 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 //mork
-app.get('/portal/fuck',function(req,res){
-    console.log(req.url);
-    res.send({name:'allen'});
-})
+// app.get('/portal/fuck',function(req,res){
+//     console.log(req.url);
+//     res.send({name:'allen'});
+// })
 //纠正VUE history模式下刷新404问题
 let historyFallback = require('./task/historyFallback.js')
 historyFallback(app)
@@ -79,4 +84,4 @@ Object.keys(proxyList).forEach(function (context) {
 //     app.use(requestBase,findStaticPath(requestBase))
 // })
 
-app.listen('8080','127.0.0.1');
+app.listen('8181','127.0.0.1');

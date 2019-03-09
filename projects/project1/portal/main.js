@@ -1,18 +1,17 @@
 
 console.log('当前是否开发环境'+dev);
+//全局ajax拦截器
+import interceptors from '@portal/utils/interceptors'
 import Vue from 'vue'
 import App from '@portal/App.vue'
 import router from '@portal/router/router'
 import store from '@portal/store/store'
-// import data from '@portal/data/data1.js'
-// let $ = require('jquery');
-// $.ajax({
-//     method:'get',
-//     url:'/portal/static/jsonData.json'
-// }).then(function(data){
-//     console.log(data);
-// })
-console.log(router);
+import axios from 'axios'
+import mixin from '@portal/utils/mixin'
+//把axios挂载到Vue原型链上
+Vue.prototype.$http = axios
+// 混合
+Vue.mixin(mixin)
 new Vue({
     el:'#app',
     router,

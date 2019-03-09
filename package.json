@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "set NODE_ENV=development && node deleteDist.js && node dev-server.js",
+    "design": "set NODE_ENV=development && node design-dev-server.js --design",
     "pro": "set NODE_ENV=production&& node deleteDist.js && webpack --mode production --config webpack.pro.config.js",
     "build-all": "set NODE_ENV=production&& webpack --mode production --config webpack.buildAll.config.js --all",
     "build": "node build.js && npm run build-all"
@@ -13,6 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^9.3.1",
+    "axios": "^0.18.0",
     "babel": "^6.23.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
