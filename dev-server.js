@@ -79,4 +79,4 @@ Object.keys(proxyList).forEach(function (context) {
 //     app.use(requestBase,findStaticPath(requestBase))
 // })
 
-app.listen('8080','127.0.0.1');
+app.listen(config.port,'127.0.0.1');

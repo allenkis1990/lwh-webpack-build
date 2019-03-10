@@ -1,7 +1,6 @@
 module.exports = loader
 let path = require('path')
 let buildAll = require('yargs').argv.all
-let isDesign = require('yargs').argv.design
 let loaderUtils = require('loader-utils')
 
 function findCurrentWebpackConfig(configArr,project){
@@ -33,7 +32,7 @@ function loader(source){
         let alias
         if(!buildAll){
             //非build-all的时候就直接取alias
-            alias = require(isDesign?'../../webpack.design.config.js':'../../webpack.pro.config.js').resolve.alias
+            alias = require('../../webpack.pro.config.js').resolve.alias
         } else {
             //build-all的时候根据是哪个project来取相应的alias
             let webpackConfigArr = require('../../webpack.buildAll.config.js')

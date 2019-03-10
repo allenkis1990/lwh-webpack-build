@@ -47,7 +47,7 @@ function getExports(project){
                         limit:1024*1//小于8KB会被转成base64
                     }
                 },
-                exclude:[path.resolve('./dist'),/node_modules/]//排除解析dist文件夹
+                exclude:[path.resolve(`./${config.dist}`),/node_modules/]//排除解析dist文件夹
                 //include:[path.resolve('./projects/project1/src')]//只编译src文件夹 但是node_modules除外
             }
         )
@@ -85,7 +85,7 @@ function getExports(project){
     return {
         entry: Object.assign(entry,{}),
         output:{
-            path:path.resolve(__dirname,'dist',project),
+            path:path.resolve(__dirname,config.dist,project),
             filename:'[name].bundle.js',
             //filename:'js/[name].[hash:8].bundle.js',
             // publicPath: 'http://127.0.0.1:8080/'+which+'/'
@@ -137,7 +137,7 @@ function getExports(project){
                             mainDir:config.mainDir.replace('./','')
                         }
                     },
-                    exclude:[path.resolve('./dist'),/node_modules/],
+                    exclude:[path.resolve(`./${config.dist}`),/node_modules/],
                     //exclude: file => (
                     //    /node_modules/.test(file) && !/\.vue\.js/.test(file)
                     //),
@@ -171,7 +171,7 @@ function getExports(project){
                             loader: "less-loader"
                         }
                     ],
-                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    exclude: [path.resolve(`./${config.dist}`), /node_modules/],//排除解析dist文件夹
                     include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
                 },
                 {
@@ -188,7 +188,7 @@ function getExports(project){
                         },
                         {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
-                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
+                    exclude: [path.resolve(`./${config.dist}`), /node_modules/],//排除解析dist文件夹
                     include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
                 },
                 //解析打包json文件
@@ -230,7 +230,7 @@ function getExports(project){
             new webpack.ProvidePlugin({
                 $:'jquery'
             }),*/
-            new CleanWebpackPlugin(['./dist/'+project]),//删除文件夹插件
+            new CleanWebpackPlugin([`./${config.dist}/${project}`]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件
             new PurifyCSSPlugin({
                 // Give paths to parse for rules. These should be absolute!

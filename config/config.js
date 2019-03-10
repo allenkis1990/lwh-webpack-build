@@ -1,15 +1,14 @@
 /**
  * Created by allen on 2019/2/11.
  */
-
 let argv = require('yargs').argv
 let fs = require('fs')
 let colors = require('colors/safe');
 let dirs
 let _project
 let isBuildAll = argv.all
-console.log(argv.design,111121212);
 let projects = !argv.design?'projects':'design'
+let deleteDist = require('../task/deleteDist')
 if(argv.project&&typeof argv.project==='string'){
     dirs = getDirs()
     if(dirs){
@@ -45,13 +44,14 @@ if(!isBuildAll){
 } else {
     console.log(colors.green(`现在开始构建${projects}下的所有项目   >>>>>>>>>>>>>>>>>>>>>>>>>`));
 }
-module.exports = {
-    mainDir:'./projects',
-    designMainDir:'./design',
+let config = {
+    isDesign:argv.design,
+    mainDir:!argv.design?'./projects':'./design',
+    parentMainDir:!argv.design?'./parentProject':'./designParent',
     project:_project,
-    parentMainDir:'./parentProject',
-    parentDesignDir:'./designParent',
-    portal:'portal',
-    center:'center',
+    dist:'dist',
+    port:!argv.design?'8080':'8181',
     apps:['portal','center']
 }
+deleteDist(config)
+module.exports = config
