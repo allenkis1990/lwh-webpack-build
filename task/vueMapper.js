@@ -3,8 +3,9 @@
  */
 let fs = require('fs')
 let path = require('path')
-module.exports = function(designDir,project){
+module.exports = function(designDir,project,parentDesign){
     let baseDir =  path.resolve(__dirname,`../${designDir.replace('./','')}/${project}`)
+    let parentBaseDir =  path.resolve(__dirname,`../${parentDesign.replace('./','')}`)
     fs.readdir(baseDir,(err,apps)=>{
         if(err){
             console.log(err);
@@ -12,20 +13,36 @@ module.exports = function(designDir,project){
             //console.log(apps,121212);
             apps.forEach((app)=>{
                 let appPath = path.join(baseDir,app)
-                let views = fs.readdirSync(`${appPath}/views`)
-                let vueMapperContent = ''
-                let exportContent = 'export default { '
-                views.forEach((view,index)=>{
-                    if(/\.vue$/.test(view)){
-                        let viewName = view.replace('.vue','')
-                        vueMapperContent += `import ${viewName} from '@${app}/views/${view}';`
-                        exportContent += `${viewName}${index===views.length-1?'':','}`
+                let parentAppPath = path.join(parentBaseDir,app)
+                // let views = fs.readdirSync(`${appPath}/views`)
+                let views
+                fs.readdir(`${appPath}/views`,(e,arr)=>{
+                    if(e){
+                        views = []
+                    } else {
+                        views = arr
                     }
+                    let parentViews = fs.readdirSync(path.join(parentAppPath,'views'))
+                    views = views.concat(parentViews)
+                    views = views.reduce((pre, next) => {
+                        pre.indexOf(next) === -1 && pre.push(next)
+                        return pre
+                    }, [])
+                    console.log(views,project+'-'+app);
+                    let vueMapperContent = ''
+                    let exportContent = 'export default { '
+                    views.forEach((view,index)=>{
+                        if(/\.vue$/.test(view)){
+                            let viewName = view.replace('.vue','')
+                            vueMapperContent += `import ${viewName} from '@${app}/views/${view}';`
+                            exportContent += `${viewName}${index===views.length-1?'':','}`
+                        }
+                    })
+                    exportContent += ` }`
+                    vueMapperContent +=  `\n${exportContent}`
+                    //console.log(vueMapperContent,111222);
+                    fs.writeFileSync(path.join(appPath,'vueMapper.js'),vueMapperContent)
                 })
-                exportContent += ` }`
-                vueMapperContent +=  `\n${exportContent}`
-                //console.log(vueMapperContent,111222);
-                fs.writeFileSync(path.join(appPath,'vueMapper.js'),vueMapperContent)
             })
         }
     })

@@ -5,6 +5,6 @@
 </template>
 
 <style>
-  @import "~@center/style/style1.css";
+  @import "~@portal/style/style1.css";
 </style>
 

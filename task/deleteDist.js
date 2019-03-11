@@ -10,7 +10,7 @@ module.exports = function(config){
             console.log(err);
         } else {
             if(config.isDesign){
-                vueMapper(config.mainDir,config.project)
+                vueMapper(config.mainDir,config.project,config.parentMainDir)
             }
         }
     });
