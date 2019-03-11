@@ -1,5 +1,7 @@
 /**
  * Created by allen on 2019/3/10.
+ * 自动生成vueMapper import home from home.vue home取得是文件的名字
+ * 先读取当前项目的views文件夹(没有的话就是空数组)然后再concat上parent的views文件夹 最后进行去重
  */
 let fs = require('fs')
 let path = require('path')
