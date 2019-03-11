@@ -1,6 +1,6 @@
 //拦截器
 import axios from 'axios'
-
+import { Message } from 'element-ui'
 axios.interceptors.request.use(function (request) {
     let dateHsh = /\?/ig.test(request.url) ? '&' : '?'
     request.url += `${dateHsh}_q_='${new Date().getTime()}`
@@ -17,6 +17,14 @@ axios.interceptors.response.use(function (response) {
     // Do something with response error
     if (error.response) {
         if (error.response.status === 404) {
+            Message.success({
+                message:'1212'
+            })
+            Message({
+                message:'请求404',
+                type:'error'
+            })
+            console.log(Message);
             console.error('请求404!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             return;
         }

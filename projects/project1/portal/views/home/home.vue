@@ -16,8 +16,11 @@
 <script>
     export default {
         mounted() {
+            this.$message.success({
+                message:'111'
+            })
 //            console.log(this.$http,'this');
-            this.$http.get('/portal/fuck', {
+            this.$http.get('/aaa', {
                 params: {
                     a: '1'
                 },

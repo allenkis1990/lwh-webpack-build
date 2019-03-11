@@ -1,6 +1,8 @@
 
 console.log('当前是否开发环境'+dev);
 //全局ajax拦截器
+import { Message } from 'element-ui';
+Vue.prototype.$message = Message
 import interceptors from '@portal/utils/interceptors'
 import Vue from 'vue'
 import App from '@portal/App.vue'
@@ -12,6 +14,7 @@ import mixin from '@portal/utils/mixin'
 Vue.prototype.$http = axios
 // 混合
 Vue.mixin(mixin)
+
 new Vue({
     el:'#app',
     router,

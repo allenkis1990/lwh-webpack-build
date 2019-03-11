@@ -108,7 +108,8 @@ function getExports(project){
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:Object.assign(alias,{
                 '@parent':path.resolve(config.parentMainDir),
-                'vue$': 'vue/dist/vue.esm.js'
+                'vue$': 'vue/dist/vue.esm.js',
+                '~':path.resolve(__dirname,'node_modules')
             })
         },
         resolveLoader: {
@@ -171,7 +172,7 @@ function getExports(project){
                             loader: "less-loader"
                         }
                     ],
-                    exclude: [path.resolve(`./${config.dist}`), /node_modules/],//排除解析dist文件夹
+                    exclude: [path.resolve(`./${config.dist}`)],//排除解析dist文件夹
                     include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
                 },
                 {
@@ -188,8 +189,8 @@ function getExports(project){
                         },
                         {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
-                    exclude: [path.resolve(`./${config.dist}`), /node_modules/],//排除解析dist文件夹
-                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve(`./${config.dist}`)],//排除解析dist文件夹
+                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`),/node_modules/]//只编译src文件夹 但是node_modules除外
                 },
                 //解析打包json文件
                 {
@@ -257,6 +258,11 @@ function getExports(project){
                                     regenerator: true,
                                     useESModules: true,
                                     moduleName: 'babel-runtime'
+                                },
+                                "component",
+                                {
+                                    "libraryName": "element-ui",
+                                    "styleLibraryName": "theme-chalk"
                                 }
                             ]
                         ]
