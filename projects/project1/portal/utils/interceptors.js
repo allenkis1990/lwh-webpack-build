@@ -17,9 +17,6 @@ axios.interceptors.response.use(function (response) {
     // Do something with response error
     if (error.response) {
         if (error.response.status === 404) {
-            Message.success({
-                message:'1212'
-            })
             Message({
                 message:'请求404',
                 type:'error'

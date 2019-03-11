@@ -122,7 +122,8 @@ function getExports(project){
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:Object.assign(alias,{
                 '@parent':path.resolve(config.parentMainDir),
-                'vue$': 'vue/dist/vue.esm.js'
+                'vue$': 'vue/dist/vue.esm.js',
+                'nms':path.resolve(__dirname,'node_modules')
             })
         },
         resolveLoader: {
@@ -171,6 +172,20 @@ function getExports(project){
                     use: ['happypack/loader?id=babel'],
                     // 不设置这个会报错
                     exclude: /node_modules/
+                },
+                {
+                    //ttf和woff全部都转成base64
+                    test:/node_modules\\.+\.(ttf|woff)/,
+                    use:{
+                        loader:'url-loader',
+                        options: {
+                            // outputPath:`${app}/images`,
+                            publicPath:'/',
+                            limit:1024*1000000//小于8KB会被转成base64
+                        }
+                    },
+                    exclude:[path.resolve(`./${config.dist}`)]//排除解析dist文件夹
+                    //include:[path.resolve('./projects/project1/src')]//只编译src文件夹 但是node_modules除外
                 },
                 {
                     test: /\.css$/,
@@ -228,7 +243,7 @@ function getExports(project){
                     vendor: {
                         chunks: 'initial',// 只对入口文件处理
                         test:/[\\/]node_modules[\\/]/,
-                        name: 'vendor',
+                        name: 'common/vendor',
                         priority: 10,
                         enforce: true,
                         // minChunks:1//最小被引用两次的公共库才被抽离到公共代码
@@ -237,7 +252,7 @@ function getExports(project){
             },
             //抽取webpack运行文件代码
             runtimeChunk: {
-                name: 'manifest'
+                name: 'common/manifest'
             },
             minimizer: [
                 new OptimizeCssAssetsPlugin()
@@ -280,6 +295,11 @@ function getExports(project){
                                     regenerator: true,
                                     useESModules: true,
                                     moduleName: 'babel-runtime'
+                                },
+                                "component",
+                                {
+                                    "libraryName": "element-ui",
+                                    "styleLibraryName": "theme-chalk"
                                 }
                             ]
                         ]
@@ -309,7 +329,7 @@ function getExports(project){
                     }
                 }
             }),
-            new MoveAssetsToDirPlugin()
+            //new MoveAssetsToDirPlugin()
         ])
     }
 }
