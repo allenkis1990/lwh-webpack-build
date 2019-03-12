@@ -25,7 +25,9 @@
                     fuck: '2222'
                 }
             }).then((data) => {
-                console.log(data.data, 'this');
+                if(data){
+                    console.log(data.data, 'this');
+                }
             })
         },
         methods: {

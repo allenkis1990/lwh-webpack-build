@@ -222,6 +222,9 @@ function getExports(project){
             aggregateTimeout: 1000//发现改动后多少秒执行打包
         },
         optimization: {
+            //hmr的时候显示的是更新文件的名称而不是id
+            // namedModules: true,
+            // namedChunks: true,
             splitChunks: {
                 cacheGroups:Object.assign(cacheGroups,{
                     vendor: {

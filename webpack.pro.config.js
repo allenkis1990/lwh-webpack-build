@@ -101,9 +101,13 @@ function getExports(project){
         entry: Object.assign(entry,{}),
         output:{
             path:path.resolve(__dirname,'dist',project),
-            filename:'[name].[hash:8].bundle.js',
+            filename:'[name].[chunkHash].bundle.js',
             publicPath: "/"
             //publicPath:"dist"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
+        },
+        //bund超过一定大小会报警告，加上这个配置就不会报了
+        performance: {
+            hints:false
         },
         externals: {
             // 使用动态连接库的VUE模块，这样就可以直接在项目中require('Vue')使用 webpack不会进行打包
@@ -279,6 +283,8 @@ function getExports(project){
             new webpack.DefinePlugin({
                 dev:false
             }),
+            //使用内容hash的规则hash文件 便于静态资源缓存
+            new webpack.HashedModuleIdsPlugin(),
             new Happypack({
                 //ID是标识符的意思，ID用来代理当前的happypack是用来处理一类特定的文件的
                 id: 'babel',
