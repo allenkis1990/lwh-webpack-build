@@ -18,6 +18,9 @@ function loader(source){
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
     //匹配import xxx from 'xxx'
     let importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
+    //匹配import(/* webpackChunkName: "portal/chunk/test3" */'@portal/views/test3/test3.vue')
+    //或者import('@portal/views/test3/test3.vue')
+    let importAsyncMatchs = source.match(/import.*?\((\/\*.*?\*\/)?.*?['"].*?['"].*?\)/g) || []
     //匹配@import 'xxx'
     let importStyleMatchs = source.match(/@import.*?['"].*?['"]/g) || []
     //匹配src = 'xxx'
@@ -28,7 +31,7 @@ function loader(source){
     //console.log(projectBaseSrc);
     let project = this.resourcePath.replace(new RegExp(`.+\\\\${options.mainDir}\\\\`),'').split(path.sep)[0]
     //console.log(project);
-    if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length||bgMatchs.length){
+    if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length||bgMatchs.length||importAsyncMatchs.length){
         let alias
         if(!buildAll){
             //非build-all的时候就直接取alias
@@ -49,9 +52,18 @@ function loader(source){
         moduleMatchs = moduleMatchs.concat(importStyleMatchs)
         moduleMatchs = moduleMatchs.concat(srcMatchs)
         moduleMatchs = moduleMatchs.concat(bgMatchs)
+        moduleMatchs = moduleMatchs.concat(importAsyncMatchs)
         moduleMatchs.forEach((item)=>{
             // console.log(item,'kkk');
-            let filePath = item.match(/['"](.*)['"]/g)[0].replace(/('|")/g,'')
+            let filePath
+            if(/\/\*.*?\*\//.test(item)){
+                //import()有带/**/的情况
+                filePath = item.match(/['"](.*?)['"]/g)[1].replace(/('|")/g,'')
+            } else {
+                //import()不带/**/的情况
+                filePath = item.match(/['"](.*)['"]/g)[0].replace(/('|")/g,'')
+            }
+            // console.log(filePath,886);
             let aliasKeys = Object.keys(alias)
             let firstWord = filePath.split('/')[0]
             let aliasKeysIndex
@@ -76,6 +88,9 @@ function loader(source){
                     let parentPath = `${parentAliasKey}/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
                     source = source.replace(filePath,parentPath)
+                    if(/\/\*.*?\*\//.test(item)){
+                        console.log(source);
+                    }
                 }
                 //console.log(fullPath);
             }

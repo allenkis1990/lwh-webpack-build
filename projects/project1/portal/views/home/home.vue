@@ -5,6 +5,7 @@
             <li><a href="javascript:void(0)" @click="goPath('/portal')">/portal</a></li>
             <li><a href="javascript:void(0)" @click="goState('test1')">home/test1</a></li>
             <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
+            <li><a href="javascript:void(0)" @click="goState('test3')">home/test3</a></li>
         </ul>
         <!--<img src="@portal/images/afei.jpg">
         <img src="@portal/images/皮卡22.jpg">-->

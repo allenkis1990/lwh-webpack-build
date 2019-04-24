@@ -23,15 +23,17 @@ export default new VueRouter({
         {
             name: 'test1',
             path: '/portal/test1',
-            // component: Test1
-            // component: () => import(/* webpackChunkName: "portalChunk@test1" */'@portal/views/test1/test1.vue')
             component: () => import(/* webpackChunkName: "portal/chunk/test1" */'@portal/views/test1/test1.vue')
         },
         {
             name:'test2',
             path: '/portal/test2',
-            // component: () => import(/* webpackChunkName: "portalChunk@test2" */'@portal/views/test2/test2.vue')
             component: () => import(/* webpackChunkName: "portal/chunk/test2" */'@portal/views/test2/test2.vue')
+        },
+        {
+            name:'test3',
+            path: '/portal/test3',
+            component: () => import(/* webpackChunkName: "portal/chunk/test3" */'@portal/views/test3/test3.vue')
         }
     ]
 });
