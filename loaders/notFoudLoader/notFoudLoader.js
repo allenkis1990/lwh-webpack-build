@@ -16,19 +16,30 @@ function loader(source){
     let moduleMatchs = []
     //匹配require('xxx')
     let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
+
+
     //匹配import xxx from 'xxx'
     let importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
+
+
     //匹配import(/* webpackChunkName: "portal/chunk/test3" */'@portal/views/test3/test3.vue')
     //或者import('@portal/views/test3/test3.vue')
     let importAsyncMatchs = source.match(/import.*?\((\/\*.*?\*\/)?.*?['"].*?['"].*?\)/g) || []
+
+
     //匹配@import 'xxx'
     let importStyleMatchs = source.match(/@import.*?['"].*?['"]/g) || []
+
+
     //匹配src = 'xxx'
     let srcMatchs = source.match(/src.*?=.*?['"].*?['"]/g) || []
+
+
     //匹配url('xxx')
     let bgMatchs = source.match(/url.*?\(.*?['"].*?['"].*?\)/g) || []
-    //let projectBaseSrc = this.resourcePath.match(/(.+\\)projects\\/)[1]
-    //console.log(projectBaseSrc);
+
+
+
     let project = this.resourcePath.replace(new RegExp(`.+\\\\${options.mainDir}\\\\`),'').split(path.sep)[0]
     //console.log(project);
     if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length||bgMatchs.length||importAsyncMatchs.length){
