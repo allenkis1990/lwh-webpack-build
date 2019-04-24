@@ -99,9 +99,9 @@ function loader(source){
                     let parentPath = `${parentAliasKey}/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
                     source = source.replace(filePath,parentPath)
-                    if(/\/\*.*?\*\//.test(item)){
-                        console.log(source);
-                    }
+                    // if(/\/\*.*?\*\//.test(item)){
+                    //     console.log(source);
+                    // }
                 }
                 //console.log(fullPath);
             }
