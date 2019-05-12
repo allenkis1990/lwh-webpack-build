@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-       home!!!!!
+        projct1 designHome!!!!!
         <div><img src="@portal/images/afei.jpg"/></div>
         <div><img src="@portal/images/loading.gif"/></div>
         <div class="bg"></div>

@@ -11,7 +11,6 @@ const getUrlParam = (key) => {
 const page = getUrlParam('page') || 1
 
 /* eslint-disable no-new */
-
 new Vue(Vue.util.extend({
     el: '#app',
     App

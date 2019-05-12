@@ -43,11 +43,18 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
     // writeToDisk:true
 })
 
-//mork
+
+//url访问/的时候固定重定向到portal去
+app.get('/',function(req,res){
+    res.redirect('/portal');
+})
+
+//mock
 app.get('/portal/fuck',function(req,res){
     console.log(req.url);
     res.send({name:'allen'});
 })
+
 //纠正VUE history模式下刷新404问题
 let historyFallback = require('./task/historyFallback.js')
 historyFallback(app)
@@ -79,4 +86,5 @@ Object.keys(proxyList).forEach(function (context) {
 //     app.use(requestBase,findStaticPath(requestBase))
 // })
 
-app.listen(config.port,'127.0.0.1');
+
+app.listen(config.port,config.host);

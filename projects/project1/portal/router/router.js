@@ -31,9 +31,9 @@ export default new VueRouter({
             component: () => import(/* webpackChunkName: "portal/chunk/test2" */'@portal/views/test2/test2.vue')
         },
         {
-            name:'test3',
-            path: '/portal/test3',
-            component: () => import(/* webpackChunkName: "portal/chunk/test3" */'@portal/views/test3/test3.vue')
+            name:'onlyPortal',
+            path: '/portal/onlyPortal',
+            component: () => import(/* webpackChunkName: "portal/chunk/onlyPortal" */'@portal/views/onlyPortal/onlyPortal.vue')
         }
     ]
 });

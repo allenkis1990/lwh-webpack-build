@@ -1,5 +1,5 @@
-module.exports =  {
+module.exports = {
     fn() {
-        return 'fn';
+        return '222';
     }
 }

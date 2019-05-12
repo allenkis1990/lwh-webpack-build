@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development && node dev-server.js",
     "design": "set NODE_ENV=development && node dev-server.js --design",
+    "dev:dist": "set NODE_ENV=development && node pro-server.js --devdist",
     "pro": "set NODE_ENV=production && webpack --mode production --config webpack.pro.config.js",
     "build-all": "set NODE_ENV=production&& webpack --mode production --config webpack.buildAll.config.js --all",
     "build": "node build.js && npm run build-all"
@@ -39,8 +40,10 @@
     "glob": "^7.1.3",
     "happypack": "^5.0.0",
     "hot-module-replacement": "^3.0.1",
+    "html-entities": "^1.2.1",
     "html-webpack-plugin": "^4.0.0-beta.5",
     "html-withimg-loader": "^0.1.16",
+    "iconv-lite": "^0.4.24",
     "jquery": "^3.3.1",
     "json-loader": "^0.5.7",
     "less": "^3.8.1",

@@ -39,10 +39,12 @@ function getDirs(){
     }
     return dirs
 }
-if(!isBuildAll){
-    console.log(colors.green(`现在开始构建项目：${_project}   >>>>>>>>>>>>>>>>>>>>>>>>>`));
-} else {
-    console.log(colors.green(`现在开始构建${projects}下的所有项目   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+if(!argv.devdist){
+    if(!isBuildAll){
+        console.log(colors.green(`现在开始构建项目：${_project}   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+    } else {
+        console.log(colors.green(`现在开始构建${projects}下的所有项目   >>>>>>>>>>>>>>>>>>>>>>>>>`));
+    }
 }
 let config = {
     isDesign:argv.design,
@@ -50,8 +52,16 @@ let config = {
     parentMainDir:!argv.design?'./parentProject':'./designParent',
     project:_project,
     dist:'dist',
-    port:!argv.design?'8080':'8181',
-    apps:['portal','center']
+    //port:!argv.design?'8080':'8181',
+    port:'8080',
+    designPort:'8181',
+    apps:['portal','center'],
+    host:'127.0.0.1'
 }
-deleteDist(config)
+if(argv.design){
+    config.port = config.designPort;
+}
+if(!argv.devdist){
+    deleteDist(config)
+}
 module.exports = config
