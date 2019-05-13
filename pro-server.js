@@ -1,8 +1,13 @@
-let project = './dist/project1'
+let project = './dist/project2'
 let express = require('express')
 let app = express()
 let path = require('path')
 let historyFallback = require('./task/distHistoryFallback.js')
+
+//url访问/的时候固定重定向到portal去
+app.get('/',function(req,res){
+    res.redirect('/portal');
+})
 
 
 app.get('/*',function(req,res){
