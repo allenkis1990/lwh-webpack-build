@@ -25,6 +25,7 @@ export default {
             let dialogOtps = dialogContent(this)
             dialogUtils.contentDialog({
                 id: 'lwhId',
+                title:'刘伟恒弹窗',
                 cancelValue: 'delete',
                 cancelCb(){
                     console.log('删除弹窗');
