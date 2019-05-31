@@ -34,6 +34,11 @@ export default new VueRouter({
             name:'onlyPortal',
             path: '/portal/onlyPortal',
             component: () => import(/* webpackChunkName: "portal/chunk/onlyPortal" */'@portal/views/onlyPortal/onlyPortal.vue')
+        },
+        {
+            name:'directive',
+            path: '/portal/directive',
+            component: () => import(/* webpackChunkName: "portal/chunk/directive" */'@portal/views/directive/directive.vue')
         }
     ]
 });
