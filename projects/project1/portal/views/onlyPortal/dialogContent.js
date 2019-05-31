@@ -9,6 +9,7 @@ export default function(context){
         },
         methods:{
             clickMe(){
+                //改变当前页面的data数据
                 context.fuck = '66666'
             }
         },

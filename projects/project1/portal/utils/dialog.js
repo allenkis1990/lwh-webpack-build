@@ -23,7 +23,6 @@ var mergerOptionsFn = function(scopeOptions,vueOptions,options){
     scopeOptions.methods.remove = function(){
         var dialogMask = document.querySelector('.dialog-mask')
         var dialogBox = document.querySelector('.dialogBox')
-        console.log(dialogMask.getAttribute('class'));
         // dialog-mask animateMask
         dialogMask.setAttribute('class','dialog-mask animateMaskLeave')
         dialogBox.setAttribute('class','dialogBox animateDialogLeave')
