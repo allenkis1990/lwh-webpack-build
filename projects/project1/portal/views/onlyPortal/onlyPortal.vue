@@ -9,6 +9,7 @@
 import {obj} from '@portal/services/onlyPortalData.js'
 import dialogUtils from '@portal/utils/dialog.js'
 import dialogContent from '@portal/views/onlyPortal/dialogContent.js'
+
 export default {
     data(){
         return {
@@ -35,7 +36,13 @@ export default {
     }
 }
 </script>
-
+<style>
+    body,html{width:100%;height:100%;}
+</style>
+<style lang="less">
+    @import "~@portal/less/dialog.less";
+</style>
+<!--scoped-->
 <style lang="less" scoped>
     @import "~@portal/less/onlyPortal.less";
 </style>
