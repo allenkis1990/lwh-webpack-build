@@ -15,7 +15,7 @@ function loader(source){
     let options = loaderUtils.getOptions(this)
     let moduleMatchs = []
     //匹配require('xxx')
-    let requireMatchs = source.match(/require.*?\(.*?\)/g) || []
+    let requireMatchs = source.match(/require\s*?\(.*?\)/g) || []
 
 
     //匹配import xxx from 'xxx'
