@@ -1,6 +1,16 @@
 /**
  * Created by Allen Liu on 2019/6/2.
  */
+
+/**
+ * Vue表单验证指令用法：
+ * 一定要有form标签,form标签要有name属性
+ * 表单元素也要有name属性，要有v-model属性
+ * vue的data要定义表单相关的错误对象
+ * 还可支持扩展表单验证指令
+ * 详细例子见directive.vue文件
+ */
+
 import Vue from 'vue'
 
 
