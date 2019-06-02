@@ -28,6 +28,7 @@ var typeUtils = {
         } else {
             this.compiler[directive](ele,bind,vNode,value)
         }
+        this.setInvalid(formModel,formItemModel);
     },
     setInvalid(fromObj,vaildObj){
         //设置表单item过没过
@@ -88,7 +89,7 @@ var typeUtils = {
             } else {
                 vaildObj.$error.required = true;
             }
-            typeUtils.setInvalid(fromObj,vaildObj);
+            //typeUtils.setInvalid(fromObj,vaildObj);
         },
         pattern(ele,bind,vNode,model){
             var context = vNode.context;
@@ -110,7 +111,7 @@ var typeUtils = {
             } else {
                 vaildObj.$error.pattern = true;
             }
-            typeUtils.setInvalid(fromObj,vaildObj);
+            //typeUtils.setInvalid(fromObj,vaildObj);
         }
     }
 }
@@ -149,6 +150,7 @@ function getOptions(directive,compileFn){
                         } else {
                             typeUtils.compiler[directive](ele,bind,vNode,value)
                         }
+                        typeUtils.setInvalid(context[form],context[form][formItem]);
                     })
                 },
                 findParentNode(compileFn,node, ele, bind, vNode){

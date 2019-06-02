@@ -135,14 +135,12 @@
                         formItem = ele.formItemName;
                 var fromObj = context[form]
                 var vaildObj = fromObj[formItem];
-                var reg = bind.value;
                 vaildObj.$error.pattern = false;
                 if(value==100){
                     vaildObj.$error.num = false;
                 } else {
                     vaildObj.$error.num = true;
                 }
-                validation.typeUtils.setInvalid(fromObj,vaildObj);
             })
         }
     }
