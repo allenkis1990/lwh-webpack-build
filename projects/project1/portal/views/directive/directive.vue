@@ -25,7 +25,7 @@
                                placeholder="请输入用户名"
                                v-required="true">
                         <span style="color:red" v-if="myForm.userName.$error.required&&myForm.userName.$dirty">请输入用户名</span>
-                        <span style="color:red" v-if="myForm.userName.$error.pattern&&myForm.userName.$dirty">请输入英文</span>
+                        <span style="color:red" v-if="myForm.userName.$error.pattern&&myForm.userName.$dirty&&!myForm.userName.$error.required">请输入英文</span>
                     </li>
                     <li>
                         爱好：<select name="sel"
@@ -47,7 +47,7 @@
                                    placeholder="请输入电话号码"
                                    v-required="true">
                         <span style="color:red" v-if="myForm.phone.$error.required&&myForm.phone.$dirty">请输入电话号码</span>
-                        <span style="color:red" v-if="myForm.phone.$error.pattern&&myForm.phone.$dirty">请输入11位电话号码</span>
+                        <span style="color:red" v-if="myForm.phone.$error.pattern&&myForm.phone.$dirty&&!myForm.phone.$error.required">请输入11位电话号码</span>
                     </li>
                     <li>
                         固定数字：<input type="text"
@@ -57,7 +57,7 @@
                                    placeholder="请输入固定数字100"
                                    v-required="true">
                         <span style="color:red" v-if="myForm.num.$error.required&&myForm.num.$dirty">必填</span>
-                        <span style="color:red" v-if="myForm.num.$error.num&&myForm.num.$dirty">请输入固定数字</span>
+                        <span style="color:red" v-if="myForm.num.$error.num&&myForm.num.$dirty&&!myForm.num.$error.required">请输入固定数字</span>
                     </li>
 
                     <li style="color:red" v-if="myForm.$invalid">整个表单没过</li>
@@ -108,7 +108,7 @@
                 this.dataSource = Math.random();
             },
             initForm(){
-                validation.typeUtils.initForm('myForm',this);
+                validation.initForm('myForm',this);
             }
         },
         directives: {

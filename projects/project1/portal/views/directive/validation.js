@@ -1,9 +1,96 @@
 /**
- * Created by admin on 2019/6/2.
+ * Created by Allen Liu on 2019/6/2.
  */
 import Vue from 'vue'
 
-var typeUtils = {
+
+var utils = {
+    isNull(str){
+        return str === undefined || str === null || str.replace(/^\s+/,'').replace(/\s+$/,'') === ''
+    }
+};
+function Validation(){
+    this.registInnerDirectives()
+}
+
+Validation.prototype = {
+    //获取指令的options
+    getOptions(directive,compileFn){
+        var _this = this;
+        return {
+            inserted(ele, bind, vNode){
+                if(!ele.name){
+                    return false;
+                }
+
+                var directives = vNode.data.directives;
+                var model = directives.find(function(item){
+                    return item.name === 'model'
+                })
+                if(!model){
+                    throw new Error('表单name为'+ele.name+'的v-model未定义')
+                }
+
+                //缓存v-model表达式名称
+                ele.formModelName = model.expression;
+//                console.log(bind.value);
+                var required = bind.value;
+                var methods = {
+                    //初始化表单验证对象
+                    initFormObj(compileFn,node,ele,vNode,bind){
+                        _this.initFormObj(compileFn,node,ele,vNode,bind,directive)
+                        //绑定input事件
+                        var context = vNode.context
+                        var form = node.name
+                        var formItem  = ele.name
+                        ele.inputEvent = function(e){
+                            var value = e.target.value;
+                            context.$set(context[form][formItem],'$dirty',true)
+                            if(compileFn){
+                                compileFn(ele,bind,vNode,value);
+                            } else {
+                                _this.compiler[directive](ele,bind,vNode,value)
+                            }
+                            _this.setInvalid(context[form],context[form][formItem]);
+                        }
+                        ele.addEventListener('input',ele.inputEvent)
+                    },
+                    findParentNode(compileFn,node, ele, bind, vNode){
+                        if (node.nodeName.toLowerCase() === 'form') {
+                            if (!node.name) {
+                                return false;
+                            }
+                            this.initFormObj(compileFn,node,ele,vNode,bind);
+                        } else {
+                            var parentNode = node.parentNode;
+                            methods.findParentNode(compileFn,parentNode,ele,bind,vNode);
+                        }
+                    }
+                }
+
+                if (!required) {
+                    return false;
+                } else {
+                    methods.findParentNode(compileFn,ele.parentNode, ele, bind, vNode);
+                }
+
+            },
+            update(ele,bind,vNode){
+//                console.log(vNode);
+//                typeUtils.compiler[directive](ele,bind,vNode)
+            },
+
+            unbind(ele,bind){
+                //销毁缓存的
+                ele.formName = null;
+                ele.formItemName = null;
+                ele.formModelName = null;
+                ele.removeEventListener('input',ele.inputEvent,true);
+                ele.inputEvent = null;
+            }
+        }
+    },
+    //初始化表单
     initFormObj(compileFn,node,ele,vNode,bind,directive){
         //缓存form的name
         ele.formName = node.name;
@@ -30,6 +117,7 @@ var typeUtils = {
         }
         this.setInvalid(formModel,formItemModel);
     },
+    //设置表单过还是没过
     setInvalid(fromObj,vaildObj){
         //设置表单item过没过
         var errValues = Object.values(vaildObj.$error)
@@ -73,6 +161,7 @@ var typeUtils = {
             }
         })
     },
+    //解析内置验证指令的方法
     compiler:{
         required(ele,bind,vNode,model){
             var context = vNode.context;
@@ -83,8 +172,7 @@ var typeUtils = {
             var vaildObj = context[form][formItem]
 //                var model = eval(`context.${modelName}`)
 //                console.log(model,1212);
-            if(model){
-                //context.$set(vaildObj,'$dirty',true)
+            if(!utils.isNull(model)){
                 vaildObj.$error.required = false;
             } else {
                 vaildObj.$error.required = true;
@@ -100,7 +188,7 @@ var typeUtils = {
             var vaildObj = fromObj[formItem];
 //                var model = eval(`context.${modelName}`)
             var reg = bind.value;
-            if(model){
+            if(!utils.isNull(model)){
                 //context.$set(vaildObj,'$dirty',true)
 //                    console.log(reg.test(model));
                 if(reg.test(model)){
@@ -113,83 +201,12 @@ var typeUtils = {
             }
             //typeUtils.setInvalid(fromObj,vaildObj);
         }
-    }
+    },
+    registInnerDirectives(){
+        Vue.directive('required',this.getOptions('required'))
+        Vue.directive('pattern',this.getOptions('pattern'))
+    },
+    constructor:Validation
 }
-function getOptions(directive,compileFn){
-    return {
-        inserted(ele, bind, vNode){
-            if(!ele.name){
-                return false;
-            }
 
-            var directives = vNode.data.directives;
-            var model = directives.find(function(item){
-                return item.name === 'model'
-            })
-            if(!model){
-                throw new Error('表单name为'+ele.name+'的v-model未定义')
-            }
-
-            //缓存v-model表达式名称
-            ele.formModelName = model.expression;
-//                console.log(bind.value);
-            var required = bind.value;
-            var methods = {
-                //初始化表单验证对象
-                initFormObj(compileFn,node,ele,vNode,bind){
-                    typeUtils.initFormObj(compileFn,node,ele,vNode,bind,directive)
-                    //绑定input事件
-                    var context = vNode.context
-                    var form = node.name
-                    var formItem  = ele.name
-                    ele.addEventListener('input',function(e){
-                        var value = e.target.value;
-                        context.$set(context[form][formItem],'$dirty',true)
-                        if(compileFn){
-                            compileFn(ele,bind,vNode,value);
-                        } else {
-                            typeUtils.compiler[directive](ele,bind,vNode,value)
-                        }
-                        typeUtils.setInvalid(context[form],context[form][formItem]);
-                    })
-                },
-                findParentNode(compileFn,node, ele, bind, vNode){
-                    if (node.nodeName.toLowerCase() === 'form') {
-                        if (!node.name) {
-                            return false;
-                        }
-                        this.initFormObj(compileFn,node,ele,vNode,bind);
-                    } else {
-                        var parentNode = node.parentNode;
-                        methods.findParentNode(compileFn,parentNode,ele,bind,vNode);
-                    }
-                }
-            }
-
-            if (!required) {
-                return false;
-            } else {
-                methods.findParentNode(compileFn,ele.parentNode, ele, bind, vNode);
-            }
-
-        },
-        update(ele,bind,vNode){
-//                console.log(vNode);
-//                typeUtils.compiler[directive](ele,bind,vNode)
-        },
-
-        unbind(ele,bind){
-            //销毁缓存的
-            ele.formName = null;
-            ele.formItemName = null;
-            ele.formModelName = null;
-        }
-    }
-}
-Vue.directive('required',getOptions('required'))
-Vue.directive('pattern',getOptions('pattern'))
-
-export default {
-    typeUtils:typeUtils,
-    getOptions:getOptions
-}
+export default new Validation()
