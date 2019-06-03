@@ -7,6 +7,7 @@
             <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
             <li><a href="javascript:void(0)" @click="goState('onlyPortal')">Vue.extend()</a></li>
             <li><a href="javascript:void(0)" @click="goState('directive')">directive</a></li>
+            <li><a href="javascript:void(0)" @click="goState('filter')">filter</a></li>
         </ul>
         <!--<img src="@portal/images/afei.jpg">
         <img src="@portal/images/皮卡22.jpg">-->

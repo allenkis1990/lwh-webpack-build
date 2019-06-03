@@ -39,6 +39,11 @@ export default new VueRouter({
             name:'directive',
             path: '/portal/directive',
             component: () => import(/* webpackChunkName: "portal/chunk/directive" */'@portal/views/directive/directive.vue')
+        },
+        {
+            name:'filter',
+            path: '/portal/filter',
+            component: () => import(/* webpackChunkName: "portal/chunk/filter" */'@portal/views/filter/filter.vue')
         }
     ]
 });

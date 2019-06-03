@@ -64,6 +64,25 @@
                 </ul>
             </form>
         </div>
+
+
+        <div>
+            <form name="myForm2">
+                <ul>
+                    <li>
+                        用户名：<input type="text"
+                                   v-pattern="/^[a-zA-Z]+$/"
+                                   v-model="userName2"
+                                   name="userName"
+                                   placeholder="请输入用户名"
+                                   v-required="true">
+                        <span style="color:red" v-if="myForm2.userName.$error.required&&myForm2.userName.$dirty">请输入用户名</span>
+                        <span style="color:red" v-if="myForm2.userName.$error.pattern&&myForm2.userName.$dirty&&!myForm2.userName.$error.required">请输入英文</span>
+                    </li>
+                    <li style="color:red" v-if="myForm2.$invalid">整个表单没过</li>
+                </ul>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -79,6 +98,7 @@
             return {
                 dataSource: "initDataSource",
                 userName:'',
+                userName2:'',
                 phone:'',
                 num:'',
                 sel:{data:''},
@@ -93,6 +113,11 @@
                         $error:{}
                     },
                     num:{
+                        $error:{}
+                    }
+                },
+                myForm2:{
+                    userName:{
                         $error:{}
                     }
                 }
@@ -150,9 +175,6 @@
         width: 100%;
         height: 100%;
     }
-</style>
-<style lang="less">
-    @import "~@portal/less/dialog.less";
 </style>
 <!--scoped-->
 <style lang="less" scoped>
