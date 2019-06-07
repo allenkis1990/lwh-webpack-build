@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 Vue.use(VueRouter);
 import Home from '@portal/views/home/home.vue'
+import componentProps from '@portal/views/component/component-props.vue'
+import componentVmodel from '@portal/views/component/component-vModel.vue'
+import componentSlot from '@portal/views/component/component-slot.vue'
 
 
 export default new VueRouter({
@@ -48,7 +50,30 @@ export default new VueRouter({
         {
             name:'component',
             path: '/portal/component',
-            component: () => import(/* webpackChunkName: "portal/chunk/component" */'@portal/views/component/component.vue')
+            component: () => import(/* webpackChunkName: "portal/chunk/component" */'@portal/views/component/component.vue'),
+            children:[
+                {
+                    name: 'component-props',
+                    path: 'props',
+                    components:{
+                        default:componentProps
+                    }
+                },
+                {
+                    name: 'component-vModel',
+                    path: 'vModel',
+                    components:{
+                        default:componentVmodel
+                    }
+                },
+                {
+                    name: 'component-slot',
+                    path: 'slot',
+                    components:{
+                        default:componentSlot
+                    }
+                }
+            ]
         }
     ]
 });

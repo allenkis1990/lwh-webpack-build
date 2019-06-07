@@ -1,34 +1,37 @@
 <template>
     <div>
-
-        <test1 :data-source="test1Data" @dataChange="dataChange"></test1>
-        <div>组件外部的data==>:{{test1Data.name}}</div>
-        <div><button @click="test1Fn()">组件外部点击查看test1Data</button></div>
-
+        <div v-if="showNav">
+            <h5>组件知识点：</h5>
+            <ul>
+                <li><a href="javascript:void(0)" @click="stateGo('component-props')">props</a></li>
+                <li><a href="javascript:void(0)" @click="stateGo('component-vModel')">v-model</a></li>
+                <li><a href="javascript:void(0)" @click="stateGo('component-slot')">slot</a></li>
+            </ul>
+        </div>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
-
-    import test1 from '@portal/views/component/component-test1.vue'
     export default {
         data(){
             return {
-                test1Data:{name:'test1Data'}
+            }
+        },
+        computed:{
+            showNav(){
+                return this.$route.name==='component'
             }
         },
         mounted(){
+
         },
         methods: {
-            test1Fn(){
-                console.log(this.test1Data);
-            },
-            dataChange(value){
-                this.test1Data.name = value;
+            stateGo(name){
+                this.$router.push({
+                    name:name
+                })
             }
-        },
-        components:{
-            test1
         }
     }
 </script>
