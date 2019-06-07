@@ -6,6 +6,7 @@
                 <li><a href="javascript:void(0)" @click="stateGo('component-props')">props</a></li>
                 <li><a href="javascript:void(0)" @click="stateGo('component-vModel')">v-model</a></li>
                 <li><a href="javascript:void(0)" @click="stateGo('component-slot')">slot</a></li>
+                <li><a href="javascript:void(0)" @click="stateGo('component-orderList')">demo-orderList</a></li>
             </ul>
         </div>
         <router-view></router-view>

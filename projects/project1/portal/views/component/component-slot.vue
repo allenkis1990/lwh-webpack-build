@@ -6,6 +6,8 @@
             <template #sx="{sx}">hello {{sx.name}}</template>
             <template v-slot:parent>hello {{parent.name}}</template>
         </test1>
+
+
     </div>
 </template>
 
