@@ -124,6 +124,7 @@
             }
         },
         mounted(){
+            console.log('第一次加载');
         },
         methods: {
             fn(){

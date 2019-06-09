@@ -9,7 +9,6 @@
 
 <script>
 import {obj} from '@portal/services/onlyPortalData.js'
-import dialogUtils from '@portal/utils/dialog.js'
 import dialogContent from '@portal/views/onlyPortal/dialogContent.js'
 
 import testCode from '@portal/views/onlyPortal/test.vue'
@@ -34,7 +33,8 @@ export default {
     methods:{
         contentDialog(){
             let dialogOtps = dialogContent(this)
-            dialogUtils.contentDialog({
+            //$contentDialog通过Vue.use()挂载到全局
+            this.$contentDialog({
                 id: 'lwhId',
                 title:'刘伟恒弹窗',
                 cancelValue: 'delete',

@@ -14,6 +14,7 @@
     import orderList from '@portal/views/component/components/component-orderList.vue'
     import subOrderList from '@portal/views/component/components/component-subOrderList.vue'
     export default {
+        name:'component-orderList',
         data(){
             return {
                 orderList:[
@@ -48,7 +49,16 @@
                 ]
             }
         },
+        activated(){
+            //激活
+            console.log('激活模式');
+        },
+        deactivated(){
+            //激活
+            console.log('后台模式');
+        },
         mounted(){
+            console.log('页面第一次加载');
         },
         methods: {
 

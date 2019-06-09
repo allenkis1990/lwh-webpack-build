@@ -46,9 +46,12 @@ var mergerOptionsFn = function(scopeOptions,vueOptions,options){
         return data
     }
 }
-import Vue from 'vue'
-export default {
-    contentDialog(opts,vueOpts){
+//import Vue from 'vue'
+var dialogPlugin = {
+
+}
+dialogPlugin.install = function(Vue,options){
+    Vue.prototype.$contentDialog = function(opts,vueOpts){
         var options = opts || {}
         var vueOptions = vueOpts || {}
         //console.log(scopeOptions);
@@ -68,3 +71,4 @@ export default {
         }
     }
 }
+export default dialogPlugin

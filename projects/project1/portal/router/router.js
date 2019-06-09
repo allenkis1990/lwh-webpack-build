@@ -2,9 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 import Home from '@portal/views/home/home.vue'
-import componentProps from '@portal/views/component/component-props.vue'
-import componentVmodel from '@portal/views/component/component-vModel.vue'
-import componentSlot from '@portal/views/component/component-slot.vue'
+
 
 
 export default new VueRouter({
@@ -40,6 +38,9 @@ export default new VueRouter({
         {
             name:'directive',
             path: '/portal/directive',
+            meta: {
+            keepAlive: false // 需要被缓存
+            },
             component: () => import(/* webpackChunkName: "portal/chunk/directive" */'@portal/views/directive/directive.vue')
         },
         {
@@ -56,21 +57,45 @@ export default new VueRouter({
                     name: 'component-props',
                     path: 'props',
                     components:{
-                        default:componentProps
+                        default:function(){
+                            return import(/* webpackChunkName: "portal/chunk/component-props" */'@portal/views/component/component-props.vue')
+                        }
                     }
                 },
                 {
                     name: 'component-vModel',
                     path: 'vModel',
                     components:{
-                        default:componentVmodel
+                        default:function(){
+                            return import(/* webpackChunkName: "portal/chunk/component-vModel" */'@portal/views/component/component-vModel.vue')
+                        }
                     }
                 },
                 {
                     name: 'component-slot',
                     path: 'slot',
                     components:{
-                        default:componentSlot
+                        default:function(){
+                            return import(/* webpackChunkName: "portal/chunk/component-slot" */'@portal/views/component/component-slot.vue')
+                        }
+                    }
+                },
+                {
+                    name: 'component-orderList',
+                    path: 'orderList',
+                    components:{
+                        default:function(){
+                            return import(/* webpackChunkName: "portal/chunk/component-demoOrderList" */'@portal/views/component/component-demo-orderList.vue')
+                        }
+                    }
+                },
+                {
+                    name: 'component-async',
+                    path: 'async',
+                    components:{
+                        default:function(){
+                            return import(/* webpackChunkName: "portal/chunk/component-async" */'@portal/views/component/component-async.vue')
+                        }
                     }
                 }
             ]

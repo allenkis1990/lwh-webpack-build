@@ -15,6 +15,15 @@
      * 在组件内部会改变外部传进来的值 包括用computed接的
      */
     export default {
+        name:'component-test1',
+        activated(){
+            //激活
+            console.log('激活模式test1');
+        },
+        deactivated(){
+            //激活
+            console.log('后台模式test1');
+        },
         props:{
             dataSource:{
                 type:Object
@@ -37,6 +46,7 @@
             }
         },
         mounted(){
+            console.log('test1组件第一次被加载');
         },
         computed:{
             computedData(){

@@ -11,12 +11,21 @@
 
     import test1 from '@portal/views/component/components/component-test1.vue'
     export default {
+        activated(){
+            //激活
+            console.log('激活模式');
+        },
+        deactivated(){
+            //激活
+            console.log('后台模式');
+        },
         data(){
             return {
                 test1Data:{name:'test1Data'}
             }
         },
         mounted(){
+            console.log('页面第一次被加载');
         },
         methods: {
             test1Fn(){

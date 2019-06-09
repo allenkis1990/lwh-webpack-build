@@ -9,6 +9,8 @@ import store from '@portal/store/store'
 import axios from 'axios'
 import mixin from '@portal/utils/mixin'
 import elementUi from '@portal/utils/element-ui'
+import dialogPlugin from '@portal/utils/dialog'
+Vue.use(dialogPlugin)
 //使用element-ui并且把各插件挂载到Vue上
 elementUi(Vue)
 //把axios挂载到Vue原型链上
@@ -16,13 +18,14 @@ Vue.prototype.$http = axios
 // 混合
 Vue.mixin(mixin)
 
-new Vue({
+var vm = new Vue({
     el:'#app',
     router,
     store,
     template:'<App/>',
     components:{App}
 });
+window.$$$vm = vm
 
 if(module.hot){
     module.hot.accept();
