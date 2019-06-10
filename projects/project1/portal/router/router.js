@@ -97,6 +97,15 @@ export default new VueRouter({
                             return import(/* webpackChunkName: "portal/chunk/component-async" */'@portal/views/component/component-async.vue')
                         }
                     }
+                },
+                {
+                    name: '$attrs$listeners',
+                    path: '$attrs$listeners',
+                    components:{
+                        default:function(){
+                            return import(/* webpackChunkName: "portal/chunk/$attrs$listeners" */'@portal/views/component/$attrs$listeners.vue')
+                        }
+                    }
                 }
             ]
         }
