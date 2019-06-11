@@ -1,10 +1,10 @@
 module.exports = loader
-let path = require('path')
-let buildAll = require('yargs').argv.all
-let loaderUtils = require('loader-utils')
-
+var path = require('path')
+var buildAll = require('yargs').argv.all
+var loaderUtils = require('loader-utils')
+var fs = require('fs')
 function findCurrentWebpackConfig(configArr,project){
-    let currentWebpackConfig = configArr.find((config)=>{
+    var currentWebpackConfig = configArr.find((config)=>{
         return config.output.path.includes(project)
     })
     return currentWebpackConfig
@@ -12,45 +12,46 @@ function findCurrentWebpackConfig(configArr,project){
 
 function loader(source){
     // console.log(this.resourcePath,88888888888888);
-    let options = loaderUtils.getOptions(this)
-    let moduleMatchs = []
+    var options = loaderUtils.getOptions(this)
+    var moduleMatchs = []
     //匹配require('xxx')
-    let requireMatchs = source.match(/require\s*?\(.*?\)/g) || []
+    var requireMatchs = source.match(/require\s*?\(.*?\)/g) || []
 
 
     //匹配import xxx from 'xxx'
-    let importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
+    var importMatchs = source.match(/import.*?from.*?('|").*?('|")/g) || []
 
 
     //匹配import(/* webpackChunkName: "portal/chunk/test3" */'@portal/views/test3/test3.vue')
     //或者import('@portal/views/test3/test3.vue')
-    let importAsyncMatchs = source.match(/import.*?\((\/\*.*?\*\/)?.*?['"].*?['"].*?\)/g) || []
+    var importAsyncMatchs = source.match(/import.*?\((\/\*.*?\*\/)?.*?['"].*?['"].*?\)/g) || []
 
 
     //匹配@import 'xxx'
-    let importStyleMatchs = source.match(/@import.*?['"].*?['"]/g) || []
+    var importStyleMatchs = source.match(/@import.*?['"].*?['"]/g) || []
 
 
     //匹配src = 'xxx'
-    let srcMatchs = source.match(/src.*?=.*?['"].*?['"]/g) || []
+    var srcMatchs = source.match(/src.*?=.*?['"].*?['"]/g) || []
 
 
     //匹配url('xxx')
-    let bgMatchs = source.match(/url.*?\(.*?['"].*?['"].*?\)/g) || []
+    var bgMatchs = source.match(/url.*?\(.*?['"].*?['"].*?\)/g) || []
 
 
 
-    let project = this.resourcePath.replace(new RegExp(`.+\\\\${options.mainDir}\\\\`),'').split(path.sep)[0]
-    //console.log(project);
+    //来自哪个项目从外面传进来
+    var project = options.project
+    // console.log(project);
     if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length||bgMatchs.length||importAsyncMatchs.length){
-        let alias
+        var alias
         if(!buildAll){
             //非build-all的时候就直接取alias
             alias = require('../../webpack.pro.config.js').resolve.alias
         } else {
             //build-all的时候根据是哪个project来取相应的alias
-            let webpackConfigArr = require('../../webpack.buildAll.config.js')
-            let currentWebpackConfig = findCurrentWebpackConfig(webpackConfigArr,project)
+            var webpackConfigArr = require('../../webpack.buildAll.config.js')
+            var currentWebpackConfig = findCurrentWebpackConfig(webpackConfigArr,project)
             // console.log(currentWebpackConfig,3333);
             if(currentWebpackConfig){
                 alias = currentWebpackConfig.resolve.alias
@@ -66,7 +67,7 @@ function loader(source){
         moduleMatchs = moduleMatchs.concat(importAsyncMatchs)
         moduleMatchs.forEach((item)=>{
             // console.log(item,'kkk');
-            let filePath
+            var filePath
             if(/\/\*.*?\*\//.test(item)){
                 //import()有带/**/的情况
                 filePath = item.match(/['"](.*?)['"]/g)[1].replace(/('|")/g,'')
@@ -75,10 +76,10 @@ function loader(source){
                 filePath = item.match(/['"](.*)['"]/g)[0].replace(/('|")/g,'')
             }
             // console.log(filePath,886);
-            let aliasKeys = Object.keys(alias)
-            let firstWord = filePath.split('/')[0]
-            let aliasKeysIndex
-            let parentAliasKey
+            var aliasKeys = Object.keys(alias)
+            var firstWord = filePath.split('/')[0]
+            var aliasKeysIndex
+            var parentAliasKey
             if(firstWord.indexOf('~')>-1){
                 aliasKeysIndex = aliasKeys.indexOf(firstWord.replace('~',''))
                 parentAliasKey = '~@parent'
@@ -87,18 +88,18 @@ function loader(source){
                 parentAliasKey = '@parent'
             }
             if(aliasKeysIndex>-1){
-                let aliasKey = aliasKeys[aliasKeysIndex]
-                let aliasKeyPath = alias[aliasKey]
-                let path = filePath.replace((firstWord.indexOf('~')>-1?`~${aliasKey}`:aliasKey),'')
-                let fullPath = aliasKeyPath + path.replace(/\//g,'\\')
+                var aliasKey = aliasKeys[aliasKeysIndex]
+                var aliasKeyPath = alias[aliasKey]
+                var path = filePath.replace((firstWord.indexOf('~')>-1?`~${aliasKey}`:aliasKey),'')
+                var fullPath = aliasKeyPath + path.replace(/\//g,'\\')
                 try{
-                    let aa = require.resolve(fullPath)
+                    var aa = require.resolve(fullPath)
                     // console.log(aa,'normal');
                 }catch (e){
                     // console.log(fullPath,'err')
-                    let parentPath = `${parentAliasKey}/${aliasKey.replace('@','')}${path}`
+                    var parentPath = `${parentAliasKey}/${aliasKey.replace('@','')}${path}`
                     //console.log(parentPath);
-                    source = source.replace(filePath,parentPath)
+                    source = source.replace(new RegExp(filePath,'ig'),parentPath)
                     // if(/\/\*.*?\*\//.test(item)){
                     //     console.log(source);
                     // }
@@ -107,7 +108,7 @@ function loader(source){
             }
 
             //console.log(aliasKeys.indexOf(filePath.split('/')[0]),'index');
-            //let app = filePath.match()
+            //var app = filePath.match()
             //try{
             //
             //}catch(e){

@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 import Home from '@portal/views/home/home.vue'
 
+console.log('22688');
 
 export default new VueRouter({
     mode: 'history',

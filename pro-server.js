@@ -1,4 +1,4 @@
-let project = './dist/project2'
+let project = './dist/project1'
 let express = require('express')
 let app = express()
 let path = require('path')

@@ -135,7 +135,8 @@ function getExports(project){
                     use:{
                         loader:'notFoudLoader',
                         options:{
-                            mainDir:config.mainDir.replace('./','')
+                            mainDir:config.mainDir.replace('./',''),
+                            project:project
                         }
                     },
                     exclude:[path.resolve(`./${config.dist}`),/node_modules/],
