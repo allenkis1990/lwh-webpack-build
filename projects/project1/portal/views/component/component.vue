@@ -13,9 +13,18 @@
         </div>
         <!--exclude="component-orderList"-->
         <!--一个路由属于keep-alive状态下，这个路由内的组件就算设置了exclude也无效-->
-        <keep-alive :exclude="excludes">
-            <router-view></router-view>
-        </keep-alive>
+        <!--<keep-alive :exclude="excludes">-->
+            <!--<router-view></router-view>-->
+        <!--</keep-alive>-->
+
+
+        <transition name="fuck"
+                    appear>
+            <keep-alive :exclude="excludes">
+                <router-view></router-view>
+            </keep-alive>
+        </transition>
+
     </div>
 </template>
 

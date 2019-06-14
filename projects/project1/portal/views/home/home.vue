@@ -1,19 +1,29 @@
 <template>
-    <div class="main">
-        <div>parent Hello Home!11112</div>
-        <ul>
-            <li><a href="javascript:void(0)" @click="goPath('/portal')">/portal</a></li>
-            <li><a href="javascript:void(0)" @click="goState('test1')">home/test1</a></li>
-            <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
-            <li><a href="javascript:void(0)" @click="goState('onlyPortal')">Vue.extend()</a></li>
-            <li><a href="javascript:void(0)" @click="goState('directive')">directive</a></li>
-            <li><a href="javascript:void(0)" @click="goState('filter')">filter</a></li>
-            <li><a href="javascript:void(0)" @click="goState('component')">component</a></li>
-        </ul>
-        <!--<img src="@portal/images/afei.jpg">
-        <img src="@portal/images/皮卡22.jpg">-->
-        <div class="lwh">lwh</div>
-        <div class="bgImg"></div>
+    <div>
+        <transition name="fuck" appear>
+            <keep-alive>
+                <router-view v-if="$route.meta.keepAlive || $route.meta.keepAlive===undefined"></router-view>
+            </keep-alive>
+        </transition>
+        <transition name="fuck" appear>
+            <router-view v-if="$route.meta.keepAlive===false"></router-view>
+        </transition>
+        <div class="main" v-if="$route.name==='home'">
+            <div>parent Hello Home!11112</div>
+            <ul>
+                <li><a href="javascript:void(0)" @click="goState('home')">/portal</a></li>
+                <li><a href="javascript:void(0)" @click="goState('test1')">home/test1</a></li>
+                <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
+                <li><a href="javascript:void(0)" @click="goState('onlyPortal')">Vue.extend()</a></li>
+                <li><a href="javascript:void(0)" @click="goState('directive')">directive</a></li>
+                <li><a href="javascript:void(0)" @click="goState('filter')">filter</a></li>
+                <li><a href="javascript:void(0)" @click="goState('component')">component</a></li>
+            </ul>
+            <!--<img src="@portal/images/afei.jpg">
+            <img src="@portal/images/皮卡22.jpg">-->
+            <div class="lwh">lwh</div>
+            <div class="bgImg"></div>
+        </div>
     </div>
 </template>
 

@@ -36,7 +36,7 @@ app.use(hotMiddleware);
 //////////////////////热更新////////////////////////////
 //////////////////////开发服务器配置////////////////////////////
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
-    publicPath: '/',
+    publicPath: config.dev.publicPath,
     // publicPath: 'http://127.0.0.1:8080/portal',
     quiet: true,
     noInfo: true,

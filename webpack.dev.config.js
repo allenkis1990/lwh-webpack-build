@@ -90,7 +90,7 @@ function getExports(project){
             //filename:'js/[name].[hash:8].bundle.js',
             // publicPath: 'http://127.0.0.1:8080/'+which+'/'
             // publicPath: which+'/'
-            publicPath:"/"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
+            publicPath:config.dev.publicPath//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
         },
         externals: {
             // 使用动态连接库的VUE模块，这样就可以直接在项目中require('Vue')使用 webpack不会进行打包
@@ -258,7 +258,8 @@ function getExports(project){
             //new uglifyjsWebpackPlugin(),//webpack4会对JS进行自动压缩
             new ProgressBarPlugin(),
             new webpack.DefinePlugin({
-                dev:true
+                dev:true,
+                isHistoryModel:true
             }),
             new Happypack({
                 //ID是标识符的意思，ID用来代理当前的happypack是用来处理一类特定的文件的

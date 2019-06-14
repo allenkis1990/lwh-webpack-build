@@ -56,7 +56,13 @@ let config = {
     port:'8080',
     designPort:'8181',
     apps:['portal','center'],
-    host:'127.0.0.1'
+    host:'127.0.0.1',
+    dev:{
+        publicPath:'/'
+    },
+    build:{
+        publicPath:'/'
+    }
 }
 if(argv.design){
     config.port = config.designPort;

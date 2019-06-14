@@ -6,29 +6,25 @@ import Home from '@center/views/home/home.vue'
 
 
 export default new VueRouter({
-    mode: 'history',
+    mode: isHistoryModel?'history':'hash',
     base: __dirname,
     routes: [
         {
-            path: '/center',
+            path: isHistoryModel?'/center':'/',
+            name:'home',
             component: Home,
             children: [
-                /*{
-                    name: 'test2',
+                {
+                    name: 'test1',
+                    path: 'test1',
+                    component: () => import(/* webpackChunkName: "center/chunk/test1" */'@center/views/test1/test1.vue')
+                },
+                {
+                    name:'test2',
                     path: 'test2',
-                    component: Test2
-                }*/
+                    component: () => import(/* webpackChunkName: "center/chunk/test2" */'@center/views/test2/test2.vue')
+                }
             ]
-        },
-        {
-            name: 'test1',
-            path: '/center/test1',
-            component: () => import(/* webpackChunkName: "center/chunk/test1" */'@center/views/test1/test1.vue')
-        },
-        {
-            name:'test2',
-            path: '/center/test2',
-            component: () => import(/* webpackChunkName: "center/chunk/test2" */'@center/views/test2/test2.vue')
         }
     ]
 });

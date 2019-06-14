@@ -102,7 +102,7 @@ function getExports(project){
         output:{
             path:path.resolve(__dirname,'dist',project),
             filename:'[name].[chunkHash].bundle.js',
-            publicPath: "/"
+            publicPath: config.build.publicPath
             //publicPath:"dist"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
         },
         //bund超过一定大小会报警告，加上这个配置就不会报了
@@ -282,7 +282,8 @@ function getExports(project){
             //指定html位置指定后打包的js会自动被引入
             new ProgressBarPlugin(),
             new webpack.DefinePlugin({
-                dev:false
+                dev:false,
+                isHistoryModel:false
             }),
             //使用内容hash的规则hash文件 便于静态资源缓存
             new webpack.HashedModuleIdsPlugin(),

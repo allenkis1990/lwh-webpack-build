@@ -1,16 +1,26 @@
 <template>
     <div class="main">
-        <div>parent Hello Home!11112</div>
-        <ul>
-            <li><a href="javascript:void(0)" @click="goPath('/center')">/center</a></li>
-            <li><a href="javascript:void(0)" @click="goState('test1')">home/test1</a></li>
-            <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
-            <li><a href="javascript:void(0)" @click="goState('onlyCenter')">我是center子项目独有的</a></li>
-        </ul>
-        <!--<img src="@center/images/afei.jpg">
-        <img src="@center/images/皮卡22.jpg">-->
-        <div class="lwh">lwh</div>
-        <div class="bgImg"></div>
+        <div v-if="$route.name==='home'">
+            <div>parent Hello Home!11112</div>
+            <!--<img src="@center/images/afei.jpg">
+            <img src="@center/images/皮卡22.jpg">-->
+            <ul>
+                <li><a href="javascript:void(0)" @click="goState('home')">/center</a></li>
+                <li><a href="javascript:void(0)" @click="goState('test1')">home/test1</a></li>
+                <li><a href="javascript:void(0)" @click="goState('test2')">home/test2</a></li>
+                <li><a href="javascript:void(0)" @click="goState('onlyCenter')">我是center子项目独有的</a></li>
+            </ul>
+            <div class="lwh">lwh</div>
+            <div class="bgImg"></div>
+        </div>
+        <transition name="fuck" appear>
+            <keep-alive>
+                <router-view v-if="$route.meta.keepAlive || $route.meta.keepAlive===undefined"></router-view>
+            </keep-alive>
+        </transition>
+        <transition name="fuck" appear>
+            <router-view v-if="$route.meta.keepAlive===false"></router-view>
+        </transition>
     </div>
 </template>
 
