@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 import Home from '@center/views/home/home.vue'
-
-
 export default new VueRouter({
     mode: isHistoryModel?'history':'hash',
     base: __dirname,
