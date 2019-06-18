@@ -4,6 +4,7 @@ import {state} from '@portal/store/state'
 import {mutations} from '@portal/store/mutations'
 import {getters} from '@portal/store/getters'
 import {actions} from '@portal/store/actions'
+import {modules} from '@portal/store/modules'
 
 
 
@@ -12,7 +13,8 @@ export default new Vuex.Store({
   state,
   mutations,
   getters,
-  actions
+  actions,
+  modules
 })
 
 

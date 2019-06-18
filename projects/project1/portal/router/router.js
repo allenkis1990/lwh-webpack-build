@@ -99,6 +99,58 @@ export default new VueRouter({
                             }
                         }
                     ]
+                },
+                {
+                    name:'vuex',
+                    path: 'vuex',
+                    component: () => import(/* webpackChunkName: "portal/chunk/vuex" */'@portal/views/vuex/vuex.vue'),
+                    children:[
+                        {
+                            name: 'vuex-state',
+                            path: 'state',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/vuex-state" */'@portal/views/vuex/vuex-state.vue')
+                                }
+                            }
+                        },
+                        {
+                            name: 'vuex-getter',
+                            path: 'getter',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/vuex-getter" */'@portal/views/vuex/vuex-getter.vue')
+                                }
+                            }
+                        },
+                        {
+                            name: 'vuex-mutation',
+                            path: 'mutation',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/vuex-mutation" */'@portal/views/vuex/vuex-mutation.vue')
+                                }
+                            }
+                        },
+                        {
+                            name: 'vuex-actions',
+                            path: 'actions',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/vuex-actions" */'@portal/views/vuex/vuex-actions.vue')
+                                }
+                            }
+                        },
+                        {
+                            name: 'vuex-modules',
+                            path: 'modules',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/vuex-modules" */'@portal/views/vuex/vuex-modules.vue')
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         }
