@@ -10,6 +10,7 @@ export default {
             userName:this.$store.state.name
         }
     },
+    //mapState的三种不同方式
     computed:{
         ...mapState({
             a:'age',

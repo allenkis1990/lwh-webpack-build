@@ -1,29 +1,38 @@
 <template>
-  <div>$store的getters数据userName：{{userName}}
-  </div>
+    <div>$store的getters数据userName：{{userName}}<br>
+        {{getGetters}}<br>
+        haha:{{hahaha}}
+    </div>
 </template>
 
 <script>
-export default {
-    data(){
-        return {
-        }
-    },
-    computed:{
-        userName(){
-            return this.$store.getters.initStateName
-        }
-    },
-    mounted(){
+    import {mapGetters} from 'vuex'
+    export default {
+        data() {
+            return {}
+        },
+        computed: {
+            userName() {
+                return this.$store.getters.initStateName
+            },
+            getGetters(){
+                return this.$store.getters.getGetters
+            },
+            ...mapGetters({
+                hahaha:'getGetters'
+            })
+        },
+        mounted() {
 
-    },
-    methods:{
-
+        },
+        methods: {}
     }
-}
 </script>
 <style>
-    body,html{width:100%;height:100%;}
+    body, html {
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 

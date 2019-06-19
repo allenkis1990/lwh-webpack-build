@@ -7,14 +7,14 @@ import {actions} from '@portal/store/actions'
 import {modules} from '@portal/store/modules'
 
 
-
 Vue.use(Vuex);
 export default new Vuex.Store({
-  state,
-  mutations,
-  getters,
-  actions,
-  modules
+    namespaced:true,
+    state,
+    mutations,
+    getters,
+    actions,
+    modules
 })
 
 

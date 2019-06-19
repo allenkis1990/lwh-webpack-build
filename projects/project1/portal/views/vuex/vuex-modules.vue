@@ -15,9 +15,6 @@
             return {}
         },
         mounted() {
-            var ob = {age:18,haha:'haha'}
-            var obj = {name:'allen',...ob}
-            console.log(obj);
         },
         methods: {
             mutationChange(){
@@ -27,7 +24,8 @@
                 this.$store.dispatch('moduleAChangeName','moduleA actions change!!!')
             },
             fn(){
-
+                //modules那边加上namespaced:true然后调用  this.$store.commit（模块/方法）
+                this.$store.commit('moduleA/changeName','fuck!!!!')
             }
         }
     }
