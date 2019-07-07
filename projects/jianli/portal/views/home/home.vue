@@ -197,42 +197,7 @@
                     <h2>基本技能</h2>
                     <hr>
                     <div class="container center fades">
-                        <div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>90</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">HTML5+CSS3</p>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>90</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">JS</p>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>50</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">Node Js</p>
-                        </div>
+                        <knowleage-list :data-list="baseKnowleage"></knowleage-list>
                         <!--<div class="col-md-3 col-xs-6">
                             <div class="wrap-box">
                                 <div class="circle-wrap clip-auto">
@@ -252,54 +217,7 @@
                     <h2>MVVM前端框架</h2>
                     <hr>
                     <div class="container center fades">
-                        <div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>90</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">HTML5+CSS3</p>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>90</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">JS</p>
-                        </div>
-                        <div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>50</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">Node Js</p>
-                        </div>
-                        <!--<div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>50</span>%
-                                </div>
-                            </div>
-                            <p class="ptitle">Vue</p>
-                        </div>-->
+                        <knowleage-list :data-list="mvvmKnowleage"></knowleage-list>
                     </div>
                 </div>
 
@@ -348,11 +266,29 @@
 </template>
 
 <script>
+    import knowleageList from '@portal/views/home/components/knowleageList.vue'
     export default {
         mounted() {
         },
         methods: {
 
+        },
+        components:{
+            knowleageList
+        },
+        data(){
+            return {
+                baseKnowleage:[
+                    {name:'HTML5',className:'h5'},
+                    {name:'CSS3',className:'css3'},
+                    {name:'js',className:'js'},
+                    {name:'nodejs',className:'nodejs'}
+                ],
+                mvvmKnowleage:[
+                    {name:'angular1',className:'angular'},
+                    {name:'vue',className:'vue'}
+                ]
+            }
         }
     }
 </script>

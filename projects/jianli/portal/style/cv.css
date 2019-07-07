@@ -768,3 +768,34 @@ h4{
 
 
 }
+
+
+.base-knowleage{width:140px;
+    height:140px;
+    border-radius:50%;
+    background-size: cover;
+    background-repeat: round;border:1px solid #eee;}
+.base-knowleage.h5{
+    background-image: url("~@portal/images/h5.jpg");
+    background-position: 0 7px;
+}
+.base-knowleage.css3{
+    background-image: url("~@portal/images/css3.jpg");
+    background-position: 0 7px;
+}
+.base-knowleage.js{
+    background-image: url("~@portal/images/js.jpg");
+    background-position: 0 2px;
+}
+.base-knowleage.nodejs{
+    background-image: url("~@portal/images/nodejs.jpg");
+    background-position: 0 2px;
+}
+.base-knowleage.angular{
+    background-image: url("~@portal/images/angular.jpg");
+    background-position: 0 2px;
+}
+.base-knowleage.vue{
+    background-image: url("~@portal/images/vue.jpg");
+    background-position: 0 2px;
+}
