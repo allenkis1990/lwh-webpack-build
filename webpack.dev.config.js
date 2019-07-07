@@ -93,8 +93,7 @@ function getExports(project){
             publicPath:config.dev.publicPath//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
         },
         externals: {
-            // 使用动态连接库的VUE模块，这样就可以直接在项目中require('Vue')使用 webpack不会进行打包
-            //'Vue': 'window._dll_vueAll(\'./node_modules/vue/dist/vue.min.js\')'
+            '$': 'window._dll_vueAll(\'./node_modules/vue/dist/vue.min.js\')'
         },
         resolve: {
             //import时可以省去后缀名js vue json默认require先找.js从左到右
@@ -245,10 +244,10 @@ function getExports(project){
         },
         plugins:plugins.concat([
             new VueLoaderPlugin(),
-            /*//在这边配置全局引入后哪个模块不用require都可以用
+            //在这边配置全局引入后哪个模块不用require都可以用
             new webpack.ProvidePlugin({
-                $:'jquery'
-            }),*/
+                $:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/jquery-1.11.1.min.js`)
+            }),
             new CleanWebpackPlugin([`./${config.dist}/${project}`]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件
             new PurifyCSSPlugin({
