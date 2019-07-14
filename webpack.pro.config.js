@@ -17,18 +17,21 @@ const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 function getExports(project){
-
     let entry = {}
     let cacheGroups = {}
     let plugins = []
     let alias = {}
     config.apps.forEach((app)=>{
-        entry[`${app}/app`] = `${config.mainDir}/${project}/${app}/main.js`
+        var dirName = ''
+        if(config.apps.length>1){
+            dirName = `${app}/`
+        }
+        entry[`${dirName}app`] = `${config.mainDir}/${project}/${app}/main.js`
         cacheGroups[`${app}Assets`] = {
             chunks: 'initial',// 只对入口文件处理
             test: path.resolve(`${config.mainDir}/${project}/${app}/assets`),
             // test: /assets/,
-            name: `${app}/assets`,
+            name: `${dirName}assets`,
             priority: 10,
             enforce: true,
             minChunks:1//最小被引用两次的公共库才被抽离到公共代码
@@ -36,7 +39,7 @@ function getExports(project){
         //'@':path.resolve(`${config.mainDir}/${project}`)
         alias[`@${app}`] = path.resolve(`${config.mainDir}/${project}/${app}`)
         plugins.push(new HtmlWebpackPlugin({
-            filename: `${app}/index.html`,//真正输出的地址output.path+filename=./dist/index.html
+            filename: `${dirName}index.html`,//真正输出的地址output.path+filename=./dist/index.html
             template:`${config.mainDir}/${project}/${app}/index.html`,//INdex的模板
             inject: true,
             hash:true,
@@ -51,11 +54,15 @@ function getExports(project){
             }).map((item)=>{
                 return `${item}/app`
             }),
-            chunks:[`${app}/app`]//按需映入入口JS
+            chunks:[`${dirName}app`]//按需映入入口JS
         }))
     })
     let rules = []
     config.apps.forEach((app)=>{
+        var dirName = ''
+        if(config.apps.length>1){
+            dirName = `${app}/`
+        }
         let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg)`)
         rules.push(
             {
@@ -65,7 +72,7 @@ function getExports(project){
                     options: {
                         // outputPath:`/${app}/images`,
                         publicPath:'/',
-                        name:`${app}/images/[name].[hash:8].[ext]`,
+                        name:`${dirName}images/[name].[hash:8].[ext]`,
                         limit:1024*1//小于8KB会被转成base64
                     }
                 },
@@ -268,10 +275,10 @@ function getExports(project){
                 {from:path.resolve(__dirname,`${config.mainDir}/${config.project}/portal/static`),to:path.resolve(__dirname,`./dist/${config.project}/portal/static`)}
             ])*/
             new VueLoaderPlugin(),
-            /*//在这边配置全局引入后哪个模块不用require都可以用
-             new webpack.ProvidePlugin({
-             $:'jquery'
-             }),*/
+            //在这边配置全局引入后哪个模块不用require都可以用
+            new webpack.ProvidePlugin({
+                $:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/jquery-1.11.1.min.js`)
+            }),
             new CleanWebpackPlugin(['./dist/'+project]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件
             /*new PurifyCSSPlugin({
