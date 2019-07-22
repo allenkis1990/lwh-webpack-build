@@ -24,8 +24,8 @@
                     <!-- 导航条-->
                     <div id="nav-bar" class="bar">
                         <div class="container">
-                            <a href="./drip.html">
-                                <div class="fl">RedSpite博客</div>
+                            <a>
+                                <div class="fl">Allen博客</div>
                             </a>
                             <ul class="fr nav-ul">
                                 <li>关于我</li>
@@ -196,21 +196,19 @@
                 <div id="section5" class="section">
                     <h2>基本技能</h2>
                     <hr>
-                    <div class="container center fades">
-                        <knowleage-list :data-list="baseKnowleage"></knowleage-list>
-                        <!--<div class="col-md-3 col-xs-6">
-                            <div class="wrap-box">
-                                <div class="circle-wrap clip-auto">
-                                    <div class="left-clip percent"></div>
-                                    <div class="right-clip percent"></div>
-                                </div>
-                                <div class="circle-num">
-                                    <span>50</span>%
-                                </div>
+                    <knowleage-list :data-list="baseKnowleage"></knowleage-list>
+                    <!--<div class="col-md-3 col-xs-6">
+                        <div class="wrap-box">
+                            <div class="circle-wrap clip-auto">
+                                <div class="left-clip percent"></div>
+                                <div class="right-clip percent"></div>
                             </div>
-                            <p class="ptitle">Vue</p>
-                        </div>-->
-                    </div>
+                            <div class="circle-num">
+                                <span>50</span>%
+                            </div>
+                        </div>
+                        <p class="ptitle">Vue</p>
+                    </div>-->
                 </div>
 
                 <div id="section6" class="section">
@@ -279,7 +277,7 @@
         data(){
             return {
                 baseKnowleage:[
-                    {name:'HTML5',className:'h5'},
+                    {name:'HTML5',className:'html5'},
                     {name:'CSS3',className:'css3'},
                     {name:'js',className:'js'},
                     {name:'nodejs',className:'nodejs'}
