@@ -27,13 +27,12 @@
                             <a>
                                 <div class="fl">Allen博客</div>
                             </a>
-                            <ul class="fr nav-ul">
-                                <li>关于我</li>
-                                <li>求职意向</li>
-                                <li>作品集</li>
-                                <li>技术掌握</li>
-                                <li>我的经历</li>
-                                <li>联系我</li>
+                            <ul class="fr nav-ul" v-tab-nav>
+                                <li loc="scroll-aboutMe">关于我</li>
+                                <li loc="scroll-jobSelect">求职意向</li>
+                                <li loc="scroll-demo">作品集</li>
+                                <li loc="scroll-mvvm">框架掌握</li>
+                                <li loc="scroll-lastJob">我的经历</li>
                             </ul>
                             <div class="fr more-nav">
                                 <img src="@portal/images/more.png" alt="更多">
@@ -50,7 +49,7 @@
                     </div>
 
                     <!--关于我-->
-                    <h2>关于我</h2>
+                    <h2 class="scroll-aboutMe">关于我</h2>
                     <hr>
                     <div class="center fades">
                         <!--<p class="center"><img src="@portal/images/mypic.jpg" alt="头像" /></p>-->
@@ -60,7 +59,7 @@
                     </div>
                 </div>
                 <div id="section3" class="section">
-                    <h2>求职意向</h2>
+                    <h2 class="scroll-jobSelect">求职意向</h2>
                     <hr>
                     <div class="container center fades">
                         <div class="col-md-3 col-xs-6 skill-ps skill">
@@ -90,7 +89,7 @@
                     </div>
                 </div>
                 <div id="section4" class="section">
-                    <h2>作品集</h2>
+                    <h2 class="scroll-demo">作品集</h2>
                     <hr>
                     <div class="container center fades">
                         <p class="center intros">写jq前端功能的时候，我的宗旨是能手写就手写，不依赖插件。手写代码更简洁高效，也更能提升自己技术。</p>
@@ -194,7 +193,7 @@
                     </div>
                 </div>
                 <div id="section5" class="section">
-                    <h2>基本技能</h2>
+                    <h2 class="scroll-base">基本技能</h2>
                     <hr>
                     <knowleage-list :data-list="baseKnowleage"></knowleage-list>
                     <!--<div class="col-md-3 col-xs-6">
@@ -212,7 +211,7 @@
                 </div>
 
                 <div id="section6" class="section">
-                    <h2>MVVM前端框架</h2>
+                    <h2 class="scroll-mvvm">MVVM前端框架</h2>
                     <hr>
                     <div class="container center fades">
                         <knowleage-list :data-list="mvvmKnowleage"></knowleage-list>
@@ -220,36 +219,34 @@
                 </div>
 
                 <div id="section7" class="section">
-                    <h2>我的经历</h2>
+                    <h2 class="scroll-lastJob">我的经历</h2>
                     <hr>
                     <div class="container center fades">
                         <ul class="my-xp">
                             <li>
                                 <div class="date-box">
-                                    <p>09/2015</p>
+                                    <p>02/2016</p>
                                     <p>-</p>
                                     <p>现在</p>
                                 </div>
                                 <div class="my-work my-xp-box">
-                                    <strong>成都清风竞技文化传媒</strong>
-                                    <p class="ptitle">技术部/前端工程师</p>
-                                    <p>负责官网页面制作。PSD切图后构建页面框架</p>
-                                    <p>利用JS、CSS3书写前端功能，让页面更充实丰富</p>
-                                    <p>并将代码上传到代码托管平台上</p>
+                                    <strong>福建华博教育科技有限公司</strong>
+                                    <p class="ptitle">前端工程师</p>
+                                    <p>编写pc静态页面，h5微信服务号静态页面，微信小程序静态页面</p>
+                                    <p>使用vue、angualr1编写前端业务</p>
+                                    <p>使用gulp、webpack来构建和维护前端项目</p>
                                 </div>
                             </li>
                             <li>
                                 <div class="date-box">
-                                    <p>06/2016</p>
+                                    <p>09/2009</p>
                                     <p>-</p>
-                                    <p>09/2012</p>
+                                    <p>06/2011</p>
                                 </div>
                                 <div class="my-school my-xp-box">
-                                    <strong>西南科技大学</strong>
-                                    <p class="ptitle">大学本科</p>
-                                    <p>获得大学英语四级证书</p>
-                                    <p>获得C语言计算机二级</p>
-                                    <p></p>
+                                    <strong>福建教育学院</strong>
+                                    <p class="ptitle">大专</p>
+                                    <p>物流管理专业</p>
                                 </div>
                             </li>
 
@@ -257,7 +254,7 @@
                     </div>
                 </div>
             </div>
-            <p class="center beian">© RedSpite | <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">蜀ICP备16004270号</a></p>
+            <!--<p class="center beian">© RedSpite | <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">蜀ICP备16004270号</a></p>-->
 
         </div>
     </div>
@@ -265,6 +262,8 @@
 
 <script>
     import knowleageList from '@portal/views/home/components/knowleageList.vue'
+    import {lwhAnimate,offset} from '@portal/utils/lwh-utils'
+
     export default {
         mounted() {
         },
@@ -273,6 +272,29 @@
         },
         components:{
             knowleageList
+        },
+        directives:{
+            tabNav:{
+                bind(ele, binding, vNode){
+                    ele.addEventListener('click',function(e){
+                        var target = e.target
+                        if(target.getAttribute('class')==='active'){
+                            return false
+                        }
+//                        console.log(target);
+                        var className = target.getAttribute('loc')
+                        var jumpTarget = document.querySelector('.'+className)
+                        var offT = offset(jumpTarget,'top')
+                        var root = document.documentElement
+                        lwhAnimate(root,{scrollTop:offT})
+                        var navLists = ele.querySelectorAll('li')
+                        navLists.forEach(function(li){
+                            li.setAttribute('class','')
+                        })
+                        target.setAttribute('class','active')
+                    })
+                }
+            }
         },
         data(){
             return {
