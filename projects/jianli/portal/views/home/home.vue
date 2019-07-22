@@ -38,13 +38,12 @@
                                 <img src="@portal/images/more.png" alt="更多">
                             </div>
                         </div>
-                        <ul class="nav-ul nav-xs-ul">
-                            <li>关于我</li>
-                            <li>求职意向</li>
-                            <li>作品集</li>
-                            <li>技术掌握</li>
-                            <li>我的经历</li>
-                            <li>联系我</li>
+                        <ul class="nav-ul nav-xs-ul" v-tab-nav>
+                            <li loc="scroll-aboutMe">关于我</li>
+                            <li loc="scroll-jobSelect">求职意向</li>
+                            <li loc="scroll-demo">作品集</li>
+                            <li loc="scroll-mvvm">框架掌握</li>
+                            <li loc="scroll-lastJob">我的经历</li>
                         </ul>
                     </div>
 
