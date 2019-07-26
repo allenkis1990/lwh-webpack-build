@@ -18,6 +18,7 @@ $(function() {
     $(" h3.fade").addClass("fadesin2");
     $(" span.fade").addClass("fadesin3");
 
+
     //回到顶部
     $("#top").click(function () {
         $('html,body').stop().animate({

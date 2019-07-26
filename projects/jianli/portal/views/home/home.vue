@@ -1,5 +1,5 @@
 <template>
-    <div class="content" v-scroll-page>
+    <div class="content" v-scroll-page v-do-other>
         <div class="cv-container">
             <div id="section1" class="section active">
                 <div id="top" title="顶部">
@@ -38,7 +38,7 @@
                             <img src="@portal/images/more.png" alt="更多">
                         </div>
                     </div>
-                    <ul class="nav-ul nav-xs-ul" v-tab-nav>
+                    <ul class="nav-ul nav-xs-ul" v-tab-nav style="display:block;overflow:hidden">
                         <li loc="scroll-aboutMe">关于我</li>
                         <li loc="scroll-jobSelect">求职意向</li>
                         <li loc="scroll-demo">作品集</li>
@@ -263,6 +263,7 @@
     import knowleageList from '@portal/views/home/components/knowleageList.vue'
     import tabNav from '@portal/views/home/directives/tabNav'
     import scrollPage from '@portal/views/home/directives/scrollPage'
+    import doOther from '@portal/views/home/directives/doOther'
 
     export default {
         mounted() {
@@ -275,7 +276,8 @@
         },
         directives:{
             tabNav,
-            scrollPage
+            scrollPage,
+            doOther
         },
         data(){
             return {

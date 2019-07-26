@@ -10,7 +10,7 @@ import axios from 'axios'
 import mixin from '@portal/utils/mixin'
 import elementUi from '@portal/utils/element-ui'
 
-require('@portal/assets/mycv.js')
+// require('@portal/assets/mycv.js')
 //使用element-ui并且把各插件挂载到Vue上
 elementUi(Vue)
 //把axios挂载到Vue原型链上
