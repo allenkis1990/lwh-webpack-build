@@ -773,7 +773,6 @@ h4{
 
 }
 
-
 .base-knowleage{width:140px;
     height:140px;
     border-radius:50%;
@@ -802,4 +801,16 @@ h4{
 .base-knowleage.vue{
     background-image: url("~@portal/images/vue.jpg");
     background-position: 0 2px;
+}
+
+/*基本技能*/
+@media (min-width:0px) and (max-width:360px){
+    .base-knowleage{
+        width:115px;
+        height:115px;
+    }
+    .wrap-box.knowleage-wrap-box{
+        width:115px;
+        height:115px;
+    }
 }
