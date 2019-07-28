@@ -3,7 +3,7 @@
  */
 import {lwhAnimate,offset,addClass} from '@portal/utils/lwh-utils'
 export default {
-    bind(ele, binding, vNode){
+    inserted(){
         window.onload = function(){
             //初始化一些动画样式
             addClass('.fades','fadesin')
@@ -24,9 +24,9 @@ export default {
             //滚动显示隐藏回到顶部按钮
             window.addEventListener('scroll',function(){
                 var root = document.documentElement || document.body
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
                 var min_height = root.clientHeight /2
-                var s = root.scrollTop
-                if(s>min_height){
+                if(scrollTop>min_height){
                     returnTop.style.display = 'block'
                 }else{
                     returnTop.style.display = 'none'
@@ -54,8 +54,20 @@ export default {
             var xsNavH = getXsNavHeight(xsNav)
             var bol = false
             var t = 0
+
+            xsNav.addEventListener('click',function(e){
+                var target = e.target
+                if(target.nodeName.toLowerCase()==='li'){
+                    toggleSlider()
+                }
+            })
+
+
             moreNavBtn.addEventListener('click',function(){
-                //两次点击小于0.35S点击太快
+                toggleSlider()
+            })
+
+            function toggleSlider(){
                 if(new Date().getTime() - t<350){
                     return false
                 }
@@ -73,8 +85,7 @@ export default {
                     },280)
                 }
                 t = new Date().getTime()
-                // console.log(123);
-            })
+            }
 
 
             //屏幕大于768隐藏超小导航
@@ -86,6 +97,5 @@ export default {
                 }
             })
         }
-
     }
 }

@@ -30,7 +30,7 @@ export function lwhAnimate(ele,options,callBack,ingFn,beishu){
             initNum = 1
         }
         if(styleName==='scrollTop'){
-            initNum = document.documentElement.scrollTop
+            initNum = document.documentElement.scrollTop || document.body.scrollTop
         }
         // debugger
         var initLocation = parseFloat(trueStyles[styleName]?trueStyles[styleName]:initNum)*initBei
