@@ -97,3 +97,17 @@ export function offset(obj, direction) {
     }
     return realNum;
 }
+
+export function addClass(selectorStr,className){
+    var nodes = document.querySelectorAll(selectorStr)
+    Array.from(nodes).forEach(function(node){
+        var classStr = node.getAttribute('class')
+        var resClassStr = ''
+        if(!classStr){
+            resClassStr = className
+        }else{
+            resClassStr = classStr+' ' +className
+        }
+        node.setAttribute('class',resClassStr)
+    })
+}

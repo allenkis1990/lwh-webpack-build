@@ -1,36 +1,26 @@
 /**
  * Created by Allen Liu on 2019/7/25.
  */
-import {lwhAnimate,offset} from '@portal/utils/lwh-utils'
+import {lwhAnimate,offset,addClass} from '@portal/utils/lwh-utils'
 export default {
     bind(ele, binding, vNode){
-
-//背景随机
-        $(function() {
-            var length = 3;
-            $(".bg-img li:nth-child(2)").show();
-            setInterval(function () {
-                var randomBgIndex = Math.round(Math.random() * length);
-                $("#section1 .bg-img li").eq(randomBgIndex).addClass("show").siblings().removeClass("show");
-            },5000);
-        });
-
-        $(function() {
-            //编辑器控制
-            // $("h4,.nav b").css("color","#fff");
-
-            $(".fades").addClass("fadesin");
-            $(" h1.fade").addClass("fadesin1");
-            $(" h3.fade").addClass("fadesin2");
-            $(" span.fade").addClass("fadesin3");
+        window.onload = function(){
+            //初始化一些动画样式
+            addClass('.fades','fadesin')
+            addClass('h1.fade','fadesin1')
+            addClass('h3.fade','fadesin2')
+            addClass('span.fade','fadesin3')
 
 
+            //返回顶部动画
             var returnTop = document.getElementById("top")
             //回到顶部
             returnTop.addEventListener('click',function(){
                 var root = document.documentElement || document.body
                 lwhAnimate(root,{scrollTop:0})
             })
+
+
             //滚动显示隐藏回到顶部按钮
             window.addEventListener('scroll',function(){
                 var root = document.documentElement || document.body
@@ -46,40 +36,56 @@ export default {
 
 
 
+            //点击超小导航按钮显示隐藏超小导航
             var moreNavBtn = document.querySelector('.more-nav')
             var xsNav = document.querySelector('.nav-ul.nav-xs-ul')
+            function getXsNavHeight(obj){
+                var res = 0
+                var liList = Array.from(obj.childNodes).filter(function(node){
+                    return node.nodeName.toLowerCase()==='li'
+                })
+                liList.forEach(function(item){
+                    var itemH = Number.parseFloat(window.getComputedStyle(item).height)
+                    res+=itemH
+                })
+                res+=Number.parseFloat(window.getComputedStyle(xsNav).paddingBottom)
+                return res
+            }
+            var xsNavH = getXsNavHeight(xsNav)
             var bol = false
+            var t = 0
             moreNavBtn.addEventListener('click',function(){
+                //两次点击小于0.35S点击太快
+                if(new Date().getTime() - t<350){
+                    return false
+                }
                 bol = !bol
                 if(bol){
                     xsNav.style.display = 'block'
+                    xsNav.style.height = '0px'
                     setTimeout(function(){
-                        xsNav.style.opacity = 1
+                        xsNav.style.height = xsNavH + 'px'
                     },50)
                 }else{
-                    xsNav.style.opacity = 0
+                    xsNav.style.height = '0px'
                     setTimeout(function(){
                         xsNav.style.display = 'none'
-                    },1000)
+                    },280)
                 }
+                t = new Date().getTime()
                 // console.log(123);
             })
 
-            // $(".more-nav").bind("click", function () {
-            //     $(".nav-ul.nav-xs-ul").stop().slideToggle(300);
-            // });
-            // $(".nav-xs-ul li").click(function () {
-            //     $(".nav-xs-ul").slideUp(300)
-            // });
-        });
 
-        $(window).resize(function (){
-            var wid = $(window).width();
-            if(wid>768){
-                $(".nav-xs-ul").hide();
-            }else{
-                $(".nav-xs-ul").show();
-            }
-        });
+            //屏幕大于768隐藏超小导航
+            window.addEventListener('resize',function(){
+                var root = document.documentElement || document.body
+                var wid = root.clientWidth
+                if(wid>768){
+                    xsNav.style.display = 'none'
+                }
+            })
+        }
+
     }
 }

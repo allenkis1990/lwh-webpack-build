@@ -11,12 +11,14 @@
                     <span class="active fade" id="abMe">关于我</span>
                     <span id="mypro" class="fade">我的作品</span>
                 </div>
-                <ul class="bg-img">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
+                <div class="bannerMain" v-scroll-banner>
+                    <ul class="bg-img">
+                        <li style="display:block;opacity:1"></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
             </div>
 
             <div id="section2" class="section">
@@ -38,7 +40,7 @@
                             <img src="@portal/images/more.png" alt="更多">
                         </div>
                     </div>
-                    <ul class="nav-ul nav-xs-ul" v-tab-nav style="display:block;overflow:hidden">
+                    <ul class="nav-ul nav-xs-ul" v-tab-nav>
                         <li loc="scroll-aboutMe">关于我</li>
                         <li loc="scroll-jobSelect">求职意向</li>
                         <li loc="scroll-demo">作品集</li>
@@ -264,6 +266,7 @@
     import tabNav from '@portal/views/home/directives/tabNav'
     import scrollPage from '@portal/views/home/directives/scrollPage'
     import doOther from '@portal/views/home/directives/doOther'
+    import scrollBanner from '@portal/views/home/directives/scrollBanner'
 
     export default {
         mounted() {
@@ -277,7 +280,8 @@
         directives:{
             tabNav,
             scrollPage,
-            doOther
+            doOther,
+            scrollBanner
         },
         data(){
             return {
