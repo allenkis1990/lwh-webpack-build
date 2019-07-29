@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/animate/circle.html" target="_blank">圆形进度条</a></li>
+    <li><a href="/animate/bannerScroll.html" target="_blank">轮播图</a></li>
+    <li><a href="/animate/wfscroll.html" target="_blank">无缝滚动</a></li>
+    <li><a href="/animate/defu.html" target="_blank">丝滑的德芙</a></li>
+    <li><a href="/animate/pubuliu.html" target="_blank">瀑布流</a></li>
+    <li><a href="/animate/beatPlane.html" target="_blank">打飞机小游戏</a></li>
+</ul>
+<script>
+    function A(){
+        this.name='parent'
+    }
+    A.prototype.haha= function(){
+        alert(1)
+    }
+
+    function B(){
+        A.call(this)
+    }
+
+
+    var b = new B()
+    console.log(b);
+
+</script>
+</body>
+</html>

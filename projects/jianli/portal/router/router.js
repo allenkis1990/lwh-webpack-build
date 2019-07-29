@@ -13,7 +13,10 @@ export default new VueRouter({
         {
             path: dev?'/portal':'/',
             name:'home',
-            component: Home
+            component: Home,
+            meta: {
+                keepAlive: false // 不需要被缓存
+            }
         },
         {
             path: dev?'/portal/test':'/test',

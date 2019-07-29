@@ -2,12 +2,14 @@
  * Created by Allen Liu on 2019/7/25.
  */
 import {offset} from '@portal/utils/lwh-utils'
+var scrollListener
 export default {
     bind(ele,binding,vNode){
         var navlocs = ['scroll-aboutMe','scroll-jobSelect','scroll-demo','scroll-base','scroll-mvvm','scroll-lastJob']
-        window.addEventListener('scroll',function(){
+        scrollListener = function(){
             bindScrollFn(navlocs);
-        })
+        }
+        window.addEventListener('scroll',scrollListener)
         // bindScrollFn(root,navlocs)
 
         function bindScrollFn(navlocs){
@@ -71,5 +73,8 @@ export default {
         }
 
 
+    },
+    unbind(){
+        window.removeEventListener('scroll',scrollListener)
     }
 }

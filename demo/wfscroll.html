@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{margin:0;padding:0;box-sizing: border-box}
+        li{
+            list-style-type: none;
+            width:200px;height:200px;
+            float: left;
+        }
+        ul{
+            overflow: hidden;
+            position:absolute;
+            left:0;top:0;
+            width:1000%;
+        }
+        .main{
+            height:200px;width:600px;margin:10px auto;position:relative;overflow:hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <ul>
+        <li style="background: red;">1</li>
+        <li style="background: blue;">2</li>
+        <li style="background: yellow;">3</li>
+        <li style="background: green;">4</li>
+        <li style="background: pink;">5</li>
+        <li style="background: #ddd;">6</li>
+    </ul>
+</div>
+<script>
+    function WfScroll(options){
+        this.init(options)
+    }
+
+    WfScroll.prototype.initDom = function(options){
+        this.main = document.querySelector(options.main)
+        this.scrollMain = this.main.querySelector('ul')
+        this.position = 0//初始化自定义变量
+        this.blockNum = options.blockNum
+        this.items = this.scrollMain.querySelectorAll(options.scrollItem)
+        this.blockItemW = this.items[0].offsetWidth
+        this.lastItemNum = Math.ceil(this.main.clientWidth/this.blockItemW)
+        this.addLastItem()
+    }
+
+    //把克隆后的item插入到scrollMain
+    WfScroll.prototype.addLastItem = function(){
+        var _this = this
+        var lastItemStr = Array.from(this.items).reduce(function(pre,next,idx){
+            if(idx<_this.lastItemNum){
+                pre = pre+next.outerHTML
+            }
+            return pre;
+        },'')
+        var childs = _this.getCloneItems(lastItemStr)
+        childs.forEach(function(child){
+            _this.scrollMain.appendChild(child)
+        })
+        childs = null
+    }
+
+    //克隆前N个item
+    WfScroll.prototype.getCloneItems = function(str){
+        var temp = document.createElement('div')
+        var content = document.createElement('div')
+        temp.appendChild(content)
+        content.outerHTML = str
+        return Array.from(temp.childNodes);
+    }
+
+    WfScroll.prototype.autoPlay = function () {
+        this.position ++
+        if(this.position){
+            if(this.position>this.blockNum*this.blockItemW){
+                this.position = 0
+            }
+        }
+        this.scrollMain.style.left = '-'+this.position+'px'
+    }
+
+    WfScroll.prototype.init = function(options){
+        this.initDom(options)
+        var _this = this
+        setInterval(function(){
+            _this.autoPlay()
+        },0)
+    }
+
+    new WfScroll({
+        main:'.main',
+        scrollMain:'ul',
+        scrollItem:'li',
+        blockNum:6
+    })
+
+</script>
+</body>
+</html>

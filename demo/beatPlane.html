@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{margin:0;padding:0;}
+        .box{width:550px; height:710px; border:5px solid cornflowerblue; margin:10px auto 0;position:relative;overflow: hidden;}
+        .plane{width:40px;height:50px;background: url('/demo/images/plane.png');background-size: contain;
+
+            position: absolute;left:-100px;bottom:-100px;cursor: pointer }
+        .zidan{width:10px; height:10px; background:blue; position: absolute;}
+        .diji{width:40px;height:40px;background:url('/demo/images/diji.png');background-size:contain;position: absolute;/*transition: opacity 0.2s*/}
+        h2{text-align: center}
+    </style>
+</head>
+<body>
+<h2 class="loading" style="display:block">游戏加载中。。。</h2>
+<h2 class="tit" style="display:none">当前歼灭敌机<span style="color:red" class="beatCount">0</span>架</h2>
+<div class="box"></div>
+<script>
+
+
+    function PlaneGame(){
+        this.beatCount = 0
+        this.box = document.querySelector('.box')
+        this.boxW = parseFloat(window.getComputedStyle(this.box).width)
+        this.boxH = parseFloat(window.getComputedStyle(this.box).height)
+        this.init()
+    }
+
+    PlaneGame.prototype.interVal = function(cb,t){
+        var count = 0
+        function interVal(time){
+            count +=12
+//            console.log(count);
+            if(count<=t){
+                requestAnimationFrame(interVal)
+            }else{
+                cb && cb()
+                count = 0
+                requestAnimationFrame(interVal)
+            }
+        }
+        requestAnimationFrame(interVal)
+    }
+
+    PlaneGame.prototype.init = function(){
+        var _this = this
+        this.createPlane()
+        this.interVal(function(){
+            _this.createZiDan()
+        },70)
+
+        this.interVal(function(){
+            _this.createDiji()
+        },510)
+
+    }
+    PlaneGame.prototype.createEle = function(tagName,className){
+        var tag =  document.createElement(tagName)
+        tag.className = className
+        return tag
+    }
+    PlaneGame.prototype.createPlane = function(){
+        var _this = this
+        var plane = this.createEle('div','plane')
+        this.box.appendChild(plane)
+//        console.log(plane);
+        window.onmousemove = function(e){
+            var planeW = plane.offsetWidth
+            var planeH = plane.offsetHeight
+            var fixW=_this.box.offsetLeft+5+(planeW/2)
+            var fixH=_this.box.offsetTop+5+(planeH/2)
+            var mx= e.clientX-fixW;
+            var my= e.clientY-fixH;
+            if(mx<0){
+                mx=-planeW/2;
+            }else if(mx>_this.boxW){
+                mx=_this.boxW-planeW/2;
+            }
+
+            if(my<=0){
+                my=0;
+            }else if(my>_this.boxH){
+                my=_this.boxH-planeH;
+            }
+            plane.style.top = my+'px'
+            plane.style.left = mx+'px'
+        }
+    }
+
+    PlaneGame.prototype.createZiDan = function(){
+        var t = 0
+        var _this = this
+        var zidan = this.createEle('div','zidan')
+        this.box.appendChild(zidan)
+        var plane = document.querySelector('.plane')
+        var zidanInitTop = plane.offsetTop-20
+        var zidanInitLeft = plane.offsetLeft+15
+        zidan.style.top = zidanInitTop+'px'
+        zidan.style.left = zidanInitLeft+'px'
+        this.animate(zidan,{top:'0px'},function(ele){
+            ele.remove();
+        },function(zidanItem,zdAniId){
+            var dijiList = Array.from(document.querySelectorAll('.diji'))
+            if(dijiList&&dijiList.length){
+
+                for(let [index,diji] of dijiList.entries()){
+                    var zdLeft = zidanItem.offsetLeft,
+                        zdTop = zidanItem.offsetTop,
+                        dijiLeft = diji.offsetLeft,
+                        dijiRight = diji.offsetLeft + diji.offsetWidth,
+                        dijiTop = diji.offsetTop,
+                        dijiBottom = dijiTop + diji.offsetHeight
+
+                    if(zdLeft>dijiLeft&&zdLeft<dijiRight&&zdTop<dijiBottom){
+                        //由于设置了渐变消失，会出现敌机被打掉后在还没消失前下一个子弹又打中这个敌机
+                        //所以被打中的敌机打一个标记，即使下一个字段打到了也不算
+                        if(diji.beated){
+                            return
+                        }
+                        if(!diji.beated){
+                            zidanItem.remove()
+                            diji.style.backgroundImage = 'url("/demo/images/fire.png")'
+                            _this.animate(diji,{opacity:0},function(dj){
+                                _this.beatCount ++
+                                document.querySelector('.beatCount').innerText = _this.beatCount
+                                dj.remove()
+                                cancelAnimationFrame(zdAniId)
+                            },null,1.2)
+                            diji.beated = true
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    PlaneGame.prototype.createDiji = function(){
+        var _this = this
+        var diji = this.createEle('div','diji')
+        this.box.appendChild(diji)
+        var dijiInitTop = 0
+        var dijiInitLeft = Math.random()*this.boxW
+        diji.style.top = dijiInitTop+'px'
+        diji.style.left = dijiInitLeft+'px'
+        this.animate(diji,{top:_this.boxH+'px'},function(ele){
+            ele.remove();
+        },null,0.2)
+    }
+
+
+    PlaneGame.prototype.animate = function (ele,options,callBack,ingFn,beishu){
+        function doSpecFn(styleName,n){
+            if(styleName==='scrollTop'){
+                return function(){
+                    document.documentElement[styleName] = n
+                }
+            }else{
+                return false
+            }
+        }
+        Object.keys(options).forEach(function(styleName,i){
+            ele['animateId'+i] = requestAnimationFrame(function(time){
+                move(time,ele['animateId'+i],function(ele){
+                    callBack&&callBack(ele)
+                })
+            })
+            var trueStyles = window.getComputedStyle(ele)
+            var initNum = 0
+            var initBei = 1
+            if(styleName==='opacity'){
+                initBei = 1000
+                initNum = 1
+            }
+            // debugger
+            var initLocation = parseFloat(trueStyles[styleName]?trueStyles[styleName]:initNum)*initBei
+            var fallyLocation = parseFloat(options[styleName])*initBei
+//            console.log(initLocation);
+//            console.log(fallyLocation);
+            var danwei = isNaN(Number(options[styleName]))?(options[styleName].replace(/\d+/,'')):''
+            var distant = 0
+            function move(time,animateId,cb){
+                distant++
+                if(initLocation>fallyLocation){
+                    initLocation -= distant * (beishu || 1)
+                    var a = (initLocation/initBei)<=fallyLocation?fallyLocation:(initLocation/initBei)
+                    var n = danwei? a+danwei : a
+                    var spec = doSpecFn(styleName,n)
+                    if(spec){
+                        spec()
+                    }else{
+                        ele.style[styleName] =n
+                    }
+                    ingFn && ingFn(ele,animateId)
+                    if(initLocation>fallyLocation){
+                        animateId = requestAnimationFrame(function(){
+                            move(time,animateId,cb)
+                        })
+                    }else{
+                        cancelAnimationFrame(animateId)
+                        cb(ele)
+                    }
+                }else{
+                    initLocation += distant * (beishu || 1)
+                    var a = (initLocation/initBei)>=fallyLocation?fallyLocation:(initLocation/initBei)
+                    var n = danwei? a+danwei : a
+                    var spec = doSpecFn(styleName,n)
+                    if(spec){
+                        spec()
+                    }else{
+                        ele.style[styleName] =n
+                    }
+                    ingFn && ingFn(ele,animateId)
+                    if(initLocation<fallyLocation){
+                        animateId = requestAnimationFrame(function(){
+                            move(time,animateId,cb)
+                        })
+                    }else{
+                        cb(ele)
+                        cancelAnimationFrame(animateId)
+                    }
+                }
+            }
+        })
+    }
+
+
+
+    function hideLoading(){
+        var tit = document.querySelector('.tit')
+        var loading = document.querySelector('.loading')
+        tit.style.display =  'block'
+        loading.style.display =  'none'
+    }
+
+    function imgReady(cb){
+        var imgList = ['/demo/images/plane.png','/demo/images/diji.png','/demo/images/fire.png']
+        var imgCount = 0
+        imgList.forEach(function(item){
+            var img = new Image()
+            img.src = item
+            img.onload = function(){
+                imgCount ++
+                if(imgCount===imgList.length){
+                    cb && cb()
+                }
+            }
+        })
+    }
+
+    window.onload = function(){
+        imgReady(function(){
+            hideLoading()
+            new PlaneGame()
+        })
+    }
+
+
+
+</script>
+</body>
+</html>

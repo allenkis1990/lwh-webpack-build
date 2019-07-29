@@ -95,80 +95,92 @@
                 <hr>
                 <div class="container center fades">
                     <p class="center intros">写jq前端功能的时候，我的宗旨是能手写就手写，不依赖插件。手写代码更简洁高效，也更能提升自己技术。</p>
-                    <div class="col-md-3 col-xs-6">
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('bannerScroll.html')">
                         <div class="imgbox">
                             <img src="@portal/images/01.jpg" alt="作品配图">
                         </div>
-                        <a href="cart.html" target="_blank">
+                        <a href="javascript:void(0)">
                             <div class="zp-cover">
-                                <h4>商城类页面</h4>
-                                <p>购物车结算jq，订单的选择或删除、金额的计算。</p>
+                                <h4>轮播图</h4>
+                                <p>简单但功能齐全的轮播图</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-3 col-xs-6">
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('beatPlane.html')">
                         <div class="imgbox">
                             <img src="@portal/images/06.jpg" alt="作品配图">
                         </div>
-                        <a href="http://www.cbecm.com/Analysis/Gametest/pc_test" target="_blank">
+                        <a href="javascript:void(0)">
                             <div class="zp-cover" style="top: 45%">
-                                <h4>测试类页面</h4>
-                                <p>AJAX获取后台数据，用数组读取选项与题目。记录测试者的选项返给后台。</p>
+                                <h4>打飞机小游戏</h4>
+                                <p>纯手写简易打飞机小游戏</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-3 col-xs-6 ">
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('circle.html')">
                         <div class="imgbox">
                             <img src="@portal/images/02.jpg" alt="作品配图">
                         </div>
-                        <a href="http://www.cbecm.com/Live/Index/index" target="_blank">
+                        <a href="javascript:void(0)">
                             <div class="zp-cover">
-                                <h4>直播类页面</h4>
-                                <p>直播页面响应式，css3 jq运用较多</p>
+                                <h4>圆形进度条</h4>
+                                <p>非canvas的圆形进度条动画</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-3 col-xs-6 ">
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('defu.html')">
                         <div class="imgbox">
                             <img src="@portal/images/03.jpg" alt="作品配图">
                         </div>
-                        <a href="http://www.cbecm.com/Anchor/Anchor/anchor" target="_blank">
+                        <a href="javascript:void(0)">
                             <div class="zp-cover">
-                                <h4>列表类页面</h4>
-                                <p>无缝轮播手写，花瓣动画。</p>
+                                <h4>丝滑的德芙</h4>
+                                <p>快速滑动方块，感受一下丝滑的感觉</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-3 col-xs-6 ">
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('wfscroll.html')">
                         <div class="imgbox">
                             <img src="@portal/images/04.jpg" alt="作品配图">
                         </div>
-                        <a href="http://www.cbecm.com/Anchor/Anchor/anchor_detai?id=RjA4QzAyMzUtNERCNC04MjM1LUY2NTQtQUM2NTdGMkQ4OTcx" target="_blank">
+                        <a href="javascript:void(0)">
                             <div class="zp-cover">
-                                <h4>详情类页面</h4>
-                                <p>视频播放，富文本编辑器手写。</p>
+                                <h4>无缝滚动</h4>
+                                <p>真的一点缝隙都看不到的无缝滚动</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-3 col-xs-6 ">
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('pubuliu.html')">
                         <div class="imgbox">
                             <img src="@portal/images/05.jpg" alt="作品配图">
                         </div>
-                        <a href="http://www.cbecm.com/Home/Index/index" target="_blank">
+                        <a href="javascript:void(0)">
                             <div class="zp-cover">
-                                <h4>官网类首页</h4>
-                                <p>多数据响应式网页，能兼容不同大小电脑分辨率</p>
+                                <h4>瀑布流</h4>
+                                <p>随屏幕大小伸缩的智能瀑布流</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('websocket.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/05.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>websocket</h4>
+                                <p>websocket简易多人聊天室</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
                     </div>
 
-                    <div class="col-md-3 col-xs-6 ">
+                    <!--<div class="col-md-3 col-xs-6 ">
                         <div class="imgbox">
                             <img src="@portal/images/07.jpg" alt="作品配图">
                         </div>
@@ -191,7 +203,7 @@
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <div id="section5" class="section">
@@ -272,7 +284,14 @@
         mounted() {
         },
         methods: {
-
+            stateGo(name){
+                this.$router.push({name:name})
+            },
+            openDemoPage(path){
+                var popup = window.open('about:blank','_blank')
+                popup.document.write('<h2>加载中。。</h2>')
+                popup.location = '/demo/'+path
+            }
         },
         components:{
             knowleageList

@@ -49,9 +49,20 @@ app.get('/',function(req,res){
     res.redirect('/portal');
 })
 
+
+//作品集专门放在demo文件夹下不走vue路由
+app.get('/demo/*',function(req,res){
+    var url = req.url.replace('/','')
+    url = url.replace(/\?.+$/,'')
+    url = decodeURI(url)
+    var p = path.resolve(__dirname,url)
+    console.log(p);
+    res.sendFile(p)
+})
+
 //mock
 app.get('/portal/fuck',function(req,res){
-    console.log(req.url);
+    // console.log(req.url);
     res.send({name:'allen'});
 })
 
@@ -86,5 +97,6 @@ Object.keys(proxyList).forEach(function (context) {
 //     app.use(requestBase,findStaticPath(requestBase))
 // })
 
-
-app.listen(config.port,config.host);
+var server = require('./demo/websocket.js')(app)
+// app.listen(config.port,config.host);
+server.listen(config.port,config.host);

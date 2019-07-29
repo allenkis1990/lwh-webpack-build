@@ -57,8 +57,8 @@ let config = {
     designPort:'8181',
     //apps:['portal','center'],
     apps:['portal'],
-    host:'127.0.0.1',
-    //host:'192.168.0.112',
+    // host:'127.0.0.1',
+    host:'192.168.28.248',
     dev:{
         publicPath:'/'
     },

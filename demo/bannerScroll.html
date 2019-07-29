@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;padding:0;list-style-type: none;
+        }
+        .main{
+            width:650px;height:350px;position:relative;
+            margin:10px auto;
+            color:#fff;
+            text-align:center;
+            line-height:350px;
+            font-size:100px;
+        }
+        ul{
+            width:100%;
+            height:100%;
+            position:absolute;
+        }
+        li{
+            position:absolute;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            opacity:0;
+            transition: all 1s;
+        }
+        li:nth-child(1){background:red}
+        li:nth-child(1):before{
+            content:'1'
+        }
+        li:nth-child(2){background:green}
+        li:nth-child(2):before{
+            content:'2'
+        }
+        li:nth-child(3){background:blue}
+        li:nth-child(3):before{
+            content:'3'
+        }
+        .pre,.next{
+            z-index:999;
+            display:inline-block;
+            width:40px;
+            height:65px;
+            background:#000;
+            position:absolute;
+            top:50%;
+            margin-top:-32.5px;
+            color:#fff;
+            font-size:14px;
+            line-height: 65px;
+            text-align:center;
+            text-decoration: none;
+        }
+        .pre:hover,.next:hover{
+            text-decoration: underline;
+        }
+        .pre{
+            left:0;
+        }
+        .next{
+            right:0;
+        }
+        .tab-box{overflow: hidden;z-index:999;position:absolute;right:10px;bottom:10px;}
+
+        .tab-box a {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            float: left;
+            margin-right:5px;
+            border:1px solid #fff;
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <a href="javascript:void(0)" class="pre">pre</a>
+    <a href="javascript:void(0)" class="next">next</a>
+    <ul>
+        <li style="opacity:1"></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="tab-box">
+        <a href="javascript:void(0)" style="background-color: #fff"></a>
+        <a href="javascript:void(0)"></a>
+        <a href="javascript:void(0)"></a>
+    </div>
+</div>
+<script>
+    function BannerScroll(options){
+        this.init(options)
+    }
+    BannerScroll.prototype.init = function(options){
+        var _this = this;
+        this.scrollIndex = 0;
+        this.duration = options.duration || '2500';
+        this.timer = null;
+        this.main = document.querySelectorAll(options.main)
+        this.main.forEach(function(main){
+            console.log(main);
+            _this.initDom(options,main)
+        })
+    }
+    //初始化dom元素变量
+    BannerScroll.prototype.initDom = function(options,main){
+        console.log(main);
+        var scrollMain = main.querySelector(options.scrollMain)
+        var items = scrollMain.querySelectorAll(options.item)
+        var tabBtns = main.querySelectorAll(options.tabBtn)
+        var next = main.querySelector(options.next || '.next')
+        var pre = main.querySelector(options.pre || '.pre')
+        this.initEvent(main,pre,next,items,tabBtns)
+        this.autoPlay(items,tabBtns)
+    }
+    //初始化dom事件
+    BannerScroll.prototype.initEvent = function(main,pre,next,items,tabBtns){
+        var _this = this
+        next.addEventListener('click',function(e){
+            _this.next(e,items,tabBtns);
+        })
+        pre.addEventListener('click',function(e){
+            _this.pre(e,items,tabBtns);
+        })
+        main.addEventListener('mouseenter',function(e){
+            e.stopPropagation()
+            clearInterval(_this.timer)
+            _this.timer = null
+        })
+        main.addEventListener('mouseleave',function(e){
+            e.stopPropagation()
+            _this.autoPlay(items,tabBtns)
+        })
+        Array.from(tabBtns).forEach(function(tabBtn,i){
+            tabBtn.addEventListener('click',function(e){
+                e.stopPropagation()
+                _this.scrollIndex = i
+                _this.move(items,tabBtns)
+            })
+        })
+
+    }
+    //上一张
+    BannerScroll.prototype.pre = function(e,items,tabBtns){
+        e.stopPropagation()
+        this.scrollIndex --
+        if(this.scrollIndex<0){
+            this.scrollIndex = items.length -1
+        }
+        this.move(items,tabBtns)
+
+    }
+    //下一张
+    BannerScroll.prototype.next = function(e,items,tabBtns){
+        e.stopPropagation()
+        this.scrollIndex ++
+        if(this.scrollIndex>items.length -1){
+            this.scrollIndex = 0
+        }
+        this.move(items,tabBtns)
+
+    }
+    //自动轮播
+    BannerScroll.prototype.autoPlay = function(items,tabBtns){
+        var _this = this
+        this.timer = setInterval(function(){
+            _this.scrollIndex ++
+            if(_this.scrollIndex>items.length -1){
+                _this.scrollIndex = 0
+            }
+            _this.move(items,tabBtns)
+        },this.duration)
+    }
+    //公用move
+    BannerScroll.prototype.move = function(items,tabBtns){
+        Array.from(items).forEach(function(item,i){
+            item.style.opacity = 0
+            Array.from(tabBtns)[i].style.backgroundColor = ''
+        })
+        Array.from(items)[this.scrollIndex].style.opacity = 1
+        Array.from(tabBtns)[this.scrollIndex].style.backgroundColor = '#fff'
+    }
+    new BannerScroll({
+        main:'.main',
+        scrollMain:'ul',
+        item:'li',
+        tabBtn:'.tab-box a',
+        duration:2000
+    })
+</script>
+</body>
+</html>

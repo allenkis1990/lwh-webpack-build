@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <style>
+        *{margin:0;padding:0;}
+        h2{
+            font-size:50px;
+            text-align: center;
+        }
+        .clear{
+            overflow:hidden;
+            _zoom:1;
+        }
+        .box{width:1000px;margin:100px auto;box-sizing: border-box;}
+        .con{width: 810px;margin:0px auto;box-sizing: border-box;}
+        .main{float:left;margin:10px 10px;width:250px;height:160px;background:rgb(154,106,42);position:relative;overflow:hidden;}
+        .mask {
+            color: #fff;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: 0.5;
+            top: 170px;
+            left: 0px;
+            line-height:160px;
+            text-align:center;
+            font-size:50px;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>快速滑动以下方块，感受一下丝滑的感觉</h2>
+    <div class="con clear">
+        <div class="main">
+            <div class="mask">德</div>
+        </div>
+        <div class="main">
+            <div class="mask">芙</div>
+        </div>
+        <div class="main">
+            <div class="mask">就</div>
+        </div>
+        <div class="main">
+            <div class="mask">是</div>
+        </div>
+        <div class="main">
+            <div class="mask">这</div>
+        </div>
+        <div class="main">
+            <div class="mask">么</div>
+        </div>
+        <div class="main">
+            <div class="mask">湿</div>
+        </div>
+        <div class="main">
+            <div class="mask">滑</div>
+        </div>
+        <div class="main">
+            <div class="mask">^_^</div>
+        </div>
+    </div>
+</div>
+<script>
+    function DesTopPlay(){
+        this.main = document.querySelectorAll('.main')
+        this.init()
+    }
+    DesTopPlay.prototype.init = function(){
+        this.onmouseenter();
+        this.onmouseleave();
+    }
+
+    DesTopPlay.prototype.getMin = function(a,b,c,d){
+        return Math.min(a,b,c,d)
+    }
+    DesTopPlay.prototype.getLTBR = function(e,context){
+        this.left = e.offsetX
+        this.top = e.offsetY
+        this.right = context.offsetWidth - this.left
+        this.bottom = context.offsetHeight - this.top
+    }
+    DesTopPlay.prototype.moveCenter = function(mask){
+        setTimeout(function(){
+            mask.style.transitionDuration = '0.3s'
+            mask.style.left = 0;
+            mask.style.top = 0;
+        })
+    }
+    DesTopPlay.prototype.moveLeft = function(mask){
+        mask.style.left = '-'+mask.offsetWidth+'px';
+        mask.style.top = 0;
+    }
+    DesTopPlay.prototype.moveRight = function(mask){
+        mask.style.left = mask.offsetWidth+'px';
+        mask.style.top = 0;
+    }
+    DesTopPlay.prototype.moveTop = function(mask){
+        mask.style.left = 0;
+        mask.style.top = '-'+mask.offsetHeight+'px';
+    }
+    DesTopPlay.prototype.moveBottom = function(mask){
+        mask.style.left = 0;
+        mask.style.top = mask.offsetHeight+'px';
+    }
+    DesTopPlay.prototype.onmouseenter = function(){
+        var _this = this
+        this.main.forEach(function(main){
+            var mask = main.querySelector('.mask')
+            main.onmouseenter = function(e){
+                mask.style.transitionDuration = ''
+                _this.getLTBR(e,this);
+                var min = _this.getMin(_this.left,_this.top,_this.right,_this.bottom)
+                //从左边进来
+                if(min === _this.left){
+                    _this.moveLeft(mask);
+                    _this.moveCenter(mask);
+                }
+                //从右边进来
+                if(min === _this.right){
+                    _this.moveRight(mask);
+                    _this.moveCenter(mask);
+                }
+                //从上面进来
+                if(min === _this.top){
+                    _this.moveTop(mask);
+                    _this.moveCenter(mask);
+                }
+                //从下面进来
+                if(min === _this.bottom){
+                    _this.moveBottom(mask);
+                    _this.moveCenter(mask);
+                }
+
+
+            }
+        })
+    }
+
+    DesTopPlay.prototype.onmouseleave = function(){
+        var _this = this;
+
+        this.main.forEach(function(main){
+            var mask = main.querySelector('.mask')
+            main.onmouseleave = function(e){
+                _this.getLTBR(e,this);
+                var min = _this.getMin(_this.left,_this.top,_this.right,_this.bottom)
+                //从左边出去
+                if(min === _this.left){
+                    _this.moveLeft(mask);
+                }
+                //从右边出去
+                if(min === _this.right){
+                    _this.moveRight(mask);
+                }
+                //从上面出去
+                if(min === _this.top){
+                    _this.moveTop(mask);
+                }
+                //从下面出去
+                if(min === _this.bottom){
+                    _this.moveBottom(mask);
+                }
+            }
+        })
+    }
+
+    new DesTopPlay();
+</script>
+</body>
+</html>
