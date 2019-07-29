@@ -1,6 +1,7 @@
 let project = './jianli'
 let express = require('express')
 let app = express()
+let path = require('path')
 let historyFallback = require('./task/historyFallback.js')
 //作品集专门放在demo文件夹下不走vue路由
 app.get('/demo/*',function(req,res){
@@ -8,7 +9,6 @@ app.get('/demo/*',function(req,res){
     url = url.replace(/\?.+$/,'')
     url = decodeURI(url)
     var p = path.resolve(__dirname,url)
-    console.log(p);
     res.sendFile(p)
 })
 

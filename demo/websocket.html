@@ -40,71 +40,86 @@
         .silder-box{width:200px;border:1px solid #2b81af;}
         .userList{overflow:auto;height:560px;}
         .li-userImg{width:50px;height:50px;}
+
+        .pending,.pending img{
+            width:100px;
+            height:100px;
+            position:fixed;
+            left:50%;
+            top:50%;
+            margin-left:-50px;
+            margin-top:-50px;
+        }
     </style>
 </head>
 <body>
 
-<div class="dialog-box">
-    <div class="modal"></div>
-    <div class="dialog">
-        <div class="dialog-header">请输入您的昵称</div>
 
-        <div class="dialog-content">
-            <input type="text" class="initName-input" />
-            <div>请选择您的头像</div>
-            <div class="dialog-img">
-                <ul class="dialog-img-box">
-                    <li><img src="/demo/images/a1.png" /></li>
-                    <li><img src="/demo/images/a2.png" /></li>
-                    <li><img src="/demo/images/a3.png" /></li>
-                    <li><img src="/demo/images/a4.jpg" /></li>
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="dialog-footer">
-            <button class="initName">确定</button>
-        </div>
-    </div>
+<div class="pending">
+    <img src="/demo/images/loading.gif" alt="">
 </div>
 
 
+<div class="socket-box" style="display:none">
+    <div class="dialog-box">
+        <div class="modal"></div>
+        <div class="dialog">
+            <div class="dialog-header">请输入您的昵称</div>
 
-<!--<button class="clearCookie">离开聊天室</button>-->
+            <div class="dialog-content">
+                <input type="text" class="initName-input" />
+                <div>请选择您的头像</div>
+                <div class="dialog-img">
+                    <ul class="dialog-img-box">
+                        <li><img src="/demo/images/a1.png" /></li>
+                        <li><img src="/demo/images/a2.png" /></li>
+                        <li><img src="/demo/images/a3.png" /></li>
+                        <li><img src="/demo/images/a4.jpg" /></li>
+                    </ul>
+                </div>
 
-<h1>Allen的聊天室</h1>
-<div class="main">
-    <div class="main-box">
-        <div class="main-header">用户名:<span class="userName"></span></div>
-        <div class="main-content">
-            <div>系统消息：</div>
-            <div class="sys-box">
-                <ul class="system-content">
-
-                </ul>
             </div>
 
-
-            <div style="margin-top:20px;">聊天内容：</div>
-            <div class="chat-box">
-                <ul class="chat-content">
-
-                </ul>
+            <div class="dialog-footer">
+                <button class="initName">确定</button>
             </div>
-
-        </div>
-        <div class="main-input">
-            <textarea class="chat-input"></textarea>
         </div>
     </div>
+    <!--<button class="clearCookie">离开聊天室</button>-->
 
-    <div class="silder-box">
-        <div class="count">当前在线人数<span class="user-count">0</span>人</div>
-        <div class="userList">
-            <ul class="userList-ul">
+    <h1>Allen的聊天室</h1>
+    <div class="main">
+        <div class="main-box">
+            <div class="main-header">用户名:<span class="userName"></span></div>
+            <div class="main-content">
+                <div>系统消息：</div>
+                <div class="sys-box">
+                    <ul class="system-content">
 
-            </ul>
+                    </ul>
+                </div>
+
+
+                <div style="margin-top:20px;">聊天内容：</div>
+                <div class="chat-box">
+                    <ul class="chat-content">
+
+                    </ul>
+                </div>
+
+            </div>
+            <div class="main-input">
+                <textarea class="chat-input"></textarea>
+            </div>
+        </div>
+
+        <div class="silder-box">
+            <div class="count">当前在线人数<span class="user-count">0</span>人</div>
+            <div class="userList">
+                <ul class="userList-ul">
+
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -113,176 +128,166 @@
 <script src="/demo/js/jquery-1.9.1.js"></script>
 <script>
 
+    var socket = io.connect('http://192.168.28.248');
+    $(function(){
+        $('.pending').hide();
+        $('.socket-box').show();
+        var userName='';
+        var userImg='';
+        socket.on('connect',function(){
+            //console.log('链接成功！！');
+            //socket.send('客户端连接成功！！');
+        });
 
-    var userName='';
-    var userImg='';
-    var socket = io.connect('http://192.168.28.248:8080');
-    socket.on('connect',function(){
-        //console.log('链接成功！！');
-        //socket.send('客户端连接成功！！');
-    });
-
-    socket.on('message',function(msg){
-        console.log(msg);
-        //userName=msg.name;
-        if(!$.trim(userName)){
-            userName=msg.name;
-            $('.userName').text(userName);
-            $('.userName').prepend('<img class="li-userImg" src="'+msg.userImg+'" />');
-        }
-    });
-
-
-    socket.on('system', function (type,obj) {
-        //console.log(type);
-        if(type==='system'){
-            $('.system-content').append('<li>欢迎<img class="li-userImg" src="'+obj.userImg+'" /><span class="chatUserName">'+obj.name+'</span>进入聊天室</li>');
-            var sysBoxH=$('.sys-box').height();
-            var sysUlH=$('.system-content').height();
-            console.log(sysBoxH);
-            console.log(sysUlH);
-            if(sysUlH>sysBoxH){
-                $('.sys-box').scrollTop(sysUlH-sysBoxH);
+        socket.on('message',function(msg){
+            console.log(msg);
+            //userName=msg.name;
+            if(!$.trim(userName)){
+                userName=msg.name;
+                $('.userName').text(userName);
+                $('.userName').prepend('<img class="li-userImg" src="'+msg.userImg+'" />');
             }
-        }
+        });
 
-        if(type==='user'){
-            $('.chat-content').append('<li><img class="li-userImg" src="'+obj.userImg+'" /><span class="chatUserName">'+obj.name+'</span>:'+obj.content+'</li>');
-            var chatBoxH=$('.chat-box').height();
-            var chatUlH=$('.chat-content').height();
-            console.log(chatBoxH);
-            console.log(chatUlH);
-            if(chatUlH>chatBoxH){
-                $('.chat-box').scrollTop(chatUlH-chatBoxH);
+
+        socket.on('system', function (type,obj) {
+            //console.log(type);
+            if(type==='system'){
+                $('.system-content').append('<li>欢迎<img class="li-userImg" src="'+obj.userImg+'" /><span class="chatUserName">'+obj.name+'</span>进入聊天室</li>');
+                var sysBoxH=$('.sys-box').height();
+                var sysUlH=$('.system-content').height();
+                console.log(sysBoxH);
+                console.log(sysUlH);
+                if(sysUlH>sysBoxH){
+                    $('.sys-box').scrollTop(sysUlH-sysBoxH);
+                }
             }
-        }
 
-        //私聊
-        if(type==='pm'){
-            $('.chat-content').append('<li><span class="pm">[私聊]</span><img class="li-userImg" src="'+obj.fromUserImg+'" /><span class="chatUserName">'+obj.name+'</span>:'+obj.content+'</li>');
-            var chatBoxH=$('.chat-box').height();
-            var chatUlH=$('.chat-content').height();
-            console.log(chatBoxH);
-            console.log(chatUlH);
-            if(chatUlH>chatBoxH){
-                $('.chat-box').scrollTop(chatUlH-chatBoxH);
+            if(type==='user'){
+                $('.chat-content').append('<li><img class="li-userImg" src="'+obj.userImg+'" /><span class="chatUserName">'+obj.name+'</span>:'+obj.content+'</li>');
+                var chatBoxH=$('.chat-box').height();
+                var chatUlH=$('.chat-content').height();
+                console.log(chatBoxH);
+                console.log(chatUlH);
+                if(chatUlH>chatBoxH){
+                    $('.chat-box').scrollTop(chatUlH-chatBoxH);
+                }
             }
-        }
-        //$()
-    });
 
-    socket.on('leave', function (name,userImg) {
-        //if($.trim(userName)){
-        if(name){
-            $('.system-content').append('<li><img class="li-userImg" src="'+userImg+'" />'+name+'已离开聊天室</li>');
-        }
-        //}
-
-    });
-
-    socket.on('existUser',function(){
-        alert('当前昵称已存在请换一个后重试！');
-    });
-
-
-    socket.on('hideDialog',function(){
-        $('.dialog-box').hide();
-    });
-
-    socket.on('downSayWithSelf',function(){
-        alert('不能和自己私聊！');
-    });
-
-    socket.on('canontFindPmUser',function(){
-        alert('当前用户已经下线或者不存在！');
-    });
-
-
-    socket.on('countTotalUser',function(data){
-        console.log(data.arr);
-        $('.user-count').text(data.arr.length);
-        //先清空列表再重新读取
-        if(data.arr.length>0){
-            $('.userList-ul').html('');
-            for(var i=0;i<data.arr.length;i++){
-                $('.userList-ul').append('<li><img class="li-userImg" src="'+data.arr[i].userImg+'" /><span class="chatUserName">'+data.arr[i].name+'</span></li>');
+            //私聊
+            if(type==='pm'){
+                $('.chat-content').append('<li><span class="pm">[私聊]</span><img class="li-userImg" src="'+obj.fromUserImg+'" /><span class="chatUserName">'+obj.name+'</span>:'+obj.content+'</li>');
+                var chatBoxH=$('.chat-box').height();
+                var chatUlH=$('.chat-content').height();
+                console.log(chatBoxH);
+                console.log(chatUlH);
+                if(chatUlH>chatBoxH){
+                    $('.chat-box').scrollTop(chatUlH-chatBoxH);
+                }
             }
-        }else{
-            $('.userList-ul').html('');
-        }
+            //$()
+        });
+
+        socket.on('leave', function (name,userImg) {
+            //if($.trim(userName)){
+            if(name){
+                $('.system-content').append('<li><img class="li-userImg" src="'+userImg+'" />'+name+'已离开聊天室</li>');
+            }
+            //}
+
+        });
+
+        socket.on('existUser',function(){
+            alert('当前昵称已存在请换一个后重试！');
+        });
 
 
-    });
+        socket.on('hideDialog',function(){
+            $('.dialog-box').hide();
+        });
+
+        socket.on('downSayWithSelf',function(){
+            alert('不能和自己私聊！');
+        });
+
+        socket.on('canontFindPmUser',function(){
+            alert('当前用户已经下线或者不存在！');
+        });
 
 
+        socket.on('countTotalUser',function(data){
+            console.log(data.arr);
+            $('.user-count').text(data.arr.length);
+            //先清空列表再重新读取
+            if(data.arr.length>0){
+                $('.userList-ul').html('');
+                for(var i=0;i<data.arr.length;i++){
+                    $('.userList-ul').append('<li><img class="li-userImg" src="'+data.arr[i].userImg+'" /><span class="chatUserName">'+data.arr[i].name+'</span></li>');
+                }
+            }else{
+                $('.userList-ul').html('');
+            }
 
 
+        });
 
-
-    /*$('.clearCookie').click(function(){
-        window.open('/','_self');
-    });*/
-
-
-    $('.initName').click(function(){
-        var val=$('.initName-input').val();
-        if(val===null|| $.trim(val)===''||val===undefined){
-            alert('请输入昵称!');
-        }else if($.trim(userImg)===''){
-            alert('请选择一个头像!');
-        }else{
-            $('.userName').text(val);
-            socket.send({
-                name:val,
-                init:true,
-                userImg:userImg
-            });
-        }
-    });
-
-    $('.dialog-img-box li').click(function(){
-        var $this=$(this),src=$this.find('img').attr('src');
-        userImg=src;
-        $this.addClass('current').siblings('li').removeClass('current');
-        //console.log($this.find('img').attr('src'));
-    });
-
-
-    $('.chat-input').keyup(function(e){
-        var val=$(this).val();
-        if(e.keyCode==13){
-            //console.log(val);
+        $('.initName').click(function(){
+            var val=$('.initName-input').val();
             if(val===null|| $.trim(val)===''||val===undefined){
-                alert('请输入聊天内容');
+                alert('请输入昵称!');
+            }else if($.trim(userImg)===''){
+                alert('请选择一个头像!');
+            }else{
+                $('.userName').text(val);
+                socket.send({
+                    name:val,
+                    init:true,
+                    userImg:userImg
+                });
+            }
+        });
+
+        $('.dialog-img-box li').click(function(){
+            var $this=$(this),src=$this.find('img').attr('src');
+            userImg=src;
+            $this.addClass('current').siblings('li').removeClass('current');
+            //console.log($this.find('img').attr('src'));
+        });
+
+
+        $('.chat-input').keyup(function(e){
+            var val=$(this).val();
+            if(e.keyCode==13){
+                //console.log(val);
+                if(val===null|| $.trim(val)===''||val===undefined){
+                    alert('请输入聊天内容');
+                    $(this).val('');
+                    return false;
+                }
+
+
+                socket.send({
+                    name:userName,
+                    init:false,
+                    content:val,
+                    userImg:userImg
+                });
                 $(this).val('');
-                return false;
+
             }
 
-
-            socket.send({
-                name:userName,
-                init:false,
-                content:val,
-                userImg:userImg
-            });
-            $(this).val('');
-
-        }
-
-    });
+        });
 
 
-    $(".main-content,.silder-box").on('click','.chatUserName',function(){
-        var text='@'+$(this).text()+' ';
-        var input=$('.chat-input');
-        input.val(text);
-        $('.chat-input').focus();
-        //console.log(text);
+        $(".main-content,.silder-box").on('click','.chatUserName',function(){
+            var text='@'+$(this).text()+' ';
+            var input=$('.chat-input');
+            input.val(text);
+            $('.chat-input').focus();
+            //console.log(text);
 
-    });
-
-
-
+        });
+    })
 
 </script>
 
