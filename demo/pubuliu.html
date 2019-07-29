@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>Title</title>
     <style>
         @keyframes imgshow {
@@ -310,16 +312,18 @@
     }
 
     Pubuliu.prototype.initScroller = function(){
-        var root = document.documentElement || document.body
-        root.scrollTop = 0
+        var html = document.documentElement
+        var body = document.body
+        html.scrollTop = 0
+        body.scrollTop = 0
     }
     //下滑滚动条 当scrollTop+可视高度>=文档高度的时候（到底部）触发加载更多
     Pubuliu.prototype.scroll = function(){
         var _this = this
         var root = document.documentElement || document.body
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
         var docH = root.scrollHeight
         var winH = root.clientHeight
-        var scrollTop = root.scrollTop
         if(winH+scrollTop>=docH-150){
             _this.getImgData();
         }

@@ -288,9 +288,10 @@
                 this.$router.push({name:name})
             },
             openDemoPage(path){
-                var popup = window.open('about:blank','_blank')
-                popup.document.write('<h2>加载中。。</h2>')
-                popup.location = '/demo/'+path
+//                var popup = window.open('about:blank','_blank')
+//                popup.document.write('<h2>加载中。。</h2>')
+//                popup.location = '/demo/'+path
+                window.open('/demo/'+path,'_self')
             }
         },
         components:{
