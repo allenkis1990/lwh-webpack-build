@@ -108,7 +108,7 @@
             var timer = setInterval(function(){
                 count++
                 numTextDom.innerText = count
-                if(count===_this.initNum){
+                if(count>=_this.initNum){
                     clearInterval(timer)
                 }
             },time)
