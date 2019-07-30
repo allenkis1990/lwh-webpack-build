@@ -8,8 +8,12 @@
                 <div class="myIntro">
                     <h1 class="fade">Hello, I'm Allen</h1>
                     <h3 class="fade">一个爱运动，爱音乐，爱生活的前端工程师</h3>
-                    <span class="active fade" id="abMe">关于我</span>
-                    <span id="mypro" class="fade">我的作品</span>
+                    <span class="active fade"
+                          @click="goScrollLoc('scroll-aboutMe')"
+                          id="abMe">关于我</span>
+                    <span id="mypro"
+                          @click="goScrollLoc('scroll-demo')"
+                          class="fade">我的作品</span>
                 </div>
                 <div class="bannerMain" v-scroll-banner>
                     <ul class="bg-img">
@@ -66,35 +70,35 @@
                 <div class="container center fades">
                     <div class="col-md-3 col-xs-6 skill-ps skill">
                         <p><img src="@portal/images/web.png" alt="切图"></p>
-                        <p class="ptitle">PS切图</p>
-                        <p>从PSD上切出页面需要的图片</p>
-                        <p>将小图标合成spirts优化。</p>
+                        <p class="ptitle">静态页制作</p>
+                        <p>从PSD设计稿上切出页面需要的图片</p>
+                        <p>用html+css高度还原设计稿的内容</p>
                     </div>
                     <div class="col-md-3 col-xs-6 skill-web skill">
                         <p><img src="@portal/images/css.png" alt="css"></p>
-                        <p class="ptitle">网页制作</p>
-                        <p>响应式页面,简单不冗余代码。</p>
-                        <p>css3流畅动画效果，兼容不同浏览器。</p>
+                        <p class="ptitle">前端工程化</p>
+                        <p>使用nodejs、webpack搭建前端工程架构</p>
+                        <p>压缩合并代码减小代码体积和代码请求数</p>
                     </div>
                     <div class="col-md-3 col-xs-6 skill-js skill">
                         <p><img src="@portal/images/js.png" alt="js"></p>
-                        <p class="ptitle">前端功能</p>
-                        <p>用JS完成常见的前端功能特效</p>
-                        <p>用AJAX读取后台数据。</p>
+                        <p class="ptitle">前后端分离</p>
+                        <p>使用mvvm框架快速开发前端功能</p>
+                        <p>与后端人员配合接口联调</p>
                     </div>
                     <div class="col-md-3 col-xs-6 skill-h5 skill">
                         <p><img src="@portal/images/h5.png" alt="h5"></p>
                         <p class="ptitle">h5页面</p>
-                        <p>移动端页面的书写</p>
                         <p>兼容平板、安卓、IOS不同终端。</p>
+                        <p>实现pc、移动页面响应式</p>
                     </div>
                 </div>
             </div>
             <div id="section4" class="section">
-                <h2 class="scroll-demo">作品集</h2>
+                <h2 class="scroll-demo">作品集（特效类）</h2>
                 <hr>
                 <div class="container center fades">
-                    <p class="center intros">写jq前端功能的时候，我的宗旨是能手写就手写，不依赖插件。手写代码更简洁高效，也更能提升自己技术。</p>
+                    <p class="center intros">不使用任何js插件库，纯原生js+css3手写特效，这些特效主要是pc端页面上展示，有些在手机上可能不兼容</p>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('bannerScroll.html')">
                         <div class="imgbox">
                             <img src="@portal/images/01.jpg" alt="作品配图">
@@ -279,11 +283,17 @@
     import scrollPage from '@portal/views/home/directives/scrollPage'
     import doOther from '@portal/views/home/directives/doOther'
     import scrollBanner from '@portal/views/home/directives/scrollBanner'
-
+    import {lwhAnimate,offset} from '@portal/utils/lwh-utils'
     export default {
         mounted() {
         },
         methods: {
+            goScrollLoc(loc){
+                var jumpTarget = document.querySelector('.'+loc)
+                var offT = offset(jumpTarget,'top')
+                var root = document.documentElement
+                lwhAnimate(root,{scrollTop:offT})
+            },
             stateGo(name){
                 this.$router.push({name:name})
             },
