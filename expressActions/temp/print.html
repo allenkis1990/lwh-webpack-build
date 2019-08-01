@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .red{display:inline-block;width:30px;height:30px;background:red;vertical-align:-8px;}
+        *{margin:0;padding:0;list-style-type: none;}
+        .list{padding:10px 0 0 10px;}
+        .list li{margin-bottom:10px;color:red;}
+    </style>
+</head>
+<body>
+<div>
+    <h1>人员信息：</h1>
+</div>
+<div>
+    <ul class="list">
+        <li>姓名：{{userInfo.userName}}</li>
+        <li>年龄：{{userInfo.age}}</li>
+        <li>性别：{{userInfo.sex==='1'?'男':'女'}}</li>
+        <li>头像：<img src="{{userInfo.imgBase64}}" width="100" height="100" alt=""></li>
+        <li>爱好：{{userInfo.hobby}}</li>
+    </ul>
+</div>
+</body>
+</html>

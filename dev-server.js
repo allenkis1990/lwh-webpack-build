@@ -26,12 +26,7 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler, {
     path: "/__webpack_hmr"
     // heartbeat: 20000
 })
- //compiler.plugin('compilation', function (compilation) {
- //    compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
- //        hotMiddleware.publish({ action: 'reload' })
- //        cb()
- //    })
- //})
+
 app.use(hotMiddleware);
 //////////////////////热更新////////////////////////////
 //////////////////////开发服务器配置////////////////////////////
@@ -44,27 +39,11 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 
-//url访问/的时候固定重定向到portal去
-app.get('/',function(req,res){
-    res.redirect('/portal');
-})
+// express后端请求
+require('./expressActions/actions').start(app)
+// express前端路由
+require('./expressRouters/routers')(app)
 
-
-//作品集专门放在demo文件夹下不走vue路由
-app.get('/demo/*',function(req,res){
-    var url = req.url.replace('/','')
-    url = url.replace(/\?.+$/,'')
-    url = decodeURI(url)
-    var p = path.resolve(__dirname,url)
-    console.log(p);
-    res.sendFile(p)
-})
-
-//mock
-app.get('/portal/fuck',function(req,res){
-    // console.log(req.url);
-    res.send({name:'allen'});
-})
 
 //纠正VUE history模式下刷新404问题
 let historyFallback = require('./task/historyFallback.js')
@@ -90,13 +69,7 @@ Object.keys(proxyList).forEach(function (context) {
 })
 //////////////////////代理////////////////////////////
 
-//静态资源
-// let findStaticPath = require('./task/findStaticPath.js')
-// config.apps.forEach(($app)=>{
-//     let requestBase = `/${$app}/static`
-//     app.use(requestBase,findStaticPath(requestBase))
-// })
-
+//起一个websocket的服务
 var server = require('./demo/websocket.js')(app)
 // app.listen(config.port,config.host);
 server.listen(config.port,config.host);

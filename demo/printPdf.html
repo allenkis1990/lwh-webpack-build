@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+    <style>
+        *{padding:0;margin:0;list-style-type: none;}
+        .list{padding:10px 0 0 10px;}
+        .list li{margin-bottom:10px;}
+    </style>
+</head>
+<body>
+<a style="color:red;
+display:inline-block;
+font-weight:bold;
+text-decoration:none;
+font-size:20px;
+cursor:pointer;
+margin-bottom:10px;" href="/">
+    <—返回首页
+</a>
+<ul class="list">
+    <li>姓名：<input type="text" id="userName"></li>
+    <li>年龄：<input type="number" id="age"></li>
+    <li>性别：<input type="radio"
+                  onclick="sexValue='1'"
+                  name="sex">男  <input type="radio"
+                                       onclick="sexValue='2'"
+                                       name="sex">女</li>
+    <li>头像：<input type="file" id="file"></li>
+    <li>爱好：<input type="text" id="hobby"></li>
+    <li><button id="print">打印PDF</button></li>
+    <li style="color:red;" id="errorTip"></li>
+</ul>
+<script>
+    var btn = document.getElementById('print')
+    var errTip = document.getElementById('errorTip')
+    var sexValue = ''
+    var loading = false
+    btn.addEventListener('click',function(){
+        if(loading){
+            return false;
+        }
+
+        var file = document.getElementById('file')
+        var userName = document.getElementById('userName')
+        var age = document.getElementById('age')
+        var hobby = document.getElementById('hobby')
+        if(strIsNull(userName.value)){
+            errTip.innerHTML = '请输入姓名'
+            return false
+        }
+        if(strIsNull(age.value)){
+            errTip.innerHTML = '请输入年龄'
+            return false
+        }
+        if(strIsNull(sexValue)){
+            errTip.innerHTML = '请选择性别'
+            return false
+        }
+        if(strIsNull(hobby.value)){
+            errTip.innerHTML = '请输入爱好'
+            return false
+        }
+        if(!file.files.length){
+            errTip.innerHTML = '请上传头像'
+            return false
+        }
+        var curFile = file.files[0]
+        if(curFile.size/1024>100){
+            errTip.innerHTML = '请上传小于100KB的图片'
+            return false
+        }
+        var fileNameArr = curFile.name.split('.')
+        if(fileNameArr.length>1){
+            var fileExt = fileNameArr[fileNameArr.length-1]
+            if(!/^(jpg|png|jpeg)$/ig.test(fileExt)){
+                errTip.innerHTML = '请上传jpg,png格式的图片'
+                return false
+            }
+        }else{
+            errTip.innerHTML = '请上传jpg,png格式的图片'
+            return false
+        }
+        console.log('ok')
+        console.log(file.files[0]);
+        errTip.innerHTML = ''
+
+        var params = new FormData()
+        params.append('imgPath',file.files[0])
+        params.append('userName',userName.value)
+        params.append('age',age.value)
+        params.append('sex',sexValue)
+        params.append('hobby',hobby.value)
+        loading = true
+        $http({
+            url:'/actions/print',
+            method:'post',
+            data:params,
+            headers:{
+            },
+            cb:function(data){
+                loading = false
+                cleanForm(userName,age,hobby)
+                var json = JSON.parse(data)
+                window.location.href = '/preview/pdf/'+json.pdfPath
+            },
+        })
+
+    })
+
+    //清空form
+    function cleanForm(userName,age,hobby){
+        userName.value=''
+        age.value=''
+        hobby.value=''
+        var sexs = document.getElementsByName('sex')
+        Array.prototype.slice.call(sexs).forEach(function(sex){
+            sex.checked = false
+        })
+        sexValue = ''
+    }
+
+
+    function strIsNull(str){
+        var s = str.replace(/^\s+/ig,'')
+        s = s.replace(/\s+$/ig,'')
+        return s===undefined || s===null || s===''
+    }
+
+    //工具AJAX函数
+    function $http(options){
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState ===4){
+                if(xhr.status>=200&&xhr.status<400){
+//                    console.log(xhr.responseText);
+                    options.cb && options.cb(xhr.responseText);
+                }
+            }
+        }
+        xhr.open(options.method,options.url,true)
+        if(options.headers){
+            for(var h in options.headers){
+                xhr.setRequestHeader(h,options.headers[h]);
+            }
+        }
+        xhr.send(options.data?options.data:null)
+    }
+</script>
+</body>
+</html>

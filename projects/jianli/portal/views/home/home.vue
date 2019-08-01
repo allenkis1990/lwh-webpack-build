@@ -183,6 +183,18 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('printPdf.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/05.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>打印预览pdf</h4>
+                                <p>前端上传用户信息，后端接收并生成pdf</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
 
                     <!--<div class="col-md-3 col-xs-6 ">
                         <div class="imgbox">
