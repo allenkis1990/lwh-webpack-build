@@ -11,6 +11,7 @@ const Happypack = require('happypack')
 const config = require('./config/config.js')
 const MoveAssetsToDirPlugin = require('./plugins/moveAssetsToDirPlugin.js')
 const NotFoudEntryPlugin = require('./plugins/notFoudEntryPlugin.js')
+const AddFavIcoPlugin = require('./plugins/addFavIcoPlugin.js')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到单独文件的插件
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
@@ -330,6 +331,7 @@ function getExports(project){
             new MiniCssExtractPlugin({
                 filename: "[name]Style/style.css",
                 chunkFilename: "[name]Style/style.[hash:8].css"}),
+            new AddFavIcoPlugin(),
             new WebpackParallelUglifyPlugin({
                 uglifyJS: {
                     output: {
