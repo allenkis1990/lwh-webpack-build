@@ -48,7 +48,15 @@ var actions = {
             onData(req,function(obj){
                 // console.log(obj.data);
                 // console.log(JSON.stringify(obj.files.imgPath));
-                var imgBase64 = getFileBase64(obj.files.imgPath.path,obj.files.imgPath.type)
+                var imgBase64
+                try {
+                    imgBase64 = getFileBase64(obj.files.imgPath.path, obj.files.imgPath.type)
+                }catch(e){
+                    if(e){
+                        console.log('没找到上传的文件')
+                        res.send({code: '500', message: '没找到上传的文件', pdfPath: null})
+                    }
+                }
                 var userInfo = Object.assign({imgBase64:imgBase64},obj.data)
 
                 var tempStr = template(tempPath,{userInfo})

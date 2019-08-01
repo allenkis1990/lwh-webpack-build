@@ -103,9 +103,13 @@ margin-bottom:10px;" href="/">
             },
             cb:function(data){
                 loading = false
-                cleanForm(userName,age,hobby)
                 var json = JSON.parse(data)
-                window.location.href = '/preview/pdf/'+json.pdfPath
+                if(json.code==='200'){
+                    cleanForm(userName,age,hobby)
+                    window.location.href = '/preview/pdf/'+json.pdfPath
+                }else{
+                    alert(json.message);
+                }
             },
         })
 
