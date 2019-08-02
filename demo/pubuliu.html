@@ -71,7 +71,7 @@ margin-bottom:10px;" href="/">
     <div class="contentBox"></div>
 </div>
 <script>
-
+    NodeList.prototype.forEach = Array.prototype.forEach;
     //工具AJAX函数
     function $http(method,url,cb){
         var xhr = new XMLHttpRequest();

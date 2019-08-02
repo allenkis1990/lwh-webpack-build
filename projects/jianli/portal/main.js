@@ -1,4 +1,4 @@
-
+NodeList.prototype.forEach = Array.prototype.forEach;
 console.log('当前是否开发环境'+dev);
 //全局ajax拦截器
 import interceptors from '@portal/utils/interceptors'

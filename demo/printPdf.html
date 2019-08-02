@@ -35,6 +35,7 @@ margin-bottom:10px;" href="/">
     <li style="color:red;" id="errorTip"></li>
 </ul>
 <script>
+    NodeList.prototype.forEach = Array.prototype.forEach;
     var btn = document.getElementById('print')
     var errTip = document.getElementById('errorTip')
     var sexValue = ''

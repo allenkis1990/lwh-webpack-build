@@ -94,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div id="section4" class="section">
+            <div class="section demo-section">
                 <h2 class="scroll-demo">作品集（特效类）</h2>
                 <hr>
                 <div class="container center fades">
@@ -222,6 +222,87 @@
                     </div>-->
                 </div>
             </div>
+
+            <div class="section demo-section">
+                <h2 class="scroll-demo2">作品集（静态页面类）</h2>
+                <hr>
+                <div class="container center fades">
+                    <p class="center intros">不引用任何css库纯手写静态页面</p>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('puxian-index.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>纯pc端页面1</h4>
+                                <p>只兼容pc端浏览器,手机端查看会变形</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('puxian-erji.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>纯pc端页面2</h4>
+                                <p>只兼容pc端浏览器,手机端查看会变形</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('puxian-sanji.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>纯pc端页面3</h4>
+                                <p>只兼容pc端浏览器,手机端查看会变形</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('phonePage1.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>纯手机端页面1</h4>
+                                <p>只兼容手机端浏览器,PC端查看页面不好看</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('phonePage2.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>纯手机端页面2</h4>
+                                <p>只兼容手机端浏览器,PC端查看页面不好看</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('xys1.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>响应式页面</h4>
+                                <p>兼容平板、安卓、IOS、PC等各种不同终端。</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <div id="section5" class="section">
                 <h2 class="scroll-base">基本技能</h2>
                 <hr>

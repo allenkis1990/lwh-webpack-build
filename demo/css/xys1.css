@@ -1,0 +1,351 @@
+*{margin:0;padding:0;box-sizing:border-box;transition: all 0.2s}
+body,html{width:100%;}
+body{font-size:14px;}
+li{list-style-type:none}
+button{outline: none;border:none}
+.rel{position:relative}
+.abs{position:absolute}
+.clear{overflow:hidden;zoom:1;}
+.fl{float: left;}
+.fr{float: right;}
+a{text-decoration:none;}
+i{font-style:normal;}
+.wrap-full{/*width:13rem;*/margin:0 auto;}
+.wrap{width:100%;height:100%;position:absolute;z-index:2}
+.bor{border:1px solid #eeeeee;}
+.box{width:100%;}
+.banner-box{
+    width:100%;
+    height:8rem;
+    /*background: url('/demo/images/topbg.old.png') no-repeat center center;*/
+    /*background-size: cover;*/
+}
+.banner-bg-list{width:100%;height:100%;position:absolute;left:0;top:0;}
+
+.banner-bg-list li {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.45rem;
+    color:#000;
+    text-align:center;
+    line-height:9rem;
+}
+.banner-bg-list li.bg1 {
+    background: url('/demo/images/topbg.old.png') no-repeat center center;
+    background-size: cover;
+}
+
+.banner-top .logo {
+    max-width: 3.8rem;
+    max-height: 1.5rem;
+    margin-top: 30px;
+    min-width: 200px;
+    min-height: 75px;
+}
+
+.banner-top .logo img{width:100%;height:100%;}
+
+.nav-hide-btn {
+    padding: 5px;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 3%;
+    top: 35%;
+    display: none;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nav-hide-btn span {
+    display: block;
+    width: 100%;
+    height: 8px;
+    background: #fff;
+}
+
+.top-nav{margin-top:40px;display:none}
+
+.top-nav .nav-line {
+    width: 36px;
+    height: 70px;
+    background: url('/demo/images/nav-right-line.png') no-repeat;
+    background-size:100% 100%;
+    right:0px;
+    display:inline-block;
+    position:absolute;
+}
+.top-nav ul li{float:left;position:relative;}
+
+.top-nav ul li a {
+    color: #fff;
+    font-size: 18px;
+    display: inline-block;
+    padding-right: 20px;
+    height: 70px;
+    line-height:70px;
+}
+.top-nav ul li.cur a{color:yellow}
+
+.top-nav ul li:last-child a{padding-right:0}
+.banner-btn-list{
+    display: none;
+    left:50%;
+    bottom:10%;
+    margin-left:-70px;
+}
+.banner-btn-list li {
+    float: left;
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #fff;
+}
+.banner-btn-list li.cur {
+    background:yellow;
+}
+
+
+
+.course-box{}
+
+.tit {
+    margin:20px auto;
+    width: 150px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    border-radius: 10%;
+    background:#48b9ff;
+    color:#d8eaa0;
+    font-size:16px;
+}
+.course-list{
+    display:flex;
+    flex-wrap: wrap;
+}
+.course-list li{
+    padding:10px;
+    width:50%;
+    margin-bottom:10px;
+}
+.course-list li .course-img-box{
+    position:relative;
+    width:100%;
+    height:185px;
+}
+.course-list li .course-img-box img{
+    width:100%;
+    height:100%;
+}
+.course-list li .course-img-box p{
+    position:absolute;
+    bottom: 0;
+    height:25px;
+    line-height:25px;
+    width:100%;
+}
+.course-list li .course-img-box p.mask{
+    opacity:0.6;
+    background:#000;
+}
+.course-list li .course-img-box p{
+    text-indent:10px;
+}
+.course-list li .course-img-box p.txt a{
+    font-size:13px;
+    color:#fff;
+}
+.course-list li .course-tit {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding:15px 8px 15px;
+}
+.course-list li .info-box {
+    padding:0 8px 7px;
+}
+.course-list li .info-box .info {
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+}
+.course-list li .info-box .info img{
+    width:100px;
+    height:25px;
+    max-width:100px;
+    max-height:25px;
+}
+.course-list li .info-box .info span{
+    display:inline-block;
+    width:70px;
+    height:20px;
+    line-height:20px;
+    border-radius:12%;
+    background: #0087ec;
+    color:#fff;
+    text-align:center;
+    font-size:14px;
+}
+
+.course-more {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    height: 40px;
+    line-height:40px;
+    background:#eee;
+}
+
+
+.teacher-list{display:flex;flex-wrap: wrap;justify-content: space-between}
+
+.teacher-list li { /*width:6.4rem;*/
+    width: 50%;
+    height: 230px;
+    padding:10px;
+    margin-bottom: 15px
+}
+.teacher-list li .teacher-main{display:flex;justify-content: space-between;height:100%;border: 1px solid #ccc;}
+.teacher-list li .img-box{width:40%;height:100%;margin-right:15px;}
+.teacher-list li .img-box img{width:100%;height:100%;}
+.teacher-list li .teacher-info{flex:1;height:100%;font-size:14px;display:flex;flex-direction: column;padding-right: 0.5%;}
+.teacher-list li .teacher-info .txt{margin-bottom:10px;}
+
+.teacher-list li .teacher-info .teacher-name {
+    color: #000;
+    font-weight: bold;
+    font-size: 18px;
+    padding-top:5px;
+    padding-bottom:10px;
+    display:inline-block;
+}
+.teacher-list li .teacher-info .intro{color:#848484;flex:1}
+.teacher-list li .teacher-info .txt{font-size:12px;}
+.teacher-list li .teacher-info .txt .date{color:#000;}
+.teacher-list li .teacher-info .txt .num{display:inline-block;padding:4px;background: #6d6d6d;color:#fff;}
+
+.schoolinfo-list{display:flex;flex-wrap: wrap}
+.schoolinfo-list li{width:50%;}
+.schoolinfo-list li .schoolinfo-main{padding:10px;}
+.schoolinfo-list li .img-box{width:100%;height:150px;}
+.schoolinfo-list li .img-box img{width:100%;height:100%;}
+.schoolinfo-list li p{font-size: 16px;font-weight:bold;padding:10px 0px 15px;}
+.schoolinfo-list li .intro{font-size:13px;width:100%;color:#666;flex:1;}
+.schoolinfo-list li .pd5{padding:5px;border:1px solid #ddd;display:flex;flex-direction: column;height:150px;}
+.schoolinfo-list li button {
+    padding: 5px 0px;
+    width: 100%;
+    background: #0087ec;
+    color: #fff;
+    font-size: 16px;
+    padding-right:5%;
+    text-align:right;
+}
+
+.friend-list{display:flex;flex-wrap: wrap;margin-top:50px;}
+.friend-list li{width:33.33%;text-align:center;margin-bottom:15px;}
+.friend-list li .pd{padding:0 15%;}
+.friend-list li img{width:100%;height:100%;}
+
+.footer-box{margin-top:30px;}
+footer{background:#0078c1;color:#fff;text-align:center;padding:25px 0;}
+
+.fixSilderNav {
+    position: fixed;
+    width: 70%;
+    height: 100%;
+    background: red;
+    top: 0;
+    left: -70%;
+    z-index: 999;
+    background:#2c3e50;
+}
+.fixSilderNav li{border-bottom:1px solid #555;}
+.fixSilderNav li.cur a{color:yellow}
+.fixSilderNav li a{
+    width:100%;
+    display:inline-block;
+    text-decoration: none;
+    color:#fff;
+    font-size:16px;
+    padding:15px 0;
+    text-indent: 2em;
+}
+
+@media(min-width:0px) and (max-width:430px){
+    .nav-hide-btn{display:flex}
+    .wrap-full{width:98.5%;}
+    .course-list li{padding:3px;}
+    .teacher-list li{padding:3px;height:110px;}
+    .teacher-list li .teacher-info .txt{display:none;}
+    .course-list li .info-box .info img{
+        width:70px;
+        height:20px;
+    }
+    .course-list li .info-box .info span {
+        display: inline-block;
+        width: 55px;
+        height: 17px;
+        line-height: 17px;
+        border-radius: 12%;
+        background: #0087ec;
+        color: #fff;
+        text-align: center;
+        font-size: 12px;
+    }
+    .course-list li .course-img-box{
+        height:135px;
+    }
+    .teacher-list li{height:125px;width:100%;}
+    .schoolinfo-list li .img-box{width:100%;height:115px;}
+    .schoolinfo-list li p {font-size:14px;padding:5px 0 10px;}
+    .schoolinfo-list li .pd5{height:130px;}
+    .schoolinfo-list li .intro {font-size:12px;}
+    .schoolinfo-list li button {font-size:14px;padding:5px 0px;}
+    .friend-list li{width:50%;}
+    .friend-list li .pd{padding:5px;}
+    .friend-list{margin-top:15px;}
+    .footer-box{margin-top:20px;}
+    footer{background:#0078c1;color:#fff;text-align:center;padding:15px 0;}
+}
+
+@media(min-width:430px) and (max-width:768px){
+    .wrap-full{width:98.5%;}
+    .course-list li{padding:5px;}
+    .teacher-list li{padding:5px;height:178px;}
+    .teacher-list li .teacher-info .txt{display:none;}
+    .schoolinfo-list li{width:50%;}
+    .friend-list li .pd{padding:0 5%;}
+    .footer-box{margin-top:20px;}
+    footer{background:#0078c1;color:#fff;text-align:center;padding:15px 0;}
+    .nav-hide-btn{display: flex}
+}
+
+@media  (min-width:768px){
+    .wrap-full{width:750px;}
+    .banner-btn-list{display: block}
+    .top-nav{display:block}
+    .schoolinfo-list li{width:33.33%;}
+    .friend-list li{width:33.33%}
+}
+
+@media  (min-width:992px){
+    .wrap-full{width:970px;}
+    .course-list li{width:33.33%}
+    .teacher-list li{width:50%;}
+    .friend-list li{width:25%;}
+}
+@media  (min-width:1200px){
+    .wrap-full{width:1170px;}
+    .course-list li{width:25%}
+    .teacher-list li{width:50%;}
+    .friend-list li{width:25%;}
+}

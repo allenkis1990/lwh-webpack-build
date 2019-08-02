@@ -31,7 +31,7 @@ margin-bottom:10px;" href="/">
 <div class="box"></div>
 <script>
 
-
+    NodeList.prototype.forEach = Array.prototype.forEach;
     function PlaneGame(){
         this.beatCount = 0
         this.box = document.querySelector('.box')

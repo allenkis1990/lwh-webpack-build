@@ -1,0 +1,243 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.main-body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.ico {
+    display: inline-block;
+    background: url('/demo/images/ico-courseDetail.png') no-repeat;
+    background-size:2.7rem 1.4rem;
+}
+
+.video-main .video-content {
+    position: relative;
+    height: 4.1rem;
+    max-height: 270px;
+}
+
+.video-main .video-content img {
+    height: 4.1rem;
+    max-height: 270px;
+    width: 100%;
+}
+.video-main .video-content .ico-return {
+    position:absolute;
+    height: 0.61rem;
+    width: 0.61rem;
+    left:0.23rem;
+    top:0.23rem;
+}
+.video-main .video-content .video-control-bar{
+    width:100%;
+    height:0.8rem;
+    position:absolute;
+    bottom:0;
+    font-size:0.24rem;
+}
+.video-main .video-content .bar-modal {
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    position:absolute;
+    left:0;
+    top:0;
+}
+.video-main .video-content .bar-content {
+    color:#fff;
+    width:100%;
+    height:100%;
+    position:absolute;
+    left:0;
+    top:0;
+}
+.video-main .video-content .bar-content-box {
+    height:100%;
+    align-items: center;
+    color:#fff;
+    display:flex;
+}
+.video-main .video-content .pause {
+    width:0.21rem;
+    height:0.32rem;
+    background-position:-0.72rem 0rem;
+    margin:0 0.25rem 0 0.32rem;
+}
+.video-main .video-content .full-screen {
+    width:0.34rem;
+    height:0.34rem;
+    background-position: -1.18rem 0rem;
+}
+.video-main .video-content .progress-box {
+    border-radius:0.042rem;
+    width:3.59rem;
+    height:0.07rem;
+    background:#fff;
+    position:relative;
+}
+.video-main .video-content .current-progress {
+    border-radius:0.042rem;
+    height:100%;
+    background:#08af9c;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.video-main .video-content .progress-box {
+    margin:0 0.08rem;
+}
+.video-main .video-content .full-screen {
+    margin-left:0.31rem;
+}
+
+.nav ul{
+    display:flex;
+    border-bottom:1px solid #ddd;
+}
+.nav ul li{
+    height:0.9rem;
+    line-height:0.9rem;
+    flex: 1;
+    text-align:center;
+    font-size:0.32rem;
+    color:#666;
+}
+.nav ul li.current{
+    color:#08af9c;
+    border-bottom: 0.04rem solid #08af9c;
+}
+.content{
+    flex:1;
+    overflow: auto;
+}
+.content .course-tit{
+    height:1.09rem;
+    line-height:1.09rem;
+    border-bottom:1px solid #ddd;
+    font-size:0.28rem;
+    font-weight: bold;
+    color:#333;
+    text-indent:0.24rem;
+}
+.content .course-tit .passed{
+    color:#08af9c;
+    margin-right:-0.07rem;
+}
+
+.content .course-list-item{
+    position:relative;
+    color:#333;
+    font-size:0.28rem;
+    padding:0.28rem 0;
+}
+.content .course-list-item .course-zj-num{
+    width:1rem;
+    left:-1.06rem;
+    top:0.29rem;
+    position:absolute;
+}
+
+.content .course-list > li{
+    margin-left:1.2rem;
+    border-left:1px solid #e0e0e0;
+}
+
+.content .course-list-item .course-zj{
+    z-index:0;
+    top:0;
+    left:0;
+    position:absolute;
+    border-radius:0.2rem;
+    border:1px solid #333;
+    display:inline-block;
+    height:0.4rem;
+    width:1rem;
+    text-indent:0.15rem;
+    line-height: 0.37rem;
+}
+.content .course-list-item .course-num{
+    font-weight:bold;
+    background:#fff;
+    z-index:1;
+    top:-0.07rem;
+    right:-0.3rem;
+    position:absolute;
+    border:1px solid #333;
+    display:inline-block;
+    border-radius:0.2515rem;
+    width:0.53rem;
+    height:0.53rem;
+    line-height:0.53rem;
+    text-align:center;
+}
+.content .course-list-item .course-name{
+    margin-left:0.37rem;
+}
+
+.content .course-sub-list li{
+    align-items: center;
+    color:#666;
+    font-size:0.24rem;
+    display:flex;
+    height:0.88rem;
+    line-height:0.88rem;
+    margin-left:-1.2rem;
+}
+.content .course-sub-list >li.current{
+    background:#daf3f0;
+    color:#08af9c;
+}
+.content .course-sub-list .progress-outter{
+    z-index:100;
+    display:flex;
+    width:0.42rem;
+    height:0.42rem;
+    border:1px solid #666;
+    border-radius: 0.21rem;
+    justify-content:center;
+    align-items: center;
+}
+.content .course-sub-list >li.current .progress-outter{
+    z-index:100;
+    background: #daf3f0;
+}
+.content .course-sub-list .progress-inner{
+    overflow: hidden;
+    position:relative;
+    width:0.3rem;
+    height:0.3rem;
+    border-radius: 0.15rem;
+}
+.content .course-sub-list .progress-inner-current{
+    top:0;
+    left:0;
+    position:absolute;
+    display:inline-block;
+    width:100%;
+    height:100%;
+    background:#08af9c;
+    border-radius: 50%;
+}
+.content .course-sub-list .progress-text{
+    margin:0 0.14rem 0 0.19rem;
+}
+.content .course-sub-list .course-cwename{
+    flex: 1;
+    border-left:1px solid #e0e0e0;
+    padding-left:0.4rem;
+    margin-left:-0.2rem;
+}
+.content .course-sub-list li.current .ico-cwe{
+    background-position:-0.7rem -1.05rem;
+}
+.content .course-sub-list .ico-cwe{
+    margin-right:0.28rem;
+    margin-left:0.08rem;
+    width:0.3rem;
+    height:0.2rem;
+    background-position:-0.7rem -0.65rem;
+}

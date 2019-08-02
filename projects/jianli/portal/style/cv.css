@@ -366,25 +366,25 @@ div.skill p{
     font-family: "SimHei";
     text-align: center;
 }
-#section4{
+.demo-section{
     height: auto;
     min-height: 100vh;
 }
-#section4.section hr{
+.demo-section.section hr{
     margin-bottom: 30px;
 }
-#section4.section .intros{
+.demo-section.section .intros{
     margin-bottom: 60px;
 }
-#section4 .container>div{
+.demo-section .container>div{
     padding: 10px;
     transition: all 0.3s linear;
 }
-#section4 .container > div:hover{
+.demo-section .container > div:hover{
     transition: all 0.3s linear;
     padding: 0;
 }
-#section4 .container > div .zp-cover{
+.demo-section .container > div .zp-cover{
     position: absolute;
     display: none;
     width: 100%;
@@ -392,41 +392,41 @@ div.skill p{
     margin-top: -46px;
     left: 0;
 }
-#section4 .container > div .zp-cover h4{
+.demo-section .container > div .zp-cover h4{
     font-size: 16px;
     font-weight: 600;
     color: #ffffff;
 }
 
-#section4 .container > div .zp-cover p{
+.demo-section .container > div .zp-cover p{
     color: #fff;
     font-size: 14px;
     text-align: center;
     margin: 10px 0;
     padding: 0 1em;
 }
-#section4 .container > div .zp-cover img{
+.demo-section .container > div .zp-cover img{
     width: 25px;
     height: 25px;
 }
 
-#section4 .container > div:hover .zp-cover{
+.demo-section .container > div:hover .zp-cover{
     display: block;
     padding:  0 2em;
 }
-#section4 .container > div:hover .imgbox img{
+.demo-section .container > div:hover .imgbox img{
     -webkit-filter: brightness(0.3);
     filter: brightness(0.3);
 }
 
-#section4 .container>div .imgbox{
+.demo-section .container>div .imgbox{
     width:100%;
     height: 0;
     padding-bottom: 100%;
     overflow: hidden;
     text-align: center;
 }
-#section4 .container .imgbox img{
+.demo-section .container .imgbox img{
     width: 100%;
     transition: all 0.3s ease;
 }
@@ -678,10 +678,10 @@ h4{
         display: block;
     }
     /*我的作品hover改变*/
-    #section4 .container > div .zp-cover{
+    .demo-section .container > div .zp-cover{
         display: block;
     }
-    #section4 .container>div .imgbox img{
+    .demo-section .container>div .imgbox img{
         -webkit-filter: brightness(0.3);
         filter: brightness(0.3);
     }
@@ -729,10 +729,10 @@ h4{
         margin: 1em 0 0.5em;
     }
     /*我的作品 字体改变*/
-    #section4.section .intros{
+    .demo-section.section .intros{
         margin-bottom: 20px;
     }
-    #section4 .container > div .zp-cover p{
+    .demo-section .container > div .zp-cover p{
         font-size: 12px;
 
     }
@@ -742,7 +742,7 @@ h4{
     #section6 .container.center{
         margin-top: 40px;
     }
-    #section4 .container > div .zp-cover img{
+    .demo-section .container > div .zp-cover img{
         display: none;
     }
     #section7 .fades{

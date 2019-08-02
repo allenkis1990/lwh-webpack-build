@@ -1,0 +1,272 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.main-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.content {
+    flex: 1;
+    overflow: auto
+}
+
+.header h1 {
+    width: 100%;
+    height: 0.88rem;
+    background: #0aceb8;
+    line-height: 0.88rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.36rem;
+    position: relative;
+}
+
+.header h1 .return {
+    left: 0.28rem;
+    top: 50%;
+    margin-top: -0.22rem;
+    position: absolute;
+    width: 0.26rem;
+    height: 0.44rem;
+    display: inline-block;
+    background: url('/demo/images/return.png') no-repeat;
+    background-size: contain;
+}
+
+.nav nav {
+    height: 0.8rem;
+    line-height: 0.8rem;
+    border-bottom: 1px solid #e6e6e6;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav ul {
+    display: flex;
+}
+
+.nav ul li {
+    font-size: 0.32rem;
+    padding: 0 0.13rem;
+    margin-left: 0.27rem
+}
+
+.nav ul li.current {
+    border-bottom: 0.04rem solid #0aceb8;
+}
+
+.nav .study-time {
+    font-size: 0.32rem;
+    margin-right: 0.54rem;
+    position: relative;
+}
+
+.nav .ico-up-down {
+    width: 0.12rem;
+    height: 0.32rem;
+    background: url('/demo/images/updown.png') no-repeat;
+    background-size: 0.7rem 0.7rem;
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    margin-top: -0.16rem;
+}
+
+.nav .ico-up {
+    right: -0.15rem;
+    background-position: -0.02rem 0rem;
+}
+
+.nav .ico-down {
+    right: -0.3rem;
+    background-position: -0.53rem 0.01rem;
+}
+
+.nav .ico-up.current {
+    background-position: -0.02rem -0.36rem;
+}
+
+.nav .ico-down.current {
+    right: -0.3rem;
+    background-position: -0.53rem -0.36rem;
+}
+
+.content ul li {
+    display: flex;
+    padding: 0.2rem;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.content ul li .info-box {
+    margin-left: 0.2rem;
+    color: #8c8c8c;
+}
+
+.content ul li .img-box {
+    position: relative;
+    width: 2.8rem;
+    height: 1.6rem;
+}
+
+.content ul li .img-box img {
+    width: 100%;
+    height: 100%;
+}
+
+.content ul li .img-box .passed {
+    top:0.18rem;
+    left:0.18rem;
+    display:inline-block;
+    position:absolute;
+    background: url('/demo/images/ico-pass.png') no-repeat;
+    background-size:contain;
+    width:0.84rem;
+    height:0.84rem;
+}
+
+.content ul li .info-box {
+    font-size: 0.24rem;
+}
+
+.content ul li .info-box .tit {
+    font-size: 0.32rem;
+    color: #000;
+}
+
+.content ul li .info-box .timeAndScore {
+    justify-content: space-between;
+    display: flex;
+}
+
+.content ul li .info-box .ico-subject {
+    display: inline-block;
+    width: 0.25rem;
+    height: 0.25rem;
+    background: url('/demo/images/ico-subject.png') no-repeat;
+    background-size: contain;
+}
+
+.content ul li .info-box .ico-time {
+    display: inline-block;
+    width: 0.25rem;
+    height: 0.25rem;
+    background: url('/demo/images/ico-time.png') no-repeat;
+    background-size: contain;
+}
+
+.content ul li .info-box .ico-score {
+    display: inline-block;
+    width: 0.2rem;
+    height: 0.26rem;
+    background: url('/demo/images/ico-score.png') no-repeat;
+    background-size: contain;
+}
+
+.content ul li .info-box .progress-box {
+    position: relative;
+    width: 3rem;
+    height: 0.15rem;
+    border-radius: 0.08rem;
+    background: #ddd;
+}
+
+.content ul li .info-box .progress {
+    position: absolute;
+    width: 3rem;
+    height: 100%;
+    border-radius: 0.08rem;
+    background: #09b9a5;
+}
+
+.content ul li .info-box .pre {
+    margin-left: 0.43rem;
+    margin-top: -0.1rem;
+}
+
+.content ul li .info-box .score {
+    margin-right: 0.85rem;
+}
+
+.content ul li .info-box .subject {
+    margin-top: 0.2rem;
+}
+
+.content ul li .info-box .subject-text, .content ul li .info-box .time-text, .content ul li .info-box .score-text {
+    vertical-align: 0.05rem;
+}
+
+.content ul li .info-box .studyInfo {
+    margin-top: 0.07rem;
+    display: flex;
+}
+
+.footer footer{
+    height: 0.95rem;
+    border-top: 1px solid #ddd;
+    font-size: 0.22rem;
+    color: #666;
+}
+
+.footer ul {
+    height:100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer ul li {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.footer .footer-ico {
+    display: inline-block;
+    background: url('/demo/images/ico-footer.png') no-repeat;
+    background-size: 4.25rem 1.05rem;
+}
+
+.footer .ico-home {
+    width: 0.49rem;
+    height: 0.49rem;
+    background-position: 0.01rem 0rem;
+}
+.footer li.current .ico-home{
+    background-position: 0.01rem -0.55rem;
+}
+
+.footer .ico-myStudy {
+    width: 0.54rem;
+    height: 0.5rem;
+    background-position: -2.53rem 0rem;
+}
+.footer li.current .ico-myStudy{
+    background-position: -2.53rem -0.55rem;
+}
+
+.footer .ico-da {
+    width: 0.59rem;
+    height: 0.49rem;
+    background-position: -0.8rem 0rem;
+}
+.footer li.current .ico-da{
+    background-position: -0.8rem -0.55rem;
+}
+
+.footer .ico-mine {
+    width: 0.46rem;
+    height: 0.49rem;
+    background-position: -1.71rem 0rem;
+}
+.footer li.current .ico-mine{
+    background-position: -1.71rem -0.55rem;
+}
+
+/*.footer .ico-home.current {
+    background-position: 0 0;
+}*/

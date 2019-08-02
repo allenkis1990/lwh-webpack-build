@@ -5,7 +5,7 @@ import {offset} from '@portal/utils/lwh-utils'
 var scrollListener
 export default {
     bind(ele,binding,vNode){
-        var navlocs = ['scroll-aboutMe','scroll-jobSelect','scroll-demo','scroll-base','scroll-mvvm','scroll-lastJob']
+        var navlocs = ['scroll-aboutMe','scroll-jobSelect','scroll-demo','scroll-demo2','scroll-base','scroll-mvvm','scroll-lastJob']
         scrollListener = function(){
             bindScrollFn(navlocs);
         }
@@ -44,21 +44,26 @@ export default {
                             // block.setAttribute('class',className+' active')
                             // console.log(block.parentNode,123);
                             var section = block.parentNode
+                            // console.log(section.getAttribute('class'),123);
+                            var classStr = section.getAttribute('class').indexOf('demo-section')>-1?
+                                'section demo-section active':'section active'
                             if(nextBlock){
                                 if(scrollTop<offset(nextBlock,'top')-30){
                                     if(section.getAttribute('class').indexOf('active')<=-1){
-                                        section.setAttribute('class','section active')
+                                        section.setAttribute('class',classStr)
                                     }
                                 }
                             }else{
                                 if(section.getAttribute('class').indexOf('active')<=-1){
-                                    section.setAttribute('class','section active')
+                                    section.setAttribute('class',classStr)
                                 }
                             }
                             if(li.getAttribute('loc')===className){
                                 li.setAttribute('class','active')
                             }else{
-                                li.setAttribute('class','')
+                                if(className!=='scroll-demo2'){
+                                    li.setAttribute('class','')
+                                }
                             }
                         }else{
                             // li.setAttribute('class','')
