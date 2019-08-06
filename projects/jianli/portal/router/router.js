@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter);
 import Home from '@portal/views/home/home.vue'
 import Test from '@portal/views/test/test.vue'
+import Page404 from '@portal/views/Page404/Page404.vue'
 
 
 export default new VueRouter({
@@ -22,6 +23,11 @@ export default new VueRouter({
             path: dev?'/portal/test':'/test',
             name:'test',
             component: Test
+        },
+        {
+            path: '*',
+            name:'page404',
+            component: Page404
         }
     ]
 });

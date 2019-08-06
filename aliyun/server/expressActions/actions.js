@@ -43,7 +43,7 @@ var actions = {
     print(app) {
         app.post('/actions/print', function (req, res) {
             var headers = req.headers
-            if (headers.referer.indexOf(headers.host) <= -1) {
+            if (headers.referer.indexOf(headers.origin) <= -1) {
                 res.send({code: '500', message: '来自外部链接的操作', pdfPath: null})
             }
             // console.log(req);
