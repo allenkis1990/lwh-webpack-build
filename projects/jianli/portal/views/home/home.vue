@@ -376,7 +376,7 @@
     import scrollPage from '@portal/views/home/directives/scrollPage'
     import doOther from '@portal/views/home/directives/doOther'
     import scrollBanner from '@portal/views/home/directives/scrollBanner'
-    import {lwhAnimate,offset} from '@portal/utils/lwh-utils'
+    import {lwhAnimate,offset,isMobile} from '@portal/utils/lwh-utils'
     export default {
         mounted() {
         },
@@ -391,10 +391,13 @@
                 this.$router.push({name:name})
             },
             openDemoPage(path){
-//                var popup = window.open('about:blank','_blank')
-//                popup.document.write('<h2>加载中。。</h2>')
-//                popup.location = '/demo/'+path
-                window.open('/demo/'+path,'_self')
+                if(isMobile()){
+                    window.open('/demo/'+path,'_self')
+                }else{
+                    var popup = window.open('about:blank', '_blank')
+                    popup.document.write('<h2>加载中。。</h2>')
+                    popup.location = '/demo/' + path
+                }
             }
         },
         components:{
