@@ -85,6 +85,9 @@ export function lwhAnimate(ele,options,callBack,ingFn,beishu){
 }
 
 export function offset(obj, direction) {
+    // if(!obj){
+    //     return false
+    // }
     //将top,left首字母大写,并拼接成offsetTop,offsetLeft
     var offsetDir = 'offset' + direction[0].toUpperCase() + direction.substring(1);
 

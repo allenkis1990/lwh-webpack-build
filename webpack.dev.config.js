@@ -35,7 +35,7 @@ function getExports(project){
     config.apps.forEach((app)=>{
         entry[`${app}/app`] = [`${config.mainDir}/${project}/${app}/main.js`,'./dev-client.js']
 
-        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff)`)
+        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4)`)
         rules.push(
             {
                 test:reg,
@@ -113,10 +113,6 @@ function getExports(project){
             })
         },
         resolveLoader: {
-            // alias: {
-            //     testLoader:path.resolve('./loaders/testLoader.js')
-            // },
-            //mainFields:['main'],
             modules: [path.resolve("node_modules"),path.resolve("loaders")]
         },
         module:{

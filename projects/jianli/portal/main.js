@@ -17,7 +17,6 @@ elementUi(Vue)
 Vue.prototype.$http = axios
 // 混合
 Vue.mixin(mixin)
-
 new Vue({
     el:'#app',
     router,

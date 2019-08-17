@@ -2,11 +2,10 @@
  * Created by Allen Liu on 2019/7/25.
  */
 import {offset} from '@portal/utils/lwh-utils'
-var scrollListener
 export default {
-    bind(ele,binding,vNode){
+    inserted(ele,binding,vNode){
         var navlocs = ['scroll-aboutMe','scroll-jobSelect','scroll-demo','scroll-demo2','scroll-base','scroll-mvvm','scroll-lastJob']
-        scrollListener = function(){
+        window.scrollListener = function(){
             bindScrollFn(navlocs);
         }
         window.addEventListener('scroll',scrollListener)
@@ -21,8 +20,10 @@ export default {
             var navOffsetTop = offset(navSection,'top')
             var navlis = document.querySelectorAll('.nav-ul li')
             if(scrollTop>=navOffsetTop){
+                // console.log(1);
                 nav.setAttribute('class','bar fixed')
             }else{
+                // console.log(2);
                 nav.setAttribute('class','bar')
                 //滚动小于导航的时候去掉所有navli的active
                 navlis.forEach(function(li){
@@ -80,6 +81,7 @@ export default {
 
     },
     unbind(){
-        window.removeEventListener('scroll',scrollListener)
+        // console.log(222222);
+        window.removeEventListener('scroll',window.scrollListener)
     }
 }

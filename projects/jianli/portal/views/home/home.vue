@@ -1,5 +1,6 @@
 <template>
-    <div class="content" v-scroll-page v-do-other>
+    <div class="content"
+         v-scroll-page v-do-other>
         <div class="cv-container">
             <div id="section1" class="section active">
                 <div id="top" title="顶部">
@@ -30,7 +31,7 @@
                 <div id="nav-bar" class="bar">
                     <div class="container">
                         <a>
-                            <div class="fl">Allen博客</div>
+                            <div class="fl">Allen博客<a @click="$router.push({name:'player'})">player</a></div>
                         </a>
                         <ul class="fr nav-ul" v-tab-nav>
                             <li loc="scroll-aboutMe">关于我</li>
@@ -369,7 +370,6 @@
 
     </div>
 </template>
-
 <script>
     import knowleageList from '@portal/views/home/components/knowleageList.vue'
     import tabNav from '@portal/views/home/directives/tabNav'
@@ -378,8 +378,24 @@
     import scrollBanner from '@portal/views/home/directives/scrollBanner'
     import {lwhAnimate,offset,isMobile} from '@portal/utils/lwh-utils'
     export default {
-        mounted() {
+        beforeRouteLeave(to, from, next) {
+//            window.removeEventListener('scroll',window.scrollListener)
+            next()
         },
+        mounted() {
+            console.log('home');
+        },
+//        beforeDestroy(){
+//            console.log(777);
+//            window.removeEventListener('scroll',window.scrollListener)
+//        },
+//        activated(){
+//            console.log('activated');
+//        },
+//        deactivated(){
+//            console.log('deactivated');
+//        },
+
         methods: {
             goScrollLoc(loc){
                 var jumpTarget = document.querySelector('.'+loc)
