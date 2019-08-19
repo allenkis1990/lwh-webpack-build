@@ -1,41 +1,248 @@
 <template>
-    <div>
-        <a @click="$router.push({name:'home'})">首页</a>
-        <a @click="$router.push({name:'test'})">test</a>
+    <div id="lwh-video-parent" class="lwh-video-parent">
+        <div style="top:48%;width:100%;position:absolute;text-align:center;color:#fff;font-weight:bold;font-size:28px;">
+            谢谢收看！
+        </div>
 
-        <div style="width:800px;margin:10px auto;height:400px;">
+        <div id="lwh-video-box" class="lwh-video-box">
+            <div class="title-bar">
+                <button class="video-tab video-tab-pre" @click="pre">上一个</button>
+                <button class="video-tab video-tab-next" @click="next">下一个</button>
+                当前视频名称：{{videoSources[curVideoSouceIdx].name}}
+            </div>
             <video controlslist="nodownload"
+                   style="width:100%;height:94%;top:6%;position:absolute"
                    class="video-js vjs-big-play-centered vjs-default-skin"
                    id="lwh-video"></video>
         </div>
     </div>
 </template>
-<style>
+<style scoped>
     @import "~video.js/dist/video-js.css";
+    .title-bar{
+        height:6%;position:absolute;background:#948C76;width:100%;top:0;
+        color:#fff;
+    }
+    button{
+        outline: none;
+        border:none
+    }
+    .lwh-video-box{
+        /*transition: margin-top 2s linear;*/
+        width:100%;
+        height:100%;
+        position: absolute;
+        top:0;left:0
+    }
+    .lwh-video-parent{
+        margin:0px auto;position:relative;overflow: hidden;
+        background:green;
+    }
+    .video-tab {
+        font-size:12px;
+        width: 60px;
+        height: 30px;
+        background: red;
+        z-index: 99;
+        color:#fff;
+        line-height:30px;
+        text-align:center;
+        cursor:pointer;
+    }
+
+    .video-tab-pre {
+        top: 55px;
+        left: 0;
+    }
+
+    .video-tab-next {
+        bottom: 55px;
+        left: 0;
+    }
 </style>
 <script>
     import videojs from 'video.js'
-
+    import {lwhAnimate,setCookie,getCookie} from '@portal/utils/lwh-utils'
     export default {
         mounted() {
             console.log('player')
-            var player = videojs(document.getElementById('lwh-video'), {
+            var _this = this
+            this.player = videojs(document.getElementById('lwh-video'), {
                 controls: true, // 是否显示控制条
                 poster: require('@portal/images/s36.jpg'), // 视频封面图地址
                 preload: 'auto',
                 autoplay: false,
-                fluid: true, // 自适应宽高
+//                fluid: true, // 自适应宽高
                 language: 'zh-CN', // 设置语言
                 muted: false, // 是否静音
                 inactivityTimeout: false
             }, function () {
 //                this.play();
                 console.log(this, 1212);
+                _this.setVideoRightSize()
+                _this.initPlayEvents(this)
+                _this.setLastPlayTime(this)
             });
-            player.src(require('@portal/images/jay.mp4'))
-            player.load(require('@portal/images/jay.mp4'))
+            var initVideoUrl = _this.videoSources[_this.curVideoSouceIdx].url
+            this.player.src(initVideoUrl)
+            this.player.load(initVideoUrl)
+
+
+            window.addEventListener('resize', () => {
+                _this.setVideoRightSize()
+            })
+
+
+            window.addEventListener('keydown',function (e) {
+                console.log(e.keyCode);
+                if(e.keyCode===27){
+                    setTimeout(function(){
+                        _this.setVideoRightSize()
+                    },100)
+                }
+            })
+
         },
-        methods: {}
+        data(){
+            return {
+                tabing:false,
+                player:null,
+                curVideoSouceIdx:0,//默认0
+                videoSources:[
+                    {url:'http://www.allen19906666.com/demo/videos/jay.mp4',id:'jay',name:'给我一首歌的时间'},
+                    {url:'http://www.allen19906666.com/demo/videos/jay2.mp4',id:'jay2',name:'半岛铁盒'},
+                    {url:'http://www.allen19906666.com/demo/videos/jay3.mp4',id:'jay3',name:'爱在西元前'}
+                ]
+            }
+        },
+        methods: {
+            initPlayEvents(player){
+                this.playerEnd(player)
+                this.playerTimeUpdate(player)
+            },
+            playerEnd(player){
+                var _this = this
+                player.on('ended', function () {
+                    console.log('播放完了ended！')
+                    _this.next()
+                })
+            },
+            playerTimeUpdate(player){
+                var _this = this
+                player.on('timeupdate', function (data) {
+                    var curTime = player.currentTime()
+                    var curVideo = _this.videoSources[_this.curVideoSouceIdx]
+                    var id = curVideo.id
+                    if(curTime){
+                        var isPaused = player.paused()
+//                        console.log(curTime,_this.curVideoSouceIdx,player.paused());
+//                        console.log(data,1212);
+                        if(!isPaused){
+                            setCookie(id,curTime)
+                        }
+                    }
+                })
+
+            },
+            setLastPlayTime(player){
+                var _this = this
+                var curVideo = _this.videoSources[_this.curVideoSouceIdx]
+                var id = curVideo.id
+//                console.log(id,'123777');
+                var lastPlayTime = getCookie(id)
+                if(lastPlayTime){
+                    player.play()
+                    player.currentTime(lastPlayTime)
+                }
+            },
+            setVideoRightSize(player) {
+                var rootW = document.documentElement.clientWidth
+                var rootH = document.documentElement.clientHeight
+                var videoParent = document.getElementById('lwh-video-parent')
+                videoParent.style.width = rootW + 'px'
+                videoParent.style.height = rootH + 'px'
+                if(this.player.isFullscreen()){
+//                    console.log('isFullscreen')
+                    this.setFullScreenStyle(0,'100%')
+                } else{
+                    this.setFullScreenStyle('6%','94%')
+                }
+            },
+            setFullScreenStyle(top,height){
+                var videoDom = document.querySelector('#lwh-video video')
+                var videoDomOutter = document.querySelector('#lwh-video')
+                videoDom.style.top = top
+                videoDom.style.height = height
+                videoDomOutter.style.top = top
+                videoDomOutter.style.height = height
+            },
+            moveVideo(type,cb){
+                var _this = this
+                if(this.tabing){
+                    return false
+                }
+                this.player.pause()
+                this.tabing = true
+                var videoBox = document.getElementById('lwh-video-box')
+                var rootH = document.documentElement.clientHeight
+                var moveDirection = type==='pre'?'':'-'
+                var initDirection = type==='pre'?'-':''
+                lwhAnimate(videoBox,{'top':moveDirection+rootH+'px'},function(){
+                    videoBox.style.top = initDirection+rootH+'px';
+                    cb && cb()
+                    lwhAnimate(videoBox,{'top':'0px'},function(){
+                        _this.tabing = false
+                    },null,0.2)
+
+                },null,0.2)
+            },
+            pre(){
+                var _this = this
+                if(!this.tabing){
+                    this.curVideoSouceIdx--
+                    if(this.curVideoSouceIdx<0){
+                        _this.$message({
+                            message:'已经是第一个了',
+                            type:'warning'
+                        })
+                        this.curVideoSouceIdx = 0
+                        return false
+                    }
+                    this.moveVideo('pre',function(){
+                        var videoUrl = _this.videoSources[_this.curVideoSouceIdx].url
+                        _this.loadUrl(videoUrl)
+                        _this.setLastPlayTime(_this.player)
+                    })
+                }
+            },
+            next(){
+                var _this = this
+                if(!this.tabing){
+
+                    this.curVideoSouceIdx++
+                    if(this.curVideoSouceIdx>this.videoSources.length-1){
+                        this.curVideoSouceIdx = this.videoSources.length-1
+                        _this.$message({
+                            message:'已经是最后一个了',
+                            type:'warning'
+                        })
+                        return false
+                    }
+                    this.moveVideo('next',function(){
+                        var videoUrl = _this.videoSources[_this.curVideoSouceIdx].url
+                        _this.loadUrl(videoUrl)
+                        _this.setLastPlayTime(_this.player)
+                    })
+
+
+                }
+            },
+            loadUrl(videoUrl,posterUrl){
+                this.player.options.poster = posterUrl||require('@portal/images/s36.jpg')
+                this.player.src(videoUrl)
+                this.player.load(videoUrl)
+            }
+        }
     }
 </script>
 

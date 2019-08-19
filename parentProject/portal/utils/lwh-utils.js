@@ -35,9 +35,10 @@ export function lwhAnimate(ele,options,callBack,ingFn,beishu){
         // debugger
         var initLocation = parseFloat(trueStyles[styleName]?trueStyles[styleName]:initNum)*initBei
         var fallyLocation = parseFloat(options[styleName])*initBei
+        // debugger
 //            console.log(initLocation);
 //            console.log(fallyLocation);
-        var danwei = isNaN(Number(options[styleName]))?(options[styleName].replace(/\d+/,'')):''
+        var danwei = isNaN(Number(options[styleName]))?(options[styleName].replace(/\d+/,'').replace('-','')):''
         var distant = 0
         function move(time,animateId,cb){
             distant++
@@ -122,4 +123,12 @@ export function isMobile(){
         isAndroid = ua.match(/(Android)\s+([\d.]+)/),
         isMobile = isIphone || isAndroid || ipad;
     return isMobile
+}
+
+export function setCookie(key,value){
+    window.localStorage.setItem(key,value)
+}
+
+export function getCookie(key){
+    return window.localStorage.getItem(key)
 }
