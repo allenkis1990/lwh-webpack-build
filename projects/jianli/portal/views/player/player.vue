@@ -8,7 +8,8 @@
             <div class="title-bar">
                 <button class="video-tab video-tab-pre" @click="pre">上一个</button>
                 <button class="video-tab video-tab-next" @click="next">下一个</button>
-                当前视频名称：{{videoSources[curVideoSouceIdx].name}}
+                <!--当前视频名称：{{videoSources[curVideoSouceIdx].name}}-->
+                当前视频名称：{{videoSources[curVideoSouceIdx].name}}，上次播放到：{{lastPlayTime}}秒
             </div>
             <video controlslist="nodownload"
                    style="width:100%;height:94%;top:6%;position:absolute"
@@ -61,11 +62,12 @@
     }
 </style>
 <script>
+    var wattingListener,
+        timeUpdateListener;
     import videojs from 'video.js'
     import {lwhAnimate,setCookie,getCookie} from '@portal/utils/lwh-utils'
     export default {
         mounted() {
-            console.log('player')
             var _this = this
             this.player = videojs(document.getElementById('lwh-video'), {
                 controls: true, // 是否显示控制条
@@ -77,34 +79,27 @@
                 muted: false, // 是否静音
                 inactivityTimeout: false
             }, function () {
+                console.log('player-init!!!')
+                var player = this
 //                this.play();
                 console.log(this, 1212);
                 _this.setVideoRightSize()
-                _this.initPlayEvents(this)
-                _this.setLastPlayTime(this)
+                //设置完上次播放的时间后再启动player事件初始化
+                _this.initPlayEvents(player)
             });
             var initVideoUrl = _this.videoSources[_this.curVideoSouceIdx].url
             this.player.src(initVideoUrl)
             this.player.load(initVideoUrl)
 
-
             window.addEventListener('resize', () => {
                 _this.setVideoRightSize()
-            })
-
-
-            window.addEventListener('keydown',function (e) {
-                console.log(e.keyCode);
-                if(e.keyCode===27){
-                    setTimeout(function(){
-                        _this.setVideoRightSize()
-                    },100)
-                }
             })
 
         },
         data(){
             return {
+                curVideoLoaded:false,//当前视频首次被加载
+                lastPlayTime:0,
                 tabing:false,
                 player:null,
                 curVideoSouceIdx:0,//默认0
@@ -118,44 +113,76 @@
         methods: {
             initPlayEvents(player){
                 this.playerEnd(player)
+                this.fullScreenChange(player)
+                this.playerWaiting(player)
+                this.videoWorkingEvent(player)
                 this.playerTimeUpdate(player)
+            },
+            //每次切换视频后初始化一些事件和参数
+            videoWorkingEvent(player){
+                //当前视频设置成没加载状态
+                var lastPlayTime = this.getLastPlayTime()
+                this.curVideoLoaded = false
+                if (lastPlayTime) {
+                    player.play()
+                }
+            },
+            playerWaiting(player){
+                player.on('waiting',function(){
+                    console.log('视频卡顿中')
+                })
+
+            },
+            fullScreenChange(player){
+                var _this = this
+                player.on('fullscreenchange',function(){
+                    _this.setVideoRightSize(player)
+                })
             },
             playerEnd(player){
                 var _this = this
                 player.on('ended', function () {
+                    _this.$message({
+                        message:'当前视频播放完毕，请进入下一个',
+                        type:'warning'
+                    })
                     console.log('播放完了ended！')
-                    _this.next()
+//                    _this.next()
                 })
             },
             playerTimeUpdate(player){
                 var _this = this
-                player.on('timeupdate', function (data) {
-                    var curTime = player.currentTime()
-                    var curVideo = _this.videoSources[_this.curVideoSouceIdx]
-                    var id = curVideo.id
-                    if(curTime){
-                        var isPaused = player.paused()
-//                        console.log(curTime,_this.curVideoSouceIdx,player.paused());
-//                        console.log(data,1212);
-                        if(!isPaused){
-                            setCookie(id,curTime)
+                timeUpdateListener = function (data) {
+                    if(!_this.curVideoLoaded){
+                        _this.curVideoLoaded = true
+                        var lastPlayTime = _this.getLastPlayTime()
+                        if (lastPlayTime) {
+                            var s = Math.ceil(lastPlayTime)
+                            player.currentTime(s)
+                        }
+                    }else{
+                        var curTime = player.currentTime()
+                        var curVideo = _this.videoSources[_this.curVideoSouceIdx]
+                        var id = curVideo.id
+                        if(curTime){
+                            var isPaused = player.paused()
+                            if(!isPaused){
+                                setCookie(id,curTime)
+                            }
                         }
                     }
-                })
+                }
+                player.on('timeupdate', timeUpdateListener)
 
             },
-            setLastPlayTime(player){
-                var _this = this
-                var curVideo = _this.videoSources[_this.curVideoSouceIdx]
+            getLastPlayTime(){
+                var curVideo = this.videoSources[this.curVideoSouceIdx]
                 var id = curVideo.id
-//                console.log(id,'123777');
                 var lastPlayTime = getCookie(id)
-                if(lastPlayTime){
-                    player.play()
-                    player.currentTime(lastPlayTime)
-                }
+                this.lastPlayTime = Math.ceil(lastPlayTime)
+                return lastPlayTime
             },
-            setVideoRightSize(player) {
+            setVideoRightSize() {
                 var rootW = document.documentElement.clientWidth
                 var rootH = document.documentElement.clientHeight
                 var videoParent = document.getElementById('lwh-video-parent')
@@ -211,7 +238,7 @@
                     this.moveVideo('pre',function(){
                         var videoUrl = _this.videoSources[_this.curVideoSouceIdx].url
                         _this.loadUrl(videoUrl)
-                        _this.setLastPlayTime(_this.player)
+                        _this.videoWorkingEvent(_this.player)
                     })
                 }
             },
@@ -231,7 +258,7 @@
                     this.moveVideo('next',function(){
                         var videoUrl = _this.videoSources[_this.curVideoSouceIdx].url
                         _this.loadUrl(videoUrl)
-                        _this.setLastPlayTime(_this.player)
+                        _this.videoWorkingEvent(_this.player)
                     })
 
 

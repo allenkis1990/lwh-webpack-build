@@ -126,9 +126,9 @@ export function isMobile(){
 }
 
 export function setCookie(key,value){
-    window.localStorage.setItem(key,value)
+    localStorage.setItem(key,value)
 }
 
 export function getCookie(key){
-    return window.localStorage.getItem(key)
+    return localStorage.getItem(key)
 }

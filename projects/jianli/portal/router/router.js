@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
-import Home from '@portal/views/home/home.vue'
 import Root from '@portal/views/root/root.vue'
 import Page404 from '@portal/views/Page404/Page404.vue'
 
