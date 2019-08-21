@@ -61,7 +61,10 @@
                 <div class="center fades">
                     <!--<p class="center"><img src="@portal/images/mypic.jpg" alt="头像" /></p>-->
                     <div class="my-intro">
-                        <p>我叫Allen，是一个来自福州的前端工程师</p>
+                        <p>
+                            我叫Allen，是一个来自福州的前端工程师，这个简历博客存放了一些平常自己做的一些简单的小DEMO，博客使用的技术是：前端框架：Vuejs，后端：nodejs的express框架，构建工具：webpack，web静态资源服务：NGINX，
+                            项目工程github地址：<a href="https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal" target="_blank">https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal</a>。
+                        </p>
                     </div>
                 </div>
             </div>
@@ -172,6 +175,39 @@
                             </div>
                         </a>
                     </div>
+                    <!--<div class="col-md-3 col-xs-6 ">
+                        <div class="imgbox">
+                            <img src="@portal/images/07.jpg" alt="作品配图">
+                        </div>
+                        <a href="http://www.cbecm.com/Live/Index/m_index" target="_blank">
+                            <div class="zp-cover">
+                                <h4>移动端页面</h4>
+                                <p>列表页，兼容安卓、ios、平板</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6">
+                        <div class="imgbox">
+                            <img src="@portal/images/08.jpg" alt="作品配图">
+                        </div>
+                        <a href="drip.html" target="_blank">
+                            <div class="zp-cover">
+                                <h4>我的技术博客</h4>
+                                <p>自己平时的知识点积累~</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+
+
+            <div class="section demo-section">
+                <h2 class="scroll-demo2">作品集（H5 API类）</h2>
+                <hr>
+                <div class="container center fades">
+                    <p class="center intros">使用html5提供的javascript API做的一些小例子</p>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('websocket.html')">
                         <div class="imgbox">
                             <img src="@portal/images/05.jpg" alt="作品配图">
@@ -208,36 +244,12 @@
                             </div>
                         </a>
                     </div>
-
-                    <!--<div class="col-md-3 col-xs-6 ">
-                        <div class="imgbox">
-                            <img src="@portal/images/07.jpg" alt="作品配图">
-                        </div>
-                        <a href="http://www.cbecm.com/Live/Index/m_index" target="_blank">
-                            <div class="zp-cover">
-                                <h4>移动端页面</h4>
-                                <p>列表页，兼容安卓、ios、平板</p>
-                                <img src="@portal/images/search.png" alt="查看">
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="imgbox">
-                            <img src="@portal/images/08.jpg" alt="作品配图">
-                        </div>
-                        <a href="drip.html" target="_blank">
-                            <div class="zp-cover">
-                                <h4>我的技术博客</h4>
-                                <p>自己平时的知识点积累~</p>
-                                <img src="@portal/images/search.png" alt="查看">
-                            </div>
-                        </a>
-                    </div>-->
                 </div>
             </div>
 
+
             <div class="section demo-section">
-                <h2 class="scroll-demo2">作品集（静态页面类）</h2>
+                <h2 class="scroll-demo3">作品集（静态页面类）</h2>
                 <hr>
                 <div class="container center fades">
                     <p class="center intros">不引用任何css库纯手写静态页面</p>
