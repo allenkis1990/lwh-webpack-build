@@ -63,7 +63,7 @@
                     <div class="my-intro">
                         <p>
                             我叫Allen，是一个来自福州的前端工程师，这个简历博客存放了一些平常自己做的一些简单的小DEMO，博客使用的技术是：前端框架：Vuejs，后端：nodejs的express框架，构建工具：webpack，web静态资源服务：NGINX，
-                            项目工程github地址：<a href="https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal" target="_blank">https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal</a>。
+                            项目工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal')">https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal</a>。
                         </p>
                     </div>
                 </div>
@@ -437,6 +437,15 @@
                     var popup = window.open('about:blank', '_blank')
                     popup.document.write('<h2>加载中。。</h2>')
                     popup.location = '/demo/' + path
+                }
+            },
+            openGithubAddress(path){
+                if(isMobile()){
+                    window.open(path,'_self')
+                } else{
+                    var popup = window.open('about:blank', '_blank')
+                    popup.document.write('<h2>加载中。。</h2>')
+                    popup.location = path
                 }
             }
         },
