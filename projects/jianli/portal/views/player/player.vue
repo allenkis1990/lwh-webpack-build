@@ -5,15 +5,19 @@
         </div>
 
         <div id="lwh-video-box" class="lwh-video-box">
-            <div class="title-bar">
-                <button class="video-tab video-tab-pre" @click="pre">上一个</button>
-                <button class="video-tab video-tab-next" @click="next">下一个</button>
+            <div class="title-bar" :style="titleBarStyle">
+                <button class="video-tab video-tab-pre"
+                        style="margin-right:5px;"
+                        @click="pre">上一个</button>
+                <button class="video-tab video-tab-next"
+                        @click="next">下一个</button>
                 <!--<button class="video-tab" id="hidePlayBtn">播放</button>-->
                 <!--当前视频名称：{{haha}}-->
-                《{{videoSources[curVideoSouceIdx].name}}》，上次播放到：{{lastPlayTime}}秒
+                当前视频名称：《{{videoSources[curVideoSouceIdx].name}}》，上次播放到：{{lastPlayTime}}秒
             </div>
             <video controlslist="nodownload"
-                   style="width:100%;height:94%;top:6%;position:absolute"
+                   :style="videoStyle"
+                   style="width:100%;position:absolute"
                    class="video-js vjs-big-play-centered vjs-default-skin"
                    id="lwh-video"></video>
         </div>
@@ -23,12 +27,14 @@
     @import "~video.js/dist/video-js.css";
 
     .title-bar {
-        height: 6%;
         position: absolute;
         background: #948C76;
         width: 100%;
         top: 0;
         color: #fff;
+        display:flex;
+        justify-content: center;
+        align-items: center;
     }
 
     button {
@@ -116,14 +122,18 @@
 //
 //                })
             });
-
-            window.addEventListener('resize', () => {
-                _this.setVideoRightSize()
-            })
-
+            this.initWindowEvents()
         },
         data() {
             return {
+                videoStyle:{
+                    height:'88%',
+                    top:'12%'
+                },
+                titleBarStyle:{
+                    'height': '12%',
+                    'line-height':'100%'
+                },
                 videoIsOk:false,
                 curVideoLoaded: false,//当前视频首次被加载
                 lastPlayTime: 0,
@@ -160,6 +170,20 @@
                 } else{
                     return res
                 }
+            },
+            initWindowEvents(){
+                var _this = this
+                window.addEventListener('resize', () => {
+                    _this.setVideoRightSize()
+                })
+
+                document.oncontextmenu = function($) {
+                    _this.$message({
+                        message: '禁止右键',
+                        type: 'warning'
+                    })
+                    return false
+                };
             },
             initPlayEvents(player) {
                 this.playerEnd(player)
@@ -243,7 +267,7 @@
 //                    console.log('isFullscreen')
                     this.setFullScreenStyle(0, '100%')
                 } else {
-                    this.setFullScreenStyle('6%', '94%')
+                    this.setFullScreenStyle(this.videoStyle.top, this.videoStyle.height)
                 }
             },
             setFullScreenStyle(top, height) {
