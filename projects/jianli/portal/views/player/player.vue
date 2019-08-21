@@ -8,6 +8,7 @@
             <div class="title-bar">
                 <button class="video-tab video-tab-pre" @click="pre">上一个</button>
                 <button class="video-tab video-tab-next" @click="next">下一个</button>
+                <!--<button class="video-tab" id="hidePlayBtn">播放</button>-->
                 <!--当前视频名称：{{haha}}-->
                 《{{videoSources[curVideoSouceIdx].name}}》，上次播放到：{{lastPlayTime}}秒
             </div>
@@ -74,8 +75,6 @@
     }
 </style>
 <script>
-    var wattingListener,
-        timeUpdateListener;
     import videojs from 'video.js'
     import {lwhAnimate, setCookie, getCookie} from '@portal/utils/lwh-utils'
 
@@ -86,7 +85,7 @@
                 controls: true, // 是否显示控制条
                 poster: require('@portal/images/s36.jpg'), // 视频封面图地址
                 preload: 'auto',
-                autoplay: true,
+//                autoplay: true,
 //                sources: [{
 //                    src: 'http://www.allen19906666.com/demo/videos/jay2.mp4',
 //                    type: 'video/mp4'
@@ -103,12 +102,20 @@
 //                }, 5000)
                 console.log(this, 1212);
                 _this.setVideoRightSize()
-                var initVideoUrl = _this.videoSources[_this.curVideoSouceIdx].url
-                player.src(initVideoUrl)
-                player.load(initVideoUrl)
-                _this.initPlayEvents(player)
+                _this.getInitVideoUrl().then(function(initVideoUrl){
+                    player.src(initVideoUrl)
+                    player.load(initVideoUrl)
+                    _this.initPlayEvents(player)
+                })
+//                progress
+//                this.on('canplay',function(){
+//                    console.log('fuck');
+//                    console.log(player.autoplay(),1212);
+//                    player.play()
+//                    _this.videoIsOk = true
+//
+//                })
             });
-
 
             window.addEventListener('resize', () => {
                 _this.setVideoRightSize()
@@ -117,6 +124,7 @@
         },
         data() {
             return {
+                videoIsOk:false,
                 curVideoLoaded: false,//当前视频首次被加载
                 lastPlayTime: 0,
                 tabing: false,
@@ -130,6 +138,29 @@
             }
         },
         methods: {
+            getInitVideoUrl(){
+                var _this = this
+                return new Promise((resolve,reject)=>{
+                    var lastPlayVideoId = getCookie('lastPlayVideoId')
+                    var lastPlayVideoIndex = 0
+                    if(lastPlayVideoId!==null&&lastPlayVideoId!==undefined&&lastPlayVideoId!==''){
+                        lastPlayVideoIndex = _this.getLastPlayVideoIdx(lastPlayVideoId)
+                    }
+                    _this.curVideoSouceIdx = lastPlayVideoIndex
+                    var initVideoUrl = _this.videoSources[_this.curVideoSouceIdx].url
+                    resolve(initVideoUrl)
+                })
+            },
+            getLastPlayVideoIdx(lastPlayVideoId){
+                var res = this.videoSources.findIndex(function(item){
+                    return item.id === lastPlayVideoId
+                })
+                if(res<=-1){
+                    return 0
+                } else{
+                    return res
+                }
+            },
             initPlayEvents(player) {
                 this.playerEnd(player)
                 this.fullScreenChange(player)
@@ -171,27 +202,28 @@
             },
             playerTimeUpdate(player) {
                 var _this = this
-                timeUpdateListener = function (data) {
-                    if (!_this.curVideoLoaded) {
-                        _this.curVideoLoaded = true
-                        var lastPlayTime = _this.getLastPlayTime()
-                        if (lastPlayTime) {
-                            var s = Math.ceil(lastPlayTime)
-                            player.currentTime(s)
-                        }
-                    } else {
-                        var curTime = player.currentTime()
-                        var curVideo = _this.videoSources[_this.curVideoSouceIdx]
-                        var id = curVideo.id
-                        if (curTime) {
+                player.on('timeupdate', function (data) {
+                    var curTime = player.currentTime()
+                    var curVideo = _this.videoSources[_this.curVideoSouceIdx]
+                    var id = curVideo.id
+                    if(curTime){
+                        if (!_this.curVideoLoaded) {
+                            _this.curVideoLoaded = true
+                            setCookie('lastPlayVideoId',id)
+                            console.log('设置lastPlayVideoId',id)
+                            var lastPlayTime = _this.getLastPlayTime()
+                            if (lastPlayTime) {
+                                var s = Math.ceil(lastPlayTime)
+                                player.currentTime(s)
+                            }
+                        } else {
                             var isPaused = player.paused()
                             if (!isPaused) {
                                 setCookie(id, curTime)
                             }
                         }
                     }
-                }
-                player.on('timeupdate', timeUpdateListener)
+                })
 
             },
             getLastPlayTime() {
