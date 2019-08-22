@@ -38,6 +38,11 @@ export default new VueRouter({
                     name: 'player',
                     path: 'player',
                     component: () => import(/* webpackChunkName: "chunk/player" */'@portal/views/player/player.vue')
+                },
+                {
+                    name: 'projectPc',
+                    path: 'projectPc',
+                    component: () => import(/* webpackChunkName: "chunk/projectPc" */'@portal/views/projectJy/projectPc.vue')
                 }
             ]
         },

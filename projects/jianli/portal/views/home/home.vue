@@ -34,11 +34,12 @@
                             <div class="fl">Allen博客</div>
                         </a>
                         <ul class="fr nav-ul" v-tab-nav>
-                            <li loc="scroll-aboutMe">关于我</li>
+                            <!--<li loc="scroll-aboutMe">关于我</li>-->
                             <li loc="scroll-jobSelect">求职意向</li>
                             <li loc="scroll-demo">作品集</li>
                             <li loc="scroll-base">基本技能</li>
                             <li loc="scroll-mvvm">框架掌握</li>
+                            <li loc="scroll-projectJy">项目经验</li>
                             <li loc="scroll-lastJob">我的经历</li>
                         </ul>
                         <div class="fr more-nav">
@@ -51,6 +52,7 @@
                         <li loc="scroll-demo">作品集</li>
                         <li loc="scroll-base">基本技能</li>
                         <li loc="scroll-mvvm">框架掌握</li>
+                        <li loc="scroll-projectJy">项目经验</li>
                         <li loc="scroll-lastJob">我的经历</li>
                     </ul>
                 </div>
@@ -353,6 +355,28 @@
                     <knowleage-list :data-list="mvvmKnowleage"></knowleage-list>
                 </div>
             </div>
+
+
+            <div class="section demo-section">
+                <h2 class="scroll-projectJy">项目经验</h2>
+                <hr>
+                <div class="container center fades">
+                    <p class="center intros">由于做过的项目有很多，这里我只挑选出几个类型不同的项目做演示，大部分项目都需要账号密码来登录浏览且流程很繁琐，所以这里统一用项目的截图来演示。</p>
+                    <div class="col-md-3 col-xs-6" @click="stateGo('projectPc')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>PC端项目</h4>
+                                <p>华博继续教育培训平台</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
 
             <div id="section7" class="section">
                 <h2 class="scroll-lastJob">我的经历</h2>
