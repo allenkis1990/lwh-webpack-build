@@ -125,6 +125,43 @@ export function isMobile(){
     return isMobile
 }
 
+
+export function imgAutoSize(Img, maxWidth, maxHeight,cb){
+    var image = new Image();
+    //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+    image.onload=function(){
+//            console.log(image.width);
+//            console.log(image.height);
+        // 当图片比图片框小时不做任何改变
+        if (image.width < maxWidth&& image.height < maxHeight) {
+            Img.setAttribute('width',image.width)
+            Img.setAttribute('height',image.height)
+        }
+        else //原图片宽高比例 大于 图片框宽高比例,则以框的宽为标准缩放，反之以框的高为标准缩放
+        {
+            if (maxWidth/ maxHeight  <= image.width / image.height) //原图片宽高比例 大于 图片框宽高比例
+            {
+                // Img.width = maxWidth;   //以框的宽度为标准
+                // Img.height = maxWidth* (image.height / image.width);
+                Img.setAttribute('width',maxWidth)
+                Img.setAttribute('height',maxWidth* (image.height / image.width))
+            }
+            else {   //原图片宽高比例 小于 图片框宽高比例
+
+                Img.setAttribute('width',maxHeight  * (image.width / image.height))
+                Img.setAttribute('height',maxHeight)
+            }
+        }
+
+        //如果生成出来的宽高小于最大宽度和最大高度，那就居中
+        var w = Img.getAttribute('width')
+        var H = Img.getAttribute('height')
+
+        cb && cb(w,H)
+    }
+    image.src = Img.getAttribute('src');
+}
+
 export function setCookie(key,value){
     localStorage.setItem(key,value)
 }
