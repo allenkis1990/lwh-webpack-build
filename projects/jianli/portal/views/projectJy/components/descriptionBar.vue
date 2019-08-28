@@ -2,11 +2,11 @@
 
 
     <div>
-        <div class="container center">
-            <p class="intros">{{des}}</p>
+        <div class="container center" style="background:#fff">
+            <h3 class="intros">{{des}}</h3>
             <div class="col-md-3 col-xs-6 desBar-img-box"
                  @click="openImgDialog($event,index)"
-                 v-for="(item,index) in imgList">
+                 v-for="(item,index) in imgList" >
                 <div class="bor">
                     <img :src="item.path">
                 </div>
@@ -57,7 +57,7 @@
     .desBar-img-box .bor{border:1px solid #ddd;width:100%;height:100%}
     .desBar-img-box .bor:hover{border-color:#409EFF}
     .desBar-img-box img{width:100%;height:100%;}
-    .intros{padding:0 15px;animation:fadeIn_left 1.5s;}
+    .intros{padding:0 15px;animation:fadeIn_left 1.5s;text-align:left}
     .mask{width:100%;height:100%;background: #000;opacity:0.8;position:fixed;top:0;left:0;z-index:98}
 
     .des-pic-ico {
@@ -130,6 +130,9 @@
             },
             imgs: {
                 type: String
+            },
+            baseImgDir:{
+                type: String
             }
         },
         data: function () {
@@ -147,7 +150,11 @@
                 showImgPreTimer:null
             }
         },
+        created(){
+            console.log(12331212);
+        },
         mounted: function () {
+            console.log(123);
             this.getImgList()
             window.addEventListener('resize',()=>{
                 if(this.showDialog&&this.imgList.length){
@@ -218,29 +225,28 @@
                 }
             },
             getImgList(){
+//                this.imgList = []
                 var imgList = this.imgs.split(',')
+//                console.log(imgList);
                 var _this = this
                 var count = 0
                 var interVal = null
                 interVal = setInterval(function(){
                     _this.imgList.push({
                         name:imgList[count],
-                        path:'/demo/images/'+imgList[count]
+                        path:_this.baseImgDir + '/'+imgList[count]
                     })
                     count++
                     if(count>imgList.length-1){
                         clearInterval(interVal)
                     }
                 },100)
-                imgList.forEach(function(img,index){
-
-                })
-//            this.imgList = imgList.map((img)=>{
-//                return {
-//                    name:img,
-//                    path:'/demo/images/'+img
-//                }
-//            })
+//                this.imgList = imgList.map((img)=>{
+//                    return {
+//                        name:img,
+//                        path:_this.baseImgDir + '/'+img
+//                    }
+//                })
             },
             createHidePreNextTimeout(){
                 var _this = this
@@ -323,7 +329,14 @@
                         bigImgDom.setAttribute('width',colW)
                     }else{
                         var bigImgMaxH = this.height
-                        imgAutoSize(bigImgDom,bigImgMaxW,bigImgMaxH)
+                        //如果图片出现滚动条了要取消垂直居中因为部分会被切割掉，如果小于图片容器的宽度恢复成垂直居中
+                        imgAutoSize(bigImgDom,bigImgMaxW,bigImgMaxH,function(w,h){
+                            if(Number(h)>contentH){
+                                dialogContent.style['align-items'] = 'inherit'
+                            }else{
+                                dialogContent.style['align-items'] = 'center'
+                            }
+                        })
                     }
                 }
 //                debugger

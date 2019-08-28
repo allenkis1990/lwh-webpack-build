@@ -26,6 +26,9 @@
         components: {}
     }
 </script>
+<style scoped>
+    body,html{overflow: hidden}
+</style>
 <style>
     /*css 和 less都可以引入*/
     .fuck-enter, .fuck-leave-active {

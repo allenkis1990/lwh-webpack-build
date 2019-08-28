@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="appRoot">
         <transition name="fuck" appear>
             <keep-alive>
                 <router-view v-if="$route.meta.keepAlive"></router-view>
