@@ -361,7 +361,7 @@
                 <h2 class="scroll-projectJy">项目经验</h2>
                 <hr>
                 <div class="container center fades">
-                    <p class="center intros">由于做过的项目有很多，这里我只挑选出几个类型不同的项目做演示，大部分项目都需要账号密码来登录浏览且流程很繁琐，所以这里统一用项目的截图来演示。</p>
+                    <p class="center intros">由于做过的项目有很多，这里我只从中挑选出几个类型不同的项目做演示，大部分项目都需要账号密码来登录浏览且流程很繁琐，所以这里统一用项目的截图来演示。</p>
                     <div class="col-md-3 col-xs-6" @click="stateGo('projectPc')">
                         <div class="imgbox">
                             <img src="@portal/images/01.jpg" alt="作品配图">

@@ -22,6 +22,7 @@ margin-bottom:10px;" @click="$router.push({name:'home'})">
         <!--门户-->
         <!--Vue对相似的元素不会执行重新mounted,这里一定要加key来识别 否则切换的时候不生效-->
         <div v-if="tabRadio==='portal'" key="portal">
+            <h5 class="container des-h2" style="background:#fff">继续教育平台门户，用户可以在门户注册，查看资讯，购买虚拟币等，这里只展示部分页面</h5>
             <description-bar des="门户首页"
                              baseImgDir="/demo/images/projectPc1"
                              imgs="sx-portal-1.jpg,sx-portal-2.jpg,sx-login.jpg"></description-bar>
@@ -44,6 +45,7 @@ margin-bottom:10px;" @click="$router.push({name:'home'})">
 
         <!--学员中心-->
         <div v-if="tabRadio==='center'" key="center">
+            <h5 class="container des-h2" style="background:#fff">继续教育平台学员中心，学员购买虚拟币后可以进行在线班级学习，练习，考试，成绩达标后还可以获得培训证明，这里只展示部分页面</h5>
             <description-bar des="学员订单"
                              baseImgDir="/demo/images/projectPc1"
                              imgs="sx-order1.jpg,sx-order2.jpg"></description-bar>
@@ -60,21 +62,55 @@ margin-bottom:10px;" @click="$router.push({name:'home'})">
                              baseImgDir="/demo/images/projectPc1"
                              imgs="sx-stu-setting.jpg"></description-bar>
         </div>
+        <!--管理中心-->
         <div v-if="tabRadio==='managerCenter'" key="managerCenter">
-            <description-bar des="ab"
+            <h5 class="container des-h2" style="background:#fff">继续教育平台集体缴费中心，购买时候选择单位缴费，集体缴费管理员可以批量为学员支付</h5>
+            <description-bar des="注册集体缴费管理员账号"
                              baseImgDir="/demo/images/projectPc1"
-                             imgs="a.jpg,b.jpg"></description-bar>
+                             imgs="mana-regist.jpg"></description-bar>
+            <description-bar des="学员购买的时候选择单位缴费，集体缴费管理员可以在缴费中心批量为学员支付"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="buyForMana.jpg,mana-payCenter1.jpg,mana-payCenter2.jpg,mana-payCenter4.jpg,mana-payCenter5.jpg,mana-payCenter6.jpg,mana-payCenter7.jpg"></description-bar>
+            <description-bar des="批次管理"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="mana-batch1.jpg,mana-batch2.jpg"></description-bar>
+            <description-bar des="集体缴费管理员账户设置"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="mana-setting1.jpg,mana-setting2.jpg,mana-setting3.jpg,mana-setting4.jpg"></description-bar>
 
         </div>
         <div v-if="tabRadio==='admin'" key="admin">
-            <description-bar des="cd"
+            <h5 class="container des-h2" style="background:#fff">继续教育平台教务中心，管理员可以新建课程、课程包，发布资讯，发布商品等，这里只展示部分页面</h5>
+            <description-bar des="登录教务后台"
                              baseImgDir="/demo/images/projectPc1"
-                             imgs="c.jpg,d.jpg"></description-bar>
+                             imgs="admin-index1.jpg,admin-index.jpg"></description-bar>
+            <description-bar des="资讯管理"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-info1.jpg,admin-info2.jpg,admin-info3.jpg,admin-info4.jpg"></description-bar>
+            <description-bar des="运营基础配置"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-config1.jpg,admin-config2.jpg,admin-config3.jpg,admin-config4.jpg"></description-bar>
+            <description-bar des="课程管理"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-course1.jpg,admin-course2.jpg,admin-course3.jpg,admin-course4.jpg,admin-course5.jpg"></description-bar>
+            <description-bar des="课程包管理(把课程加入课程包)"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-courseBag1.jpg,admin-courseBag2.jpg,admin-courseBag3.jpg,admin-courseBag4.jpg"></description-bar>
+            <description-bar des="发布商品"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-goods1.jpg,admin-goods2.jpg,admin-goods3.jpg,admin-goods4.jpg,admin-goods5.jpg,admin-goods6.jpg,admin-goods7.jpg,admin-goods8.jpg,admin-goods9.jpg,admin-goods10.jpg"></description-bar>
+            <description-bar des="学员管理"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-student1.jpg,admin-student2.jpg"></description-bar>
+            <description-bar des="客服查询与订单管理"
+                             baseImgDir="/demo/images/projectPc1"
+                             imgs="admin-kf1.jpg,admin-order.jpg"></description-bar>
         </div>
     </div>
 </template>
 <style scoped>
     .project-tab-box{padding:0 15px;margin-top:5px;}
+    .des-h2{padding:5px 30px;font-weight: bold}
 </style>
 <script>
     import descriptionBar from '@portal/views/projectJy/components/descriptionBar.vue'
