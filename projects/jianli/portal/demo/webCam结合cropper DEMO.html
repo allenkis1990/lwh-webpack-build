@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="/demo/css/cropper.min.css" rel="stylesheet" />
+    <style>
+        .clear{clear:both;_zoom:1;}
+        .clear:after,.clear:before{display:block; content:"clear"; height:0; clear:both; overflow:hidden; visibility:hidden;}
+        .container{width:300px; margin:100px auto;}
+        .main{width:300px; height:300px;border:1px dashed #ddd;}
+        .main img{width:300px;height:300px;}
+        .box{float:left;}
+        .box1{display:inline-block;width:50px; height:50px;overflow:hidden; border-radius:25px;}
+        .box2{display:inline-block;width:100px; height:100px;overflow:hidden; border-radius:50px;}
+        .box3{display:inline-block;width:150px; height:150px;overflow:hidden; border-radius:75px;}
+
+        .progress-box{line-height:30px; margin:10px 0px;width:100%;height:30px;position:relative;border:1px solid #ddd;}
+        .progress-box .progress{
+            height:100%;position:absolute;left:0;top:0;background:deepskyblue;
+        }
+        .progress-txt{display:inline-block;position:absolute;left:35%;z-index:999;}
+        .progress-box span{}
+        .hide{display:none;}
+        .show{display:block;}
+
+        .snap{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:pink;cursor:pointer;}
+        .reSnap{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:pink;cursor:pointer;}
+        .chooseFile{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:pink;cursor:pointer;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="res">11</div>
+    <div class="clear">
+        <div class="box1 box"></div>
+        <div class="box2 box"></div>
+        <div class="box3 box"></div>
+    </div>
+    <div class="main" id="my_camera">
+
+    </div>
+    <div class="main" id="my_result" style="display:none;">
+        <img src="/demo/images/user_image_container.png" />
+    </div>
+    <div class="progress-box">
+        <div class="progress-txt">上传进度<span>0</span>%</div>
+        <div class="progress"></div>
+    </div>
+
+
+    <div style="margin-top:10px;position:relative" class="chooseFile">
+    <input type="file"
+           id="uploadFile"
+           style="position:absolute;width:100px;height:30px;left:0;top:0;opacity:0" />
+    上传图片
+    </div>
+
+
+    <div style="margin-top:10px;" class="snap" />拍照</div>
+    <div style="margin-top:10px;" class="reSnap" />重拍</div>
+    <button>点击我上传</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script type="text/javascript" src="/demo/js/webcam.js"></script>
+<script type="text/javascript" src="/demo/js/cropper.min.js"></script>
+<script>
+
+    /*$('#my_result img').cropper({
+        responsive: true,
+        aspectRatio: 4 / 3,
+        resizable: true,
+        movable: true,
+        dragCrop: true,
+        preview: '.box',
+        zoomable: false,//放大缩小图片
+        crop: function (data) {
+            // Output the result data for cropping image.
+            //console.log(data);
+        }
+    });*/
+    /*var obj={
+        a:1
+    }
+    var ex=$.extend(obj,{b:2});
+    console.log(ex);*/
+
+
+function LwhWebCam(options){
+    this.defaultConfig={
+        swfURL:"js/webcam.swf"
+    };
+
+    this.options=options;
+
+    this.hasCropper=false;
+
+    this.dataUri='';
+
+    this.cropperConfig = {
+        responsive: true,
+        aspectRatio: 4 / 3,
+        resizable: true,
+        movable: true,
+        dragCrop: true,
+        preview: '.box',
+        zoomable: false,//放大缩小图片
+        crop: function (data) {
+            // Output the result data for cropping image.
+            //console.log(data);
+        }
+    }
+
+
+    this.bindUploadEvent = function(){
+        var that = this
+        document.getElementById('uploadFile').addEventListener('change',function(e){
+            var file = e.target.files[0]
+            var reader = new FileReader()
+            reader.addEventListener('load',function(eee){
+                console.log(eee.target.result);
+
+
+
+
+
+
+                $('#my_camera').hide();
+                $('#my_result').show();
+                that.dataUri=eee.target.result;
+                if(that.hasCropper==false){
+                    $('#my_result img').attr('src',eee.target.result);
+                    document.getElementById('res').innerHTML = eee.target.result
+                    //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+                    that.img.cropper(that.cropperConfig);
+                    that.hasCropper=true;
+                }else{
+                    that.img.cropper('replace',eee.target.result);
+                }
+
+
+
+
+
+
+
+
+
+
+            })
+            reader.readAsDataURL(file)
+        })
+    }
+
+
+
+    this.snap=function(){
+        var that=this;
+        Webcam.snap( function(data_uri) {
+            $('#my_camera').hide();
+            $('#my_result').show();
+            that.dataUri=data_uri;
+            if(that.hasCropper==false){
+                $('#my_result img').attr('src',data_uri);
+                document.getElementById('res').innerHTML = data_uri
+                //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+                that.img.cropper(that.cropperConfig);
+                that.hasCropper=true;
+            }else{
+                that.img.cropper('replace',data_uri);
+            }
+
+
+
+        } );
+
+    };
+
+    this.reSnap=function(){
+        $('#my_camera').show();
+        $('#my_result').hide();
+        $('.box').html('');
+        this.dataUri='';
+    }
+
+    this.upload=function(){
+        var that=this;
+        /*var cropperInfo=that.img.cropper('getData');
+        cropperInfo.type='lwhType';
+        var result=JSON.stringify(cropperInfo);
+        console.log(result);*/
+        Webcam.upload( that.dataUri, 'afei.html', function(code, text) {
+            if(code===200){
+                that.reSnap();
+                alert('上传成功');
+                setTimeout(function(){
+                    $('.progress').css({width:0+'%'});
+                    $('.progress-box span').html(0*100);
+                },3000);
+            }
+            //console.log(code);
+            //console.log(text);
+        } );
+    }
+
+    this.img=$('#my_result img');
+
+
+    this.eventName={
+        uploadProgress:'uploadProgress'
+    };
+
+    this.successUploadDo=function(){
+
+    };
+
+    return this.init();
+
+}
+
+
+LwhWebCam.prototype.init=function(){
+    var that=this;
+    setTimeout(function(){
+        //that.uploader=new WebUploader.Uploader(that.defaultConfig);
+        //bindEvent.call(that);
+        that.defaultConfig= $.extend(that.defaultConfig,that.options);
+        //console.log(that.defaultConfig);
+        Webcam.set(that.defaultConfig);
+        Webcam.attach( '#my_camera' );
+        that.bindUploadEvent()
+        bindEvent.call(that);
+    },1);
+
+}
+function bindEvent(){
+    var that=this;
+    Webcam.on( that.eventName.uploadProgress, function(progress) {
+        console.log(progress);
+        $('.progress').css({width:progress*100+'%'});
+        $('.progress-box span').html(progress*100);
+    } );
+
+}
+
+var lwhWebCam=new LwhWebCam();
+
+
+$('.snap').click(function(){
+    lwhWebCam.snap();
+});
+
+
+$('.reSnap').click(function(){
+    lwhWebCam.reSnap();
+
+});
+
+$('button').click(function(){
+    if(lwhWebCam.dataUri===''){
+        alert('您还没有拍照');
+        return false;
+    }else{
+        lwhWebCam.upload();
+    }
+});
+
+</script>
+</body>
+</html>

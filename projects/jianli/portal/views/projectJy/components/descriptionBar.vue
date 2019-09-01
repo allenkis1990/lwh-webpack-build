@@ -42,22 +42,31 @@
     </div>
 </template>
 <style scoped >
-    @keyframes fadeIn_left {
+    @keyframes fadeIn_Top {
         from{
-            transform: translateX(20px) translateY(20px);
+            transform: translateY(20px);
         }
 
         to{
-            transform: translateX(0px) translateY(0px);
+            transform: translateY(0px);
+        }
+    }
+    @keyframes fadeIn_Bottom {
+        from{
+            transform: translateY(-20px);
+        }
+
+        to{
+            transform: translateY(0px);
         }
     }
     *{box-sizing: border-box}
     .desBar-box{}
-    .desBar-img-box{cursor:pointer;height:200px;margin-bottom:10px;animation:fadeIn_left 1.5s;}
+    .desBar-img-box{cursor:pointer;height:200px;margin-bottom:10px;animation:fadeIn_Top 1.5s;}
     .desBar-img-box .bor{border:1px solid #ddd;width:100%;height:100%}
     .desBar-img-box .bor:hover{border-color:#409EFF}
     .desBar-img-box img{width:100%;height:100%;}
-    .intros{padding:0 15px;animation:fadeIn_left 1.5s;text-align:left}
+    .intros{padding:0 15px;animation:fadeIn_Bottom 1.5s;text-align:left}
     .mask{width:100%;height:100%;background: #000;opacity:0.8;position:fixed;top:0;left:0;z-index:98}
 
     .des-pic-ico {
@@ -227,26 +236,25 @@
             getImgList(){
 //                this.imgList = []
                 var imgList = this.imgs.split(',')
-//                console.log(imgList);
                 var _this = this
-                var count = 0
-                var interVal = null
-                interVal = setInterval(function(){
-                    _this.imgList.push({
-                        name:imgList[count],
-                        path:_this.baseImgDir + '/'+imgList[count]
-                    })
-                    count++
-                    if(count>imgList.length-1){
-                        clearInterval(interVal)
-                    }
-                },100)
-//                this.imgList = imgList.map((img)=>{
-//                    return {
-//                        name:img,
-//                        path:_this.baseImgDir + '/'+img
+//                var count = 0
+//                var interVal = null
+//                interVal = setInterval(function(){
+//                    _this.imgList.push({
+//                        name:imgList[count],
+//                        path:_this.baseImgDir + '/'+imgList[count]
+//                    })
+//                    count++
+//                    if(count>imgList.length-1){
+//                        clearInterval(interVal)
 //                    }
-//                })
+//                },100)
+                this.imgList = imgList.map((img)=>{
+                    return {
+                        name:img,
+                        path:_this.baseImgDir + '/'+img
+                    }
+                })
             },
             createHidePreNextTimeout(){
                 var _this = this
