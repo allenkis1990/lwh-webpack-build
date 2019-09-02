@@ -2,6 +2,8 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title></title>
     <link href="/demo/css/cropper.min.css" rel="stylesheet" />
     <style>
@@ -69,6 +71,9 @@
 <script type="text/javascript" src="/demo/js/cropper.min.js"></script>
 <script>
 
+    window.hasNotCamCb = function(){
+        console.log('没有可用的摄像头')
+    }
     /*$('#my_result img').cropper({
         responsive: true,
         aspectRatio: 4 / 3,

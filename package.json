@@ -83,6 +83,7 @@
   },
   "dependencies": {
     "ansi-html": "0.0.7",
+    "cropperjs": "^1.5.5",
     "css-declaration-sorter": "^4.0.1",
     "css-select-base-adapter": "^0.1.1",
     "import-fresh": "^2.0.0",

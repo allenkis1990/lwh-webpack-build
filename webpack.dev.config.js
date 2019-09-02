@@ -35,7 +35,7 @@ function getExports(project){
     config.apps.forEach((app)=>{
         entry[`${app}/app`] = [`${config.mainDir}/${project}/${app}/main.js`,'./dev-client.js']
 
-        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4)`)
+        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4|swf)`)
         rules.push(
             {
                 test:reg,
@@ -243,7 +243,8 @@ function getExports(project){
             new VueLoaderPlugin(),
             //在这边配置全局引入后哪个模块不用require都可以用
             new webpack.ProvidePlugin({
-                $:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/jquery-1.11.1.min.js`)
+                //$:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/jquery-3.1.1.min.js`),
+                //cropper:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/cropper.min.js`)
             }),
             new CleanWebpackPlugin([`./${config.dist}/${project}`]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件

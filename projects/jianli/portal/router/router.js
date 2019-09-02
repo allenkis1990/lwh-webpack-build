@@ -40,6 +40,11 @@ export default new VueRouter({
                     component: () => import(/* webpackChunkName: "chunk/player" */'@portal/views/player/player.vue')
                 },
                 {
+                    name: 'faceDetect',
+                    path: 'faceDetect',
+                    component: () => import(/* webpackChunkName: "chunk/faceDetect" */'@portal/views/faceDetect/faceDetect.vue')
+                },
+                {
                     name: 'projectPc',
                     path: 'projectPc',
                     component: () => import(/* webpackChunkName: "chunk/projectPc" */'@portal/views/projectJy/projectPc.vue')
