@@ -32,7 +32,7 @@
 <body>
 
 <div class="container">
-    <div id="res">11</div>
+    <div id="res"></div>
     <div class="clear">
         <div class="box1 box"></div>
         <div class="box2 box"></div>
@@ -63,8 +63,9 @@
     <button>点击我上传</button>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
-<script type="text/javascript" src="/demo/js/webcam.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>-->
+<script type="text/javascript" src="/demo/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="/demo/js/webcam.min.js"></script>
 <script type="text/javascript" src="/demo/js/cropper.min.js"></script>
 <script>
 
@@ -89,10 +90,11 @@
 
 
 function LwhWebCam(options){
+    var that = this
     this.defaultConfig={
-        swfURL:"js/webcam.swf"
+        swfURL:"/demo/js/webcam.swf"
     };
-
+    this.img=$('#my_result img');
     this.options=options;
 
     this.hasCropper=false;
@@ -108,6 +110,11 @@ function LwhWebCam(options){
         preview: '.box',
         zoomable: false,//放大缩小图片
         crop: function (data) {
+//            console.log(data);
+//            var $imgData=that.img.cropper('getCroppedCanvas')
+//            var dataurl = $imgData.toDataURL();
+//            console.log(dataurl,'裁剪后的图片');
+//            console.log($imgData,'裁剪后的图片');
             // Output the result data for cropping image.
             //console.log(data);
         }
@@ -120,7 +127,7 @@ function LwhWebCam(options){
             var file = e.target.files[0]
             var reader = new FileReader()
             reader.addEventListener('load',function(eee){
-                console.log(eee.target.result);
+//                console.log(eee.target.result);
 
 
 
@@ -131,7 +138,7 @@ function LwhWebCam(options){
                 $('#my_result').show();
                 that.dataUri=eee.target.result;
                 if(that.hasCropper==false){
-                    $('#my_result img').attr('src',eee.target.result);
+                    that.img.attr('src',eee.target.result);
                     document.getElementById('res').innerHTML = eee.target.result
                     //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
                     that.img.cropper(that.cropperConfig);
@@ -204,10 +211,6 @@ function LwhWebCam(options){
             //console.log(text);
         } );
     }
-
-    this.img=$('#my_result img');
-
-
     this.eventName={
         uploadProgress:'uploadProgress'
     };
@@ -263,7 +266,9 @@ $('button').click(function(){
         alert('您还没有拍照');
         return false;
     }else{
-        lwhWebCam.upload();
+//        lwhWebCam.upload();
+//        var a = $('#my_result img').cropper('getData')
+//        console.log(a,1212);
     }
 });
 

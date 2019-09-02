@@ -1,3 +1,9 @@
+
+
+var Webcam = require('@portal/assets/webcam.min.js')
+var Cropper = require('@portal/assets/cropper.min.js')
+console.log(Webcam,333);
+console.log(Cropper,444);
 NodeList.prototype.forEach = Array.prototype.forEach;
 console.log('当前是否开发环境'+dev);
 //全局ajax拦截器

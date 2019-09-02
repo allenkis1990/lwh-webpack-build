@@ -31,7 +31,7 @@
                 <div id="nav-bar" class="bar">
                     <div class="container">
                         <a>
-                            <div class="fl">Allen博客  <a href="javascript:void(0)" @click="openDemoPage('webCam结合cropper DEMO.html')">aaa</a></div>
+                            <div class="fl">Allen博客  <a href="javascript:void(0)" @click="openDemoPage('faceDetect.html')">aaa</a></div>
                         </a>
                         <ul class="fr nav-ul" v-tab-nav>
                             <!--<li loc="scroll-aboutMe">关于我</li>-->
