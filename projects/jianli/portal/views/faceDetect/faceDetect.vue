@@ -1,6 +1,13 @@
 <template>
     <div class="face-detect">
         <div id="res"style="width:100%;text-align:center;word-break: break-all;height:50px;overflow:auto"></div>
+        <div style="width:455px;margin:0 auto">
+            <el-steps :active="active" finish-status="success">
+                <el-step title="上传基准照"></el-step>
+                <el-step title="上传对比照"></el-step>
+                <el-step title="人脸识别结果"></el-step>
+            </el-steps>
+        </div>
         <div class="clear" style="width:455px;margin:0 auto">
             <div class="lwh-container" style="float:left">
                 <div class="main" id="my_camera">
@@ -9,13 +16,13 @@
                 <div class="main" id="my_result" style="display:none;">
                     <img src="@portal/images/user_image_container.png" />
                 </div>
-                <div class="progress-box">
+                <div class="progress-box" v-if="hasCam">
                     <div class="progress-txt">上传进度<span>0</span>%</div>
                     <div class="progress"></div>
                 </div>
 
 
-                <div style="margin-top:10px;position:relative" class="chooseFile">
+                <div style="margin-top:10px;position:relative" v-if="!hasCam" class="chooseFile">
                     <input type="file"
                            id="uploadFile"
                            style="position:absolute;width:100px;height:30px;left:0;top:0;opacity:0" />
@@ -23,9 +30,16 @@
                 </div>
 
 
-                <div style="margin-top:10px;" class="snap">拍照</div>
-                <div style="margin-top:10px;" class="reSnap">重拍</div>
-                <button>点击我上传</button>
+                <div style="margin-top:10px;" v-if="hasCam" class="snap">拍照</div>
+                <div style="margin-top:10px;" v-if="hasCam" class="reSnap">重拍</div>
+
+
+
+                <!--<button>点击我上传</button>-->
+
+                <el-button style="margin-top:10px;"
+                           @click="next()"
+                           type="primary">下一步</el-button>
             </div>
             <div style="float:left">
                 <div class="preview-box1 preview-box"></div>
@@ -40,11 +54,28 @@
     var $ = require('@portal/assets/jquery-3.1.1.min.js')
     import Webcam from '@portal/assets/webcam.min.js'
     import Cropper from 'cropperjs'
+    import {  Step,Steps,Button  } from 'element-ui'
     export default {
+        data(){
+            return {
+                hasCam:true,
+                active:0,
+                tempUri:'',
+                basePhoto:'',//基准照
+                curPhoto:''//对比照
+            }
+        },
+        components:{
+            elStep:Step,
+            elSteps:Steps,
+            elButton:Button
+        },
         mounted() {
 
+            var _this = this
             window.hasNotCamCb = function(){
                 console.log('没有可用的摄像头')
+                _this.hasCam = false
             }
 
             function LwhWebCam(options){
@@ -81,32 +112,29 @@
 
                 this.bindUploadEvent = function(){
                     var that = this
-                    document.getElementById('uploadFile').addEventListener('change',function(e){
-                        var file = e.target.files[0]
-                        var reader = new FileReader()
-                        reader.addEventListener('load',function(eee){
+                    _this.$nextTick(function(){
+                        document.getElementById('uploadFile').addEventListener('change',function(e){
+                            var file = e.target.files[0]
+                            var reader = new FileReader()
+                            reader.addEventListener('load',function(eee){
 //                console.log(eee.target.result);
 
-
-
-
-
-
-                            $('#my_camera').hide();
-                            $('#my_result').show();
-                            that.dataUri=eee.target.result;
-                            if(that.hasCropper==false){
+                                $('#my_camera').hide();
+                                $('#my_result').show();
+                                that.dataUri=eee.target.result;
+                                _this.tempUri = eee.target.result
+                                if(that.hasCropper==false){
 //                                that.img.attr('src',eee.target.result);
-                                that.img.setAttribute('src',eee.target.result);
-                                document.getElementById('res').innerHTML = eee.target.result
-                                //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
-                                console.log(that.img);
-                                that.cropper = new Cropper(that.img,that.cropperConfig)
+                                    that.img.setAttribute('src',eee.target.result);
+                                    document.getElementById('res').innerHTML = eee.target.result
+                                    //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
+                                    console.log(that.img);
+                                    that.cropper = new Cropper(that.img,that.cropperConfig)
 //                                that.img.cropper(that.cropperConfig);
-                                that.hasCropper=true;
-                            }else{
-                                that.cropper.replace(eee.target.result);
-                            }
+                                    that.hasCropper=true;
+                                }else{
+                                    that.cropper.replace(eee.target.result);
+                                }
 
 
 
@@ -117,8 +145,9 @@
 
 
 
+                            })
+                            reader.readAsDataURL(file)
                         })
-                        reader.readAsDataURL(file)
                     })
                 }
 
@@ -220,16 +249,13 @@
 
             });
 
-            $('button').click(function(){
-                if(lwhWebCam.dataUri===''){
-                    alert('您还没有拍照');
-                    return false;
-                }else{
-//        lwhWebCam.upload();
-//        var a = $('#my_result img').cropper('getData')
-//        console.log(a,1212);
-                }
-            });
+//            $('button').click(function(){
+//                if(lwhWebCam.dataUri===''){
+//                    alert('您还没有拍照');
+//                    return false;
+//                }else{
+//                }
+//            });
 
 
 
@@ -239,7 +265,55 @@
 
         },
         methods: {
-
+            next(){
+                if(this.active===0){
+                    this.step1()
+                }
+                if(this.active===1){
+                    this.step2()
+                }
+//                this.active ++
+            },
+            step1(){
+                var _this = this
+                if(!this.tempUri){
+                    this.$message({
+                        message: '请上传人脸识别基准照',
+                        type: 'warning'
+                    })
+                    return false
+                }else{
+                    this.basePhoto = this.tempUri
+                }
+                setTimeout(function(){
+                    _this.active ++
+                    _this.resetCropper()
+                },100)
+            },
+            step2(){
+                var _this = this
+                if(!this.tempUri){
+                    this.$message({
+                        message: '请上传人脸识别对比照',
+                        type: 'warning'
+                    })
+                    return false
+                }else{
+                    this.curPhoto = this.tempUri
+                }
+                setTimeout(function(){
+                    _this.active ++
+                    _this.resetCropper()
+                },100)
+            },
+            resetCropper(){
+                this.dataUri='';
+                this.tempUri = ''
+                $('#my_camera').show();
+                $('#my_result').hide();
+                $('.preview-box').html('')
+                $('.box').html('');
+            }
         }
     }
 </script>
@@ -267,9 +341,9 @@
     .hide{display:none;}
     .show{display:block;}
 
-    .snap{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:pink;cursor:pointer;}
-    .reSnap{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:pink;cursor:pointer;}
-    .chooseFile{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:pink;cursor:pointer;}
+    .snap{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:red;cursor:pointer;}
+    .reSnap{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:red;cursor:pointer;}
+    .chooseFile{width:100px;height:30px;line-height:30px;text-align:center;color:#fff;background:red;cursor:pointer;}
 </style>
 
 <style>
