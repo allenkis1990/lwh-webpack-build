@@ -60,6 +60,7 @@
     import Webcam from 'webcamjs'
     import Cropper from 'cropperjs'
     import {  Step,Steps,Button,Tag  } from 'element-ui'
+    import {isMobile} from '@portal/utils/lwh-utils'
     export default {
         data(){
             return {
@@ -111,6 +112,15 @@
                 Webcam.set(this.defaultConfig);
                 Webcam.attach( '#my_camera' );
                 this.bindEvents()
+                if(isMobile()){
+                    this.hasCam = true
+                }else{
+                    if(Webcam.userMedia){
+                        this.hasCam = true
+                    }else{
+                        this.hasCam = false
+                    }
+                }
                 console.log(Webcam);
             },
             bindEvents() {
@@ -138,7 +148,6 @@
 
                 Webcam.on('error',function(e){
                     console.log('没有可用的摄像头');
-                    _this.hasCam = false
                 })
             },
             snap(){
