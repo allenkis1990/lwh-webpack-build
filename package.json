@@ -97,6 +97,7 @@
     "socket.io": "^1.0.2",
     "video.js": "^7.2.3",
     "vue": "^2.5.17",
-    "vue-router": "^3.0.2"
+    "vue-router": "^3.0.2",
+    "webcamjs": "^1.0.25"
   }
 }

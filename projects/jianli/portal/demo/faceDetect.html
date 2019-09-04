@@ -70,7 +70,7 @@
 <script type="text/javascript" src="/demo/js/webcam.min.js"></script>
 <script type="text/javascript" src="/demo/js/cropper.min.js"></script>
 <script>
-
+//    alert(Webcam.snap);
     window.hasNotCamCb = function(){
         console.log('没有可用的摄像头')
     }
@@ -170,7 +170,7 @@ function LwhWebCam(options){
 
     this.snap=function(){
         var that=this;
-        Webcam.snap( function(data_uri) {
+        var bol = Webcam.snap( function(data_uri) {
             $('#my_camera').hide();
             $('#my_result').show();
             that.dataUri=data_uri;
@@ -187,7 +187,7 @@ function LwhWebCam(options){
 
 
         } );
-
+        alert(bol)
     };
 
     this.reSnap=function(){

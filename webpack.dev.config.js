@@ -243,6 +243,7 @@ function getExports(project){
             new VueLoaderPlugin(),
             //在这边配置全局引入后哪个模块不用require都可以用
             new webpack.ProvidePlugin({
+                // Webcam:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/webcam.min.js`),
                 //$:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/jquery-3.1.1.min.js`),
                 //cropper:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/cropper.min.js`)
             }),

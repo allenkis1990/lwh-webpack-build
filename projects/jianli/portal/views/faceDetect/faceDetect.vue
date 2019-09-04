@@ -1,7 +1,12 @@
 <template>
     <div class="face-detect">
-        <div id="res"style="width:100%;text-align:center;word-break: break-all;height:50px;overflow:auto"></div>
-        <div style="width:455px;margin:0 auto">
+        <!--<div id="res"style="width:100%;text-align:center;word-break: break-all;height:50px;overflow:auto"></div>-->
+        <div style="width:455px;margin:10px auto 0px" v-if="!hasCam&&tipshow">
+            <el-tag type="danger" closable @close="closeTip">
+                当前未检测到摄像头，如果想要启用拍照模式，请安装摄像头或者使用移动设备打开此页面。
+            </el-tag>
+        </div>
+        <div style="width:455px;margin:10px auto">
             <el-steps :active="active" finish-status="success">
                 <el-step title="上传基准照"></el-step>
                 <el-step title="上传对比照"></el-step>
@@ -16,13 +21,13 @@
                 <div class="main" id="my_result" style="display:none;">
                     <img src="@portal/images/user_image_container.png" />
                 </div>
-                <div class="progress-box" v-if="hasCam">
+                <!--<div class="progress-box" v-show="hasCam">
                     <div class="progress-txt">上传进度<span>0</span>%</div>
                     <div class="progress"></div>
-                </div>
+                </div>-->
 
 
-                <div style="margin-top:10px;position:relative" v-if="!hasCam" class="chooseFile">
+                <div style="margin-top:10px;position:relative" v-show="!hasCam" class="chooseFile">
                     <input type="file"
                            id="uploadFile"
                            style="position:absolute;width:100px;height:30px;left:0;top:0;opacity:0" />
@@ -30,12 +35,13 @@
                 </div>
 
 
-                <div style="margin-top:10px;" v-if="hasCam" class="snap">拍照</div>
-                <div style="margin-top:10px;" v-if="hasCam" class="reSnap">重拍</div>
-
-
-
-                <!--<button>点击我上传</button>-->
+                <div style="margin-top:10px;"
+                     @click="snap()"
+                     v-show="hasCam"
+                     class="snap">拍照</div>
+                <div style="margin-top:10px;"
+                     @click="resetCropper"
+                     class="reSnap">重置</div>
 
                 <el-button style="margin-top:10px;"
                            @click="next()"
@@ -52,45 +58,23 @@
 
 <script>
     var $ = require('@portal/assets/jquery-3.1.1.min.js')
-    import Webcam from '@portal/assets/webcam.min.js'
+    import Webcam from 'webcamjs'
+//    alert(Webcam.loaded,33);
     import Cropper from 'cropperjs'
-    import {  Step,Steps,Button  } from 'element-ui'
+    import {  Step,Steps,Button,Tag  } from 'element-ui'
     export default {
         data(){
             return {
+                tipshow:true,
                 hasCam:true,
                 active:0,
                 tempUri:'',
                 basePhoto:'',//基准照
-                curPhoto:''//对比照
-            }
-        },
-        components:{
-            elStep:Step,
-            elSteps:Steps,
-            elButton:Button
-        },
-        mounted() {
-
-            var _this = this
-            window.hasNotCamCb = function(){
-                console.log('没有可用的摄像头')
-                _this.hasCam = false
-            }
-
-            function LwhWebCam(options){
-                var that = this
-                this.defaultConfig={
+                curPhoto:'',//对比照
+                defaultConfig:{
                     swfURL: require('@portal/images/webcam.swf')
-                };
-                this.img= document.querySelector('#my_result img');
-                this.options=options;
-
-                this.hasCropper=false;
-
-                this.dataUri='';
-
-                this.cropperConfig = {
+                },
+                cropperConfig:{
                     responsive: true,
                     aspectRatio: 4 / 3,
                     resizable: true,
@@ -99,172 +83,82 @@
                     preview: '.preview-box',
                     zoomable: false,//放大缩小图片
                     crop: function (data) {
-//            console.log(data);
-//            var $imgData=that.img.cropper('getCroppedCanvas')
-//            var dataurl = $imgData.toDataURL();
-//            console.log(dataurl,'裁剪后的图片');
-//            console.log($imgData,'裁剪后的图片');
-                        // Output the result data for cropping image.
-                        //console.log(data);
+//                        console.log(data);
+//                        var $imgData = that.img.cropper('getCroppedCanvas')
+//                        var dataurl = $imgData.toDataURL();
+//                        console.log(dataurl, '裁剪后的图片');
+//                        console.log($imgData, '裁剪后的图片');
                     }
-                }
-
-
-                this.bindUploadEvent = function(){
-                    var that = this
-                    _this.$nextTick(function(){
-                        document.getElementById('uploadFile').addEventListener('change',function(e){
-                            var file = e.target.files[0]
-                            var reader = new FileReader()
-                            reader.addEventListener('load',function(eee){
-//                console.log(eee.target.result);
-
-                                $('#my_camera').hide();
-                                $('#my_result').show();
-                                that.dataUri=eee.target.result;
-                                _this.tempUri = eee.target.result
-                                if(that.hasCropper==false){
-//                                that.img.attr('src',eee.target.result);
-                                    that.img.setAttribute('src',eee.target.result);
-                                    document.getElementById('res').innerHTML = eee.target.result
-                                    //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
-                                    console.log(that.img);
-                                    that.cropper = new Cropper(that.img,that.cropperConfig)
-//                                that.img.cropper(that.cropperConfig);
-                                    that.hasCropper=true;
-                                }else{
-                                    that.cropper.replace(eee.target.result);
-                                }
-
-
-
-
-
-
-
-
-
-
-                            })
-                            reader.readAsDataURL(file)
-                        })
-                    })
-                }
-
-
-
-                this.snap=function(){
-                    var that=this;
-                    Webcam.snap( function(data_uri) {
-                        $('#my_camera').hide();
-                        $('#my_result').show();
-                        that.dataUri=data_uri;
-                        if(that.hasCropper==false){
-                            that.img.setAttribute('src',data_uri);
-//                            $('#my_result img').attr('src',data_uri);
-                            document.getElementById('res').innerHTML = data_uri
-                            //document.getElementById('my_result').innerHTML = '<img src="'+data_uri+'"/>';
-                            that.cropper = new Cropper(that.img,that.cropperConfig)
-                            that.hasCropper=true;
-                        }else{
-                            that.cropper.replace(data_uri);
-//                            that.img.cropper('replace',data_uri);
-                        }
-
-
-
-                    } );
-
-                };
-
-                this.reSnap=function(){
-                    $('#my_camera').show();
-                    $('#my_result').hide();
-                    $('.box').html('');
-                    this.dataUri='';
-                }
-
-                this.upload=function(){
-                    var that=this;
-                    Webcam.upload( that.dataUri, 'afei.html', function(code, text) {
-                        if(code===200){
-                            that.reSnap();
-                            alert('上传成功');
-                            setTimeout(function(){
-                                $('.progress').css({width:0+'%'});
-                                $('.progress-box span').html(0*100);
-                            },3000);
-                        }
-                        //console.log(code);
-                        //console.log(text);
-                    } );
-                }
-                this.eventName={
-                    uploadProgress:'uploadProgress'
-                };
-
-                this.successUploadDo=function(){
-
-                };
-
-                return this.init();
-
+                },
+                hasCropper:false,
+                img:null,
+                cropper:null
             }
-
-
-            LwhWebCam.prototype.init=function(){
-                var that=this;
-                setTimeout(function(){
-                    //that.uploader=new WebUploader.Uploader(that.defaultConfig);
-                    //bindEvent.call(that);
-                    that.defaultConfig= $.extend(that.defaultConfig,that.options);
-                    //console.log(that.defaultConfig);
-                    Webcam.set(that.defaultConfig);
-                    Webcam.attach( '#my_camera' );
-                    that.bindUploadEvent()
-                    bindEvent.call(that);
-                },1);
-
-            }
-            function bindEvent(){
-                var that=this;
-                Webcam.on( that.eventName.uploadProgress, function(progress) {
-                    console.log(progress);
-                    $('.progress').css({width:progress*100+'%'});
-                    $('.progress-box span').html(progress*100);
-                } );
-
-            }
-
-            var lwhWebCam=new LwhWebCam();
-
-
-            $('.snap').click(function(){
-                lwhWebCam.snap();
-            });
-
-
-            $('.reSnap').click(function(){
-                lwhWebCam.reSnap();
-
-            });
-
-//            $('button').click(function(){
-//                if(lwhWebCam.dataUri===''){
-//                    alert('您还没有拍照');
-//                    return false;
-//                }else{
-//                }
-//            });
-
-
-
-
-
-
-
+        },
+        components:{
+            elStep:Step,
+            elSteps:Steps,
+            elButton:Button,
+            elTag:Tag
+        },
+        mounted() {
+            this.img = document.querySelector('#my_result img')
+            this.init()
         },
         methods: {
+            closeTip(){
+                this.tipshow = false
+            },
+            init(){
+                Webcam.set(this.defaultConfig);
+                Webcam.attach( '#my_camera' );
+                this.bindEvents()
+                console.log(Webcam);
+            },
+            bindEvents() {
+                var _this = this
+                this.$nextTick(function () {
+                    document.getElementById('uploadFile').addEventListener('change', function (e) {
+                        var file = e.target.files[0]
+                        var reader = new FileReader()
+                        reader.addEventListener('load', function (eee) {
+                            $('#my_camera').hide();
+                            $('#my_result').show();
+                            _this.tempUri = eee.target.result
+                            if (_this.hasCropper == false) {
+                                _this.img.setAttribute('src', eee.target.result);
+//                                    document.getElementById('res').innerHTML = eee.target.result
+                                _this.cropper = new Cropper(_this.img, _this.cropperConfig)
+                                _this.hasCropper = true;
+                            } else {
+                                _this.cropper.replace(eee.target.result);
+                            }
+                        })
+                        reader.readAsDataURL(file)
+                    })
+                })
+
+                Webcam.on('error',function(e){
+                    console.log('没有可用的摄像头');
+                    _this.hasCam = false
+                })
+            },
+            snap(){
+                var _this=this;
+                Webcam.snap( function(data_uri) {
+                    $('#my_camera').hide();
+                    $('#my_result').show();
+                    _this.tempUri = data_uri
+                    if(_this.hasCropper==false){
+                        _this.img.setAttribute('src',data_uri);
+//                            document.getElementById('res').innerHTML = data_uri
+                        _this.cropper = new Cropper(_this.img,_this.cropperConfig)
+                        _this.hasCropper=true;
+                    }else{
+                        _this.cropper.replace(data_uri);
+                    }
+                } );
+            },
             next(){
                 if(this.active===0){
                     this.step1()
@@ -307,12 +201,15 @@
                 },100)
             },
             resetCropper(){
-                this.dataUri='';
                 this.tempUri = ''
                 $('#my_camera').show();
                 $('#my_result').hide();
                 $('.preview-box').html('')
                 $('.box').html('');
+                var files = document.getElementById('uploadFile')
+                files.value=''
+                this.cropper.destroy()
+                this.hasCropper = false
             }
         }
     }
