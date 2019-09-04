@@ -57,9 +57,7 @@
 </template>
 
 <script>
-    var $ = require('@portal/assets/jquery-3.1.1.min.js')
     import Webcam from 'webcamjs'
-//    alert(Webcam.loaded,33);
     import Cropper from 'cropperjs'
     import {  Step,Steps,Button,Tag  } from 'element-ui'
     export default {
@@ -122,8 +120,8 @@
                         var file = e.target.files[0]
                         var reader = new FileReader()
                         reader.addEventListener('load', function (eee) {
-                            $('#my_camera').hide();
-                            $('#my_result').show();
+                            document.getElementById('my_camera').style.display = 'none'
+                            document.getElementById('my_result').style.display = 'block'
                             _this.tempUri = eee.target.result
                             if (_this.hasCropper == false) {
                                 _this.img.setAttribute('src', eee.target.result);
@@ -146,8 +144,8 @@
             snap(){
                 var _this=this;
                 Webcam.snap( function(data_uri) {
-                    $('#my_camera').hide();
-                    $('#my_result').show();
+                    document.getElementById('my_camera').style.display = 'none'
+                    document.getElementById('my_result').style.display = 'block'
                     _this.tempUri = data_uri
                     if(_this.hasCropper==false){
                         _this.img.setAttribute('src',data_uri);
@@ -177,12 +175,8 @@
                     })
                     return false
                 }else{
-                    this.basePhoto = this.tempUri
+                    this.getCropperedImgUriAndNext(this.basePhoto)
                 }
-                setTimeout(function(){
-                    _this.active ++
-                    _this.resetCropper()
-                },100)
             },
             step2(){
                 var _this = this
@@ -193,8 +187,15 @@
                     })
                     return false
                 }else{
-                    this.curPhoto = this.tempUri
+                    this.getCropperedImgUriAndNext(this.curPhoto)
                 }
+            },
+            getCropperedImgUriAndNext(photo){
+                var _this = this
+                var cropperImg = this.cropper.getCroppedCanvas()
+                var cropperUri = cropperImg.toDataURL();
+                photo = cropperUri
+//                    this.curPhoto = this.tempUri
                 setTimeout(function(){
                     _this.active ++
                     _this.resetCropper()
@@ -202,12 +203,18 @@
             },
             resetCropper(){
                 this.tempUri = ''
-                $('#my_camera').show();
-                $('#my_result').hide();
-                $('.preview-box').html('')
-                $('.box').html('');
+                document.getElementById('my_camera').style.display = 'block'
+                document.getElementById('my_result').style.display = 'none'
+                document.querySelectorAll('.preview-box').forEach(function(item){
+                    item.innerHTML = ''
+                })
+                document.querySelectorAll('.box').forEach(function(item){
+                    item.innerHTML = ''
+                })
                 var files = document.getElementById('uploadFile')
                 files.value=''
+
+                //销毁一下 防止JS报错
                 this.cropper.destroy()
                 this.hasCropper = false
             }
