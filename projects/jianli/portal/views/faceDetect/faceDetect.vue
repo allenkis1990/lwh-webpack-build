@@ -119,6 +119,7 @@
     export default {
         data(){
             return {
+                faceToken:'',
                 showImgDia:false,
                 dialogImg:'',
                 dialogImgStyle:{
@@ -178,10 +179,22 @@
                 this.loading = this.$loading.service({
                     text:'人脸识别中~~~~~'
                 })
-                setTimeout(function(){
+//                setTimeout(function(){
+//                    _this.loading&&_this.loading.close()
+//                    _this.active ++
+//                },3000)
+                var base64StartReg = /^data:image\/(png|jpg|jpeg|gif);/ig
+                var basePhoto = encodeURIComponent(this.basePhoto.replace(base64StartReg,''))
+                var curPhoto = encodeURIComponent(this.curPhoto.replace(base64StartReg,''))
+                this.$http.post('/actions/faceMatch',{
+                    basePhoto:basePhoto,
+                    curPhoto:curPhoto
+                }).then(function(data){
                     _this.loading&&_this.loading.close()
-                    _this.active ++
-                },3000)
+                    console.log(data);
+                })
+
+
             },
             getDefaultConfig(){
                 var _this = this
