@@ -10,13 +10,12 @@
             <el-steps :active="active" finish-status="success">
                 <el-step title="上传基准照"></el-step>
                 <el-step title="上传对比照"></el-step>
-                <el-step title="人脸识别结果"></el-step>
+                <el-step title="确认提交"></el-step>
             </el-steps>
         </div>
-        <div class="clear" style="width:455px;margin:0 auto">
+        <div class="clear" style="width:455px;margin:0 auto" v-show="active<2">
             <div class="lwh-container" style="float:left">
                 <div class="main" id="my_camera">
-
                 </div>
                 <div class="main" id="my_result" style="display:none;">
                     <img src="@portal/images/user_image_container.png" />
@@ -53,6 +52,62 @@
                 <div class="preview-box3 preview-box"></div>
             </div>
         </div>
+
+        <div style="width:455px;margin:0 auto;text-align:center"
+             v-show="active===2">
+            <div style="display:flex;justify-content: space-around">
+                <div class="resultImgBox">
+                    <p>基准照</p>
+                    <img :src="basePhoto"
+                         @click="openImgWin('basePhoto',$event)"
+                         alt="">
+                </div>
+                <div class="resultImgBox">
+                    <p>对比照</p>
+                    <img :src="curPhoto"
+                         @click="openImgWin('curPhoto',$event)"
+                         alt="">
+                </div>
+            </div>
+            <el-button style="margin-top:10px;"
+                       @click="submit()"
+                       type="primary">提交</el-button>
+        </div>
+
+
+        <div style="width:455px;margin:0 auto;text-align:center"
+             v-show="active===3">
+            <div style="display:flex;justify-content: space-around">
+                <div class="resultImgBox">
+                    <p>基准照</p>
+                    <img :src="basePhoto"
+                         @click="openImgWin('basePhoto',$event)"
+                         alt="">
+                </div>
+                <div class="resultImgBox">
+                    <p>对比照</p>
+                    <img :src="curPhoto"
+                         @click="openImgWin('curPhoto',$event)"
+                         alt="">
+                </div>
+            </div>
+            <div style="color:green;">
+                <p style="text-align:center">人脸识别结果：成功</p>
+                <p style="text-align:center">相似度：90%</p>
+            </div>
+            <el-button style="margin-top:10px;"
+                       @click="restart()"
+                       type="primary">重新开始</el-button>
+        </div>
+
+
+        <div v-show="showImgDia">
+            <button class="dia-close" @click="showImgDia=false"></button>
+            <div class="face-detect-mask"></div>
+            <img class="face-detect-img"
+                 :style="dialogImgStyle"
+                 :src="dialogImg" alt="">
+        </div>
     </div>
 </template>
 
@@ -64,18 +119,23 @@
     export default {
         data(){
             return {
+                showImgDia:false,
+                dialogImg:'',
+                dialogImgStyle:{
+                    'margin-left':'',
+                    'margin-top':''
+                },
+                loading:null,
                 tipshow:true,
                 hasCam:true,
                 active:0,
                 tempUri:'',
                 basePhoto:'',//基准照
                 curPhoto:'',//对比照
-                defaultConfig:{
-                    swfURL: require('@portal/images/webcam.swf')
-                },
+                defaultConfig:{},
                 cropperConfig:{
                     responsive: true,
-                    aspectRatio: 4 / 3,
+                    aspectRatio: 10 / 12.5,
                     resizable: true,
                     movable: true,
                     dragCrop: true,
@@ -105,22 +165,53 @@
             this.init()
         },
         methods: {
+            openImgWin(url,e){
+                var ele = e.target
+                console.log(e);
+                this.dialogImgStyle['margin-left'] = '-'+parseInt(ele.naturalWidth/2)+'px'
+                this.dialogImgStyle['margin-top'] = '-'+parseInt(ele.naturalHeight/2)+'px'
+                this.showImgDia = true
+                this.dialogImg = this[url]
+            },
+            submit(){
+                var _this = this
+                this.loading = this.$loading.service({
+                    text:'人脸识别中~~~~~'
+                })
+                setTimeout(function(){
+                    _this.loading&&_this.loading.close()
+                    _this.active ++
+                },3000)
+            },
+            getDefaultConfig(){
+                var _this = this
+                return {
+                    swfURL: require('@portal/images/webcam.swf'),
+                    iosPlaceholderText:'点击此处可拍照',
+                    //点击默认的拍照框
+                    user_callback(data_uri){
+                        _this.snapCb(data_uri)
+                    }
+                }
+            },
             closeTip(){
                 this.tipshow = false
             },
             init(){
+                this.defaultConfig = this.getDefaultConfig()
                 Webcam.set(this.defaultConfig);
                 Webcam.attach( '#my_camera' );
                 this.bindEvents()
-                if(isMobile()){
-                    this.hasCam = true
-                }else{
-                    if(Webcam.userMedia){
-                        this.hasCam = true
-                    }else{
-                        this.hasCam = false
-                    }
-                }
+                this.hasCam = Webcam.loaded
+//                if(isMobile()){
+//                    this.hasCam = true
+//                }else{
+//                    if(Webcam.userMedia){
+//                        this.hasCam = true
+//                    }else{
+//                        this.hasCam = false
+//                    }
+//                }
                 console.log(Webcam);
             },
             bindEvents() {
@@ -130,17 +221,7 @@
                         var file = e.target.files[0]
                         var reader = new FileReader()
                         reader.addEventListener('load', function (eee) {
-                            document.getElementById('my_camera').style.display = 'none'
-                            document.getElementById('my_result').style.display = 'block'
-                            _this.tempUri = eee.target.result
-                            if (_this.hasCropper == false) {
-                                _this.img.setAttribute('src', eee.target.result);
-//                                    document.getElementById('res').innerHTML = eee.target.result
-                                _this.cropper = new Cropper(_this.img, _this.cropperConfig)
-                                _this.hasCropper = true;
-                            } else {
-                                _this.cropper.replace(eee.target.result);
-                            }
+                            _this.snapCb(eee.target.result)
                         })
                         reader.readAsDataURL(file)
                     })
@@ -149,22 +230,27 @@
                 Webcam.on('error',function(e){
                     console.log('没有可用的摄像头');
                 })
+
             },
             snap(){
                 var _this=this;
                 Webcam.snap( function(data_uri) {
-                    document.getElementById('my_camera').style.display = 'none'
-                    document.getElementById('my_result').style.display = 'block'
-                    _this.tempUri = data_uri
-                    if(_this.hasCropper==false){
-                        _this.img.setAttribute('src',data_uri);
-//                            document.getElementById('res').innerHTML = data_uri
-                        _this.cropper = new Cropper(_this.img,_this.cropperConfig)
-                        _this.hasCropper=true;
-                    }else{
-                        _this.cropper.replace(data_uri);
-                    }
+                    _this.snapCb(data_uri)
                 } );
+            },
+            snapCb(data_uri){
+                var _this = this
+                document.getElementById('my_camera').style.display = 'none'
+                document.getElementById('my_result').style.display = 'block'
+                _this.tempUri = data_uri
+                if(_this.hasCropper==false){
+                    _this.img.setAttribute('src',data_uri);
+//                            document.getElementById('res').innerHTML = data_uri
+                    _this.cropper = new Cropper(_this.img,_this.cropperConfig)
+                    _this.hasCropper=true;
+                }else{
+                    _this.cropper.replace(data_uri);
+                }
             },
             next(){
                 if(this.active===0){
@@ -184,7 +270,7 @@
                     })
                     return false
                 }else{
-                    this.getCropperedImgUriAndNext(this.basePhoto)
+                    this.basePhoto =  this.getCropperedImgUriAndNext()
                 }
             },
             step2(){
@@ -196,19 +282,27 @@
                     })
                     return false
                 }else{
-                    this.getCropperedImgUriAndNext(this.curPhoto)
+                    this.curPhoto = this.getCropperedImgUriAndNext()
                 }
             },
             getCropperedImgUriAndNext(photo){
                 var _this = this
                 var cropperImg = this.cropper.getCroppedCanvas()
                 var cropperUri = cropperImg.toDataURL();
-                photo = cropperUri
+//                console.log(cropperUri);
+//                photo = cropperUri
 //                    this.curPhoto = this.tempUri
                 setTimeout(function(){
                     _this.active ++
                     _this.resetCropper()
                 },100)
+                return cropperUri
+            },
+            restart(){
+                this.active = 0
+                this.basePhoto = ''
+                this.curPhoto = ''
+                this.resetCropper()
             },
             resetCropper(){
                 this.tempUri = ''
@@ -232,6 +326,35 @@
 </script>
 
 <style scoped>
+    .dia-close{
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+MTYvaTAwMjdfY2xvc2UtZGlhbG9nPC90aXRsZT48ZGVzYz5DcmVhdGVkIHdpdGggU2tldGNoLjwvZGVzYz48cGF0aCBkPSJNOS42NCA4bDQuMDE2IDQuMDE2Yy4yMy4yMy4zNDQuNTAyLjM0NC44MiAwIC4zMTgtLjExNS41OS0uMzQ0LjgyLS4yMy4yMy0uNTAyLjM0NC0uODIuMzQ0LS4zMTggMC0uNTktLjExNS0uODItLjM0NEw4IDkuNjRsLTQuMDE2IDQuMDE2Yy0uMjMuMjMtLjUwMi4zNDQtLjgyLjM0NC0uMzE4IDAtLjU5LS4xMTUtLjgyLS4zNDQtLjIzLS4yMy0uMzQ0LS41MDItLjM0NC0uODIgMC0uMzE4LjExNS0uNTkuMzQ0LS44Mkw2LjM2IDggMi4zNzQgNC4wMTZjLS4yMy0uMjMtLjM0NC0uNTAzLS4zNDQtLjgyIDAtLjMxOC4xMTYtLjU4Ny4zNDUtLjgwNS4yMy0uMjMuNTAzLS4zNC44Mi0uMzQuMzE4IDAgLjU5LjExMy44Mi4zNDNMOCA2LjM3Nmw0LjAzLTQuMDNjLjIzLS4yMy41MDQtLjM0NS44MjItLjM0NS4zMTcgMCAuNTkuMTE3LjgyLjM0Ni4yMi4yMy4zMjguNTAyLjMyOC44MiAwIC4zMTgtLjExLjU4Ni0uMzI4LjgwNUw5LjY0MiA4eiIgZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+");
+        width:40px;
+        height:40px;
+        background-repeat:no-repeat;
+        background-position: center center;
+        background-color: transparent;
+        text-align: center;
+        outline:none;
+        border:none;
+        position:fixed;
+        right:5px;
+        top:5px;
+        z-index:1001;
+    }
+    .dia-close:hover{background-color:#ccc }
+    .face-detect-img{position:fixed;z-index:1000;left:50%;top:50%;}
+    .face-detect-mask{width:100%;height:100%;background:#000;opacity:0.7;position:fixed;top:0;left:0;z-index:999}
+    .resultImgBox{width:150px;text-align:center;}
+    .resultImgBox p {text-align:center}
+    .resultImgBox img{
+        width:100%;height:187.5px;
+    }
+    #my_camera {
+        background-image: url('~@portal/images/user_image_container.png');
+        background-repeat:no-repeat;
+        background-size: cover;
+        background-position: center center;
+    }
     .face-detect,.face-detect *{box-sizing:border-box}
     .clear{clear:both;_zoom:1;}
     .clear:after,.clear:before{display:block; content:"clear"; height:0; clear:both; overflow:hidden; visibility:hidden;}

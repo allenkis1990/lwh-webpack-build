@@ -30,6 +30,7 @@
     body,html{overflow: hidden}
 </style>
 <style>
+    .el-loading-text{text-align:center}
     /*css 和 less都可以引入*/
     .fuck-enter, .fuck-leave-active {
         opacity: 0;
