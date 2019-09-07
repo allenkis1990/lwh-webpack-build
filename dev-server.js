@@ -57,15 +57,9 @@ function tryHasConFigServer(url){
     return res
 }
 
-var actionSeverPath = `./server/${config.project}/expressActions/actions.js`
 var routerSeverPath = `./server/${config.project}/expressRouters/routers.js`
-
-var hasConfigActions = tryHasConFigServer(actionSeverPath)
 var hasConfigRouters = tryHasConFigServer(routerSeverPath)
-if(hasConfigActions){
-    // express后端请求
-    require(actionSeverPath).start(app)
-}
+
 if(hasConfigRouters){
     // express前端路由
     require(routerSeverPath)(app)
@@ -81,8 +75,12 @@ app.use(devMiddleware);
 
 //////////////////////代理////////////////////////////
 let proxyList = {
-    '/mobile': {
-        target: 'http://192.168.28.250:8899/'
+    '/actions': {
+        target: 'http://192.168.28.248:8080/'
+        // changeOrigin: false
+    },
+    '/socket.io': {
+        target: 'http://192.168.28.248:8080/'
         // changeOrigin: false
     }
 }
@@ -96,12 +94,4 @@ Object.keys(proxyList).forEach(function (context) {
 })
 //////////////////////代理////////////////////////////
 
-var wbPath = `./server/${config.project}/websocket.js`
-var hasConfigWebsocket = tryHasConFigServer(wbPath)
-//如果有websocket.js就起wb服务 否则起一般的服务
-if(hasConfigWebsocket){
-    var server = require(wbPath)(app)
-    server.listen(config.port,config.host);
-}else{
-    app.listen(config.port,config.host);
-}
+app.listen(config.port,config.host);

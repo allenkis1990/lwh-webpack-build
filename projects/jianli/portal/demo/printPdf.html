@@ -96,6 +96,8 @@ margin-bottom:10px;" href="/">
         params.append('sex',sexValue)
         params.append('hobby',hobby.value)
         loading = true
+        var popup = window.open('about:blank','_blank')
+        popup.document.write('<h2>加载中...</h2>')
         $http({
             url:'/actions/print',
             method:'post',
@@ -107,8 +109,10 @@ margin-bottom:10px;" href="/">
                 var json = JSON.parse(data)
                 if(json.code==='200'){
                     cleanForm(userName,age,hobby)
-                    window.location.href = '/preview/pdf/'+json.pdfPath
+                    popup.location = '/actions/preview/pdf/'+json.pdfPath
+//                    window.location.href = '/actions/preview/pdf/'+json.pdfPath
                 }else{
+                    popup.close()
                     alert(json.message);
                 }
             },

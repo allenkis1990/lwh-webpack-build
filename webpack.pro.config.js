@@ -64,7 +64,7 @@ function getExports(project){
         if(config.apps.length>1){
             dirName = `${app}/`
         }
-        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg)`)
+        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4|swf)`)
         rules.push(
             {
                 test:reg,

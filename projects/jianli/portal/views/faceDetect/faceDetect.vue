@@ -331,7 +331,7 @@
                 files.value=''
 
                 //销毁一下 防止JS报错
-                this.cropper.destroy()
+                this.cropper&&this.cropper.destroy()
                 this.hasCropper = false
             }
         }
