@@ -76,11 +76,11 @@ app.use(devMiddleware);
 //////////////////////代理////////////////////////////
 let proxyList = {
     '/actions': {
-        target: 'http://192.168.28.248:8080/'
+        target: 'http://192.168.0.112:8080/'
         // changeOrigin: false
     },
     '/socket.io': {
-        target: 'http://192.168.28.248:8080/'
+        target: 'http://192.168.0.112:8080/'
         // changeOrigin: false
     }
 }

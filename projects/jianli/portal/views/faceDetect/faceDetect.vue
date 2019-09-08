@@ -72,6 +72,9 @@
             <el-button style="margin-top:10px;"
                        @click="submit()"
                        type="primary">提交</el-button>
+            <el-button style="margin-top:10px;"
+                       @click="restart()"
+                       type="primary">重新开始</el-button>
         </div>
 
 
@@ -93,7 +96,7 @@
             </div>
             <div style="color:green;">
                 <p style="text-align:center">人脸识别结果：成功</p>
-                <p style="text-align:center">相似度：90%</p>
+                <p style="text-align:center">相似度：{{result.score}}%</p>
             </div>
             <el-button style="margin-top:10px;"
                        @click="restart()"
@@ -119,6 +122,7 @@
     export default {
         data(){
             return {
+                result:{},
                 faceToken:'',
                 showImgDia:false,
                 dialogImg:'',
@@ -166,6 +170,30 @@
             this.init()
         },
         methods: {
+            suofang(base64, bili, callback) {
+                console.log("执行缩放程序,bili=" + bili);
+                //处理缩放，转格式
+                var _img = new Image();
+                _img.src = base64;
+                _img.onload = function() {
+                    var _canvas = document.createElement("canvas");
+                    var w = this.width / bili;
+                    var h = this.height / bili;
+                    _canvas.setAttribute("width", w);
+                    _canvas.setAttribute("height", h);
+                    _canvas.getContext("2d").drawImage(this, 0, 0, w, h);
+                    var base64 = _canvas.toDataURL("image/jpeg");
+                    _canvas.toBlob(function(blob) {
+                        console.log(blob.size);
+
+                        if(blob.size > 1024*1024){
+                            suofang(base64, bili, callback);
+                        }else{
+                            callback(blob, base64);
+                        }
+                    }, "image/jpeg");
+                }
+            },
             openImgWin(url,e){
                 var ele = e.target
                 console.log(e);
@@ -174,8 +202,24 @@
                 this.showImgDia = true
                 this.dialogImg = this[url]
             },
+            getComPressBase64(base641,base642){
+                var _this = this
+                var p1 = new Promise(function(resolve,reject){
+                    _this.suofang(base641,1.5,function(b,base64){
+                        resolve(base64)
+                    })
+                })
+                var p2 = new Promise(function(resolve,reject){
+                    _this.suofang(base642,1.5,function(b,base64){
+                        resolve(base64)
+                    })
+                })
+                return Promise.all([p1,p2])
+            },
             submit(){
                 var _this = this
+                console.log(_this.baseFile,111);
+                console.log(_this.curFile,222);
                 this.loading = this.$loading.service({
                     text:'人脸识别中~~~~~'
                 })
@@ -183,18 +227,31 @@
 //                    _this.loading&&_this.loading.close()
 //                    _this.active ++
 //                },3000)
-                var base64StartReg = /^data:image\/(png|jpg|jpeg|gif);/ig
-                var basePhoto = encodeURIComponent(this.basePhoto.replace(base64StartReg,''))
-                var curPhoto = encodeURIComponent(this.curPhoto.replace(base64StartReg,''))
-                this.$http.post('/actions/faceMatch',{
-                    basePhoto:basePhoto,
-                    curPhoto:curPhoto
-                }).then(function(data){
-                    _this.loading&&_this.loading.close()
-                    console.log(data);
+                var base64StartReg = /^data:image\/(png|jpg|jpeg|gif);base64,/img
+                this.getComPressBase64(this.basePhoto,this.curPhoto).then(function(data){
+                    console.log(data,'121sss');
+                    var basePhoto = data[0].replace(base64StartReg,'')
+                    var curPhoto = data[1].replace(base64StartReg,'')
+                    _this.$http.post('/actions/faceMatch',{
+                        basePhoto:basePhoto,
+                        curPhoto:curPhoto
+                    }).then(function(data){
+                        _this.loading&&_this.loading.close()
+                        var res = data.data
+                        if(res.code==='200'){
+                            _this.active ++
+                            _this.result = res.info.result
+                            _this.result.score = parseInt(_this.result.score)
+
+                        }else{
+                            _this.$message({
+                                message: res.message,
+                                type: 'warning'
+                            })
+                        }
+                        console.log(res);
+                    })
                 })
-
-
             },
             getDefaultConfig(){
                 var _this = this
@@ -231,12 +288,12 @@
                 var _this = this
                 this.$nextTick(function () {
                     document.getElementById('uploadFile').addEventListener('change', function (e) {
-                        var file = e.target.files[0]
+                        _this.file = e.target.files[0]
                         var reader = new FileReader()
                         reader.addEventListener('load', function (eee) {
                             _this.snapCb(eee.target.result)
                         })
-                        reader.readAsDataURL(file)
+                        reader.readAsDataURL(_this.file)
                     })
                 })
 
@@ -284,6 +341,7 @@
                     return false
                 }else{
                     this.basePhoto =  this.getCropperedImgUriAndNext()
+                    this.baseFile = _this.file
                 }
             },
             step2(){
@@ -296,6 +354,7 @@
                     return false
                 }else{
                     this.curPhoto = this.getCropperedImgUriAndNext()
+                    this.curFile = _this.file
                 }
             },
             getCropperedImgUriAndNext(photo){
