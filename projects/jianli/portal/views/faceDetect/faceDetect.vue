@@ -170,7 +170,9 @@
             this.init()
         },
         methods: {
+            //缩放方法：先把宽高按比例缩放，然后转成canvas然后通过canvas转成base64
             suofang(base64, bili, callback) {
+                var _this = this
                 console.log("执行缩放程序,bili=" + bili);
                 //处理缩放，转格式
                 var _img = new Image();
@@ -187,7 +189,7 @@
                         console.log(blob.size);
 
                         if(blob.size > 1024*1024){
-                            suofang(base64, bili, callback);
+                            _this.suofang(base64, bili, callback);
                         }else{
                             callback(blob, base64);
                         }
