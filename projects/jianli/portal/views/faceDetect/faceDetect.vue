@@ -1,107 +1,127 @@
 <template>
     <div class="face-detect">
         <!--<div id="res"style="width:100%;text-align:center;word-break: break-all;height:50px;overflow:auto"></div>-->
-        <div style="width:455px;margin:10px auto 0px" v-if="!hasCam&&tipshow">
+        <div style="width:455px;margin:10px auto 0px" v-if="tipshow">
             <el-tag type="danger" closable @close="closeTip">
-                当前未检测到摄像头，如果想要启用拍照模式，请安装摄像头或者使用移动设备打开此页面。
+                如果当前设备支持摄像头可选择拍照模式。
             </el-tag>
         </div>
-        <div style="width:455px;margin:10px auto">
-            <el-steps :active="active" finish-status="success">
-                <el-step title="上传基准照"></el-step>
-                <el-step title="上传对比照"></el-step>
-                <el-step title="确认提交"></el-step>
-            </el-steps>
-        </div>
-        <div class="clear" style="width:455px;margin:0 auto" v-show="active<2">
-            <div class="lwh-container" style="float:left">
-                <div class="main" id="my_camera">
-                </div>
-                <div class="main" id="my_result" style="display:none;">
-                    <img src="@portal/images/user_image_container.png" />
-                </div>
-                <!--<div class="progress-box" v-show="hasCam">
-                    <div class="progress-txt">上传进度<span>0</span>%</div>
-                    <div class="progress"></div>
-                </div>-->
-
-
-                <div style="margin-top:10px;position:relative" v-show="!hasCam" class="chooseFile">
-                    <input type="file"
-                           id="uploadFile"
-                           style="position:absolute;width:100px;height:30px;left:0;top:0;opacity:0" />
-                    上传图片
-                </div>
-
-
-                <div style="margin-top:10px;"
-                     @click="snap()"
-                     v-show="hasCam"
-                     class="snap">拍照</div>
-                <div style="margin-top:10px;"
-                     @click="resetCropper"
-                     class="reSnap">重置</div>
-
+        <div style="width:455px;margin:0 auto;" v-show="!defectMode">
+            <p style="margin-top:10px;">请选择人脸识别模式：</p>
+            <div>
                 <el-button style="margin-top:10px;"
-                           @click="next()"
-                           type="primary">下一步</el-button>
+                           @click="selectMode(1)"
+                           type="primary">图片模式</el-button>
             </div>
-            <div style="float:left">
-                <div class="preview-box1 preview-box"></div>
-                <div class="preview-box2 preview-box"></div>
-                <div class="preview-box3 preview-box"></div>
+            <div>
+                <el-button style="margin-top:10px;"
+                           @click="selectMode(2)"
+                           type="primary">拍照模式</el-button>
             </div>
         </div>
 
-        <div style="width:455px;margin:0 auto;text-align:center"
-             v-show="active===2">
-            <div style="display:flex;justify-content: space-around">
-                <div class="resultImgBox">
-                    <p>基准照</p>
-                    <img :src="basePhoto"
-                         @click="openImgWin('basePhoto',$event)"
-                         alt="">
-                </div>
-                <div class="resultImgBox">
-                    <p>对比照</p>
-                    <img :src="curPhoto"
-                         @click="openImgWin('curPhoto',$event)"
-                         alt="">
-                </div>
+        <div v-show="defectMode">
+            <div style="width:455px;margin:10px auto">
+                <el-steps :active="active" finish-status="success">
+                    <el-step title="上传基准照"></el-step>
+                    <el-step title="上传对比照"></el-step>
+                    <el-step title="确认提交"></el-step>
+                </el-steps>
             </div>
-            <el-button style="margin-top:10px;"
-                       @click="submit()"
-                       type="primary">提交</el-button>
-            <el-button style="margin-top:10px;"
-                       @click="restart()"
-                       type="primary">重新开始</el-button>
-        </div>
+            <div class="clear" style="width:455px;margin:0 auto" v-show="active<2">
+                <div class="lwh-container" style="float:left">
+                    <div class="main" id="my_camera">
+                    </div>
+                    <div class="main" id="my_result" style="display:none;">
+                        <img src="@portal/images/user_image_container.png" />
+                    </div>
+                    <!--<div class="progress-box" v-show="hasCam">
+                        <div class="progress-txt">上传进度<span>0</span>%</div>
+                        <div class="progress"></div>
+                    </div>-->
 
 
-        <div style="width:455px;margin:0 auto;text-align:center"
-             v-show="active===3">
-            <div style="display:flex;justify-content: space-around">
-                <div class="resultImgBox">
-                    <p>基准照</p>
-                    <img :src="basePhoto"
-                         @click="openImgWin('basePhoto',$event)"
-                         alt="">
+                    <div style="margin-top:10px;position:relative" v-show="defectMode===1" class="chooseFile">
+                        <input type="file"
+                               id="uploadFile"
+                               style="position:absolute;width:100px;height:30px;left:0;top:0;opacity:0" />
+                        上传图片
+                    </div>
+
+
+                    <div style="margin-top:10px;"
+                         @click="snap()"
+                         v-show="defectMode===2"
+                         class="snap">拍照</div>
+                    <div style="margin-top:10px;"
+                         @click="resetCropper"
+                         class="reSnap">重置</div>
+
+                    <el-button style="margin-top:10px;"
+                               @click="next()"
+                               type="primary">下一步</el-button>
+                    <el-button style="margin-top:10px;"
+                               @click="restart()"
+                               type="primary">重新开始</el-button>
                 </div>
-                <div class="resultImgBox">
-                    <p>对比照</p>
-                    <img :src="curPhoto"
-                         @click="openImgWin('curPhoto',$event)"
-                         alt="">
+                <div style="float:left">
+                    <div class="preview-box1 preview-box"></div>
+                    <div class="preview-box2 preview-box"></div>
+                    <div class="preview-box3 preview-box"></div>
                 </div>
             </div>
-            <div style="color:green;">
-                <p style="text-align:center">人脸识别结果：成功</p>
-                <p style="text-align:center">相似度：{{result.score}}%</p>
+
+            <div style="width:455px;margin:0 auto;text-align:center"
+                 v-show="active===2">
+                <div style="display:flex;justify-content: space-around">
+                    <div class="resultImgBox">
+                        <p>基准照</p>
+                        <img :src="basePhoto"
+                             @click="openImgWin('basePhoto',$event)"
+                             alt="">
+                    </div>
+                    <div class="resultImgBox">
+                        <p>对比照</p>
+                        <img :src="curPhoto"
+                             @click="openImgWin('curPhoto',$event)"
+                             alt="">
+                    </div>
+                </div>
+                <el-button style="margin-top:10px;"
+                           @click="submit()"
+                           type="primary">提交</el-button>
+                <el-button style="margin-top:10px;"
+                           @click="restart()"
+                           type="primary">重新开始</el-button>
             </div>
-            <el-button style="margin-top:10px;"
-                       @click="restart()"
-                       type="primary">重新开始</el-button>
+
+
+            <div style="width:455px;margin:0 auto;text-align:center"
+                 v-show="active===3">
+                <div style="display:flex;justify-content: space-around">
+                    <div class="resultImgBox">
+                        <p>基准照</p>
+                        <img :src="basePhoto"
+                             @click="openImgWin('basePhoto',$event)"
+                             alt="">
+                    </div>
+                    <div class="resultImgBox">
+                        <p>对比照</p>
+                        <img :src="curPhoto"
+                             @click="openImgWin('curPhoto',$event)"
+                             alt="">
+                    </div>
+                </div>
+                <div style="color:green;">
+                    <p style="text-align:center">人脸识别结果：成功</p>
+                    <p style="text-align:center">相似度：{{result.score}}%</p>
+                </div>
+                <el-button style="margin-top:10px;"
+                           @click="restart()"
+                           type="primary">重新开始</el-button>
+            </div>
         </div>
+
 
 
         <div v-show="showImgDia">
@@ -122,6 +142,7 @@
     export default {
         data(){
             return {
+                defectMode:'',//1图片模式 2拍照模式
                 result:{},
                 faceToken:'',
                 showImgDia:false,
@@ -170,6 +191,10 @@
             this.init()
         },
         methods: {
+            selectMode(mode){
+                this.defectMode = mode
+                this.hasSelectMode = true
+            },
             //缩放方法：先把宽高按比例缩放，然后转成canvas然后通过canvas转成base64
             suofang(base64, bili, callback) {
                 var _this = this
@@ -286,20 +311,47 @@
 //                }
                 console.log(Webcam);
             },
+            beforeFileUploadCheck(file,fileDom){
+                var _this = this
+                if(!/(png|jpg|jpeg)/.test(file.type)){
+                    _this.$message({
+                        message: '请上传jpg,png格式的图片',
+                        type: 'warning'
+                    })
+                    fileDom.value = ''
+                    return false
+                }
+                if(file.size>1024*1024){
+                    _this.$message({
+                        message: '请上传小于1M的图片',
+                        type: 'warning'
+                    })
+                    fileDom.value = ''
+                    return false
+                }
+                return true
+            },
             bindEvents() {
                 var _this = this
                 this.$nextTick(function () {
                     document.getElementById('uploadFile').addEventListener('change', function (e) {
                         _this.file = e.target.files[0]
-                        var reader = new FileReader()
-                        reader.addEventListener('load', function (eee) {
-                            _this.snapCb(eee.target.result)
-                        })
-                        reader.readAsDataURL(_this.file)
+                        var bol = _this.beforeFileUploadCheck(_this.file,this)
+                        if(bol){
+                            var reader = new FileReader()
+                            reader.addEventListener('load', function (eee) {
+                                _this.snapCb(eee.target.result)
+                            })
+                            reader.readAsDataURL(_this.file)
+                        }
                     })
                 })
 
                 Webcam.on('error',function(e){
+                    _this.$message({
+                        message: '没有可用的摄像头',
+                        type: 'warning'
+                    })
                     console.log('没有可用的摄像头');
                 })
 
@@ -373,6 +425,7 @@
                 return cropperUri
             },
             restart(){
+                this.defectMode = ''
                 this.active = 0
                 this.basePhoto = ''
                 this.curPhoto = ''
