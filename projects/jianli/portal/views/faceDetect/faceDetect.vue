@@ -142,6 +142,7 @@
     export default {
         data(){
             return {
+                firstLoadCam:false,
                 defectMode:'',//1图片模式 2拍照模式
                 result:{},
                 faceToken:'',
@@ -188,12 +189,17 @@
         },
         mounted() {
             this.img = document.querySelector('#my_result img')
-            this.init()
+//            this.init()
         },
         methods: {
             selectMode(mode){
+                var _this = this
                 this.defectMode = mode
-                this.hasSelectMode = true
+                this.$nextTick(function(){
+                    if(!_this.firstLoadCam){
+                        _this.init()
+                    }
+                })
             },
             //缩放方法：先把宽高按比例缩放，然后转成canvas然后通过canvas转成base64
             suofang(base64, bili, callback) {
@@ -309,6 +315,7 @@
 //                        this.hasCam = false
 //                    }
 //                }
+                this.firstLoadCam = true
                 console.log(Webcam);
             },
             beforeFileUploadCheck(file,fileDom){

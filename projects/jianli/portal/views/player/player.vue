@@ -141,9 +141,9 @@
                 player: null,
                 curVideoSouceIdx: 0,//默认0
                 videoSources: [
-                    {url: 'http://www.allen19906666.com/demo/videos/jay.mp4', id: 'jay', name: '给我一首歌的时间'},
-                    {url: 'http://www.allen19906666.com/demo/videos/jay2.mp4', id: 'jay2', name: '半岛铁盒'},
-                    {url: 'http://www.allen19906666.com/demo/videos/jay3.mp4', id: 'jay3', name: '爱在西元前'}
+                    {url: 'https://www.allen19906666.com/demo/videos/jay.mp4', id: 'jay', name: '给我一首歌的时间'},
+                    {url: 'https://www.allen19906666.com/demo/videos/jay2.mp4', id: 'jay2', name: '半岛铁盒'},
+                    {url: 'https://www.allen19906666.com/demo/videos/jay3.mp4', id: 'jay3', name: '爱在西元前'}
                 ]
             }
         },
