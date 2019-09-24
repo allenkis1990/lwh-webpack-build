@@ -9,8 +9,10 @@ let _project
 let isBuildAll = argv.all
 let projects = !argv.design?'projects':'design'
 let deleteDist = require('../task/deleteDist')
+let path = require('path')
 if(argv.project&&typeof argv.project==='string'){
     dirs = getDirs()
+    // console.log(dirs,33);
     if(dirs){
         if(dirs.indexOf(argv.project)===-1){
             throw new Error(colors.red('当前要构建的项目不存在'))
@@ -27,7 +29,7 @@ if(argv.project&&typeof argv.project==='string'){
 }
 function getDirs(){
     let dirs
-    try {dirs = fs.readdirSync(`./${projects}`)}catch(e){
+    try {dirs = fs.readdirSync(path.resolve(__dirname,'..','..',`${projects}`))}catch(e){
         throw new Error(colors.red('项目主文件夹没建！！！'))
         //console.log(colors.red('项目主文件夹projects没建！！！'));
         return
@@ -48,12 +50,12 @@ if(!argv.devdist){
 }
 let config = {
     isDesign:argv.design,
-    mainDir:!argv.design?'./projects':'./design',
-    parentMainDir:!argv.design?'./parentProject':'./designParent',
+    mainDir:!argv.design?'../projects':'../design',
+    parentMainDir:!argv.design?'../parentProject':'../designParent',
     project:_project,
     dist:'dist',
     //port:!argv.design?'8080':'8181',
-    port:'8080',
+    port:'8888',
     designPort:'8181',
     // apps:['portal','center'],
     apps:['portal'],

@@ -6,8 +6,8 @@
 let fs = require('fs')
 let path = require('path')
 module.exports = function(designDir,project,parentDesign){
-    let baseDir =  path.resolve(__dirname,`../${designDir.replace('./','')}/${project}`)
-    let parentBaseDir =  path.resolve(__dirname,`../${parentDesign.replace('./','')}`)
+    let baseDir =  path.resolve(__dirname,'..','..',`${designDir.replace('../','')}/${project}`)
+    let parentBaseDir =  path.resolve(__dirname,'..','..',`${parentDesign.replace('../','')}`)
     fs.readdir(baseDir,(err,apps)=>{
         if(err){
             console.log(err);

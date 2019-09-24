@@ -8,7 +8,7 @@ module.exports = function(app){
         var url = req.url.replace('/','')
         url = url.replace(/\?.+$/,'')
         url = decodeURI(url)
-        var p = path.resolve(__dirname,'../../../projects/jianli/portal',url)
+        var p = path.resolve(__dirname,'../../../../projects/jianli/portal',url)
         res.sendFile(p)
     })
 }

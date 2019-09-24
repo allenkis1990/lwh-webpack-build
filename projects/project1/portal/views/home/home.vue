@@ -1,13 +1,5 @@
 <template>
     <div>
-        <transition name="fuck" appear>
-            <keep-alive>
-                <router-view v-if="$route.meta.keepAlive || $route.meta.keepAlive===undefined"></router-view>
-            </keep-alive>
-        </transition>
-        <transition name="fuck" appear>
-            <router-view v-if="$route.meta.keepAlive===false"></router-view>
-        </transition>
         <div class="main" v-if="$route.name==='home'">
             <div>parent Hello Home!11112</div>
             <ul>

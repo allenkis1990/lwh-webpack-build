@@ -42,6 +42,7 @@ function loader(source){
 
     //来自哪个项目从外面传进来
     var project = options.project
+    // console.log(project,77);
     // console.log(project);
     if(requireMatchs.length||importMatchs.length||importStyleMatchs.length||srcMatchs.length||bgMatchs.length||importAsyncMatchs.length){
         var alias

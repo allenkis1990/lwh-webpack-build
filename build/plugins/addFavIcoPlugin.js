@@ -6,7 +6,7 @@ class addFavIcoPlugin{
     }
     apply(compiler){
         var _this = this
-        var favIcoContent = fs.readFileSync(path.resolve(__dirname,'../favicon.ico'))
+        var favIcoContent = fs.readFileSync(path.resolve(__dirname,'../../favicon.ico'))
         compiler.hooks.emit.tapAsync('addFavIcoPlugin',(compilation,cb)=>{
             compilation.assets['favicon.ico']={
                 source(){

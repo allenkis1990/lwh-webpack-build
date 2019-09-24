@@ -7,18 +7,19 @@ let fs = require('fs')
 let argv = require('yargs').argv
 let colors = require('colors/safe');
 let buildAll = argv.all
+let path = require('path')
 class notFoudEntryPlugin{
     constructor(options){
-        this.mainDir = options.mainDir
-        this.parentDir = options.parentDir
+        this.mainDir = options.mainDir.replace('../','')
+        this.parentDir = options.parentDir.replace('../','')
     }
     apply(compiler){
         console.log(this.mainDir,123);
         let _this = this
         function getDirs(){
             let dirs
-            try {dirs = fs.readdirSync(_this.mainDir)}catch(e){
-                throw new Error(colors.red(`项目主文件夹${_this.mainDir.replace('./','')}没建！！！`))
+            try {dirs = fs.readdirSync(path.resolve(__dirname,'..','..',_this.mainDir))}catch(e){
+                throw new Error(colors.red(`项目主文件夹${_this.mainDir}没建！！！`))
                 //console.log(colors.red('项目主文件夹projects没建！！！'));
                 return
             }
@@ -33,18 +34,18 @@ class notFoudEntryPlugin{
             let appIsExist = {}
             if(!buildAll){
                 config.apps.forEach((app)=>{
-                    appIsExist[app+'IsExist'] = fs.existsSync(`${_this.mainDir}/${config.project}/${app}/main.js`)
+                    appIsExist[app+'IsExist'] = fs.existsSync(path.resolve(__dirname,'..','..',`${_this.mainDir}/${config.project}/${app}/main.js`))
                     if (!appIsExist[app+'IsExist']) {
-                        entry[app] = [`${_this.parentDir}/${app}/main.js`]
+                        entry[app] = [path.resolve(__dirname,'..','..',`${_this.parentDir}/${app}/main.js`)]
                     }
                 })
             } else {
                 let dirs = getDirs()
                 dirs.forEach((dir)=>{
                     config.apps.forEach((app)=>{
-                        appIsExist[app+'IsExist'] = fs.existsSync(`${_this.mainDir}/${dir}/${app}/main.js`)
+                        appIsExist[app+'IsExist'] = fs.existsSync(path.resolve(__dirname,'..','..',`${_this.mainDir}/${dir}/${app}/main.js`))
                         if (!appIsExist[app+'IsExist']) {
-                            entry[app] = [`${_this.parentDir}/${app}/main.js`]
+                            entry[app] = [path.resolve(__dirname,'..','..',`${_this.parentDir}/${app}/main.js`)]
                         }
                     })
                 })

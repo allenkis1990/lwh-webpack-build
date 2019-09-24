@@ -27,10 +27,10 @@ function getExports(project){
         if(config.apps.length>1){
             dirName = `${app}/`
         }
-        entry[`${dirName}app`] = `${config.mainDir}/${project}/${app}/main.js`
+        entry[`${dirName}app`] = path.resolve(__dirname,`${config.mainDir}/${project}/${app}/main.js`)
         cacheGroups[`${app}Assets`] = {
             chunks: 'initial',// 只对入口文件处理
-            test: path.resolve(`${config.mainDir}/${project}/${app}/assets`),
+            test: path.resolve(__dirname,`${config.mainDir}/${project}/${app}/assets`),
             // test: /assets/,
             name: `${dirName}assets`,
             priority: 10,
@@ -38,10 +38,10 @@ function getExports(project){
             minChunks:1//最小被引用两次的公共库才被抽离到公共代码
         }
         //'@':path.resolve(`${config.mainDir}/${project}`)
-        alias[`@${app}`] = path.resolve(`${config.mainDir}/${project}/${app}`)
+        alias[`@${app}`] = path.resolve(__dirname,`${config.mainDir}/${project}/${app}`)
         plugins.push(new HtmlWebpackPlugin({
             filename: `${dirName}index.html`,//真正输出的地址output.path+filename=./dist/index.html
-            template:`${config.mainDir}/${project}/${app}/index.html`,//INdex的模板
+            template:path.resolve(__dirname,`${config.mainDir}/${project}/${app}/index.html`),//INdex的模板
             inject: true,
             hash:true,
             title:app,
@@ -77,7 +77,7 @@ function getExports(project){
                         limit:1024*1//小于8KB会被转成base64
                     }
                 },
-                exclude:[path.resolve('./dist'),/node_modules/]//排除解析dist文件夹
+                exclude:[path.resolve(__dirname,'..',config.dist),/node_modules/]//排除解析dist文件夹
                 //include:[path.resolve('./projects/project1/src')]//只编译src文件夹 但是node_modules除外
             }
         )
@@ -108,7 +108,7 @@ function getExports(project){
     return {
         entry: Object.assign(entry,{}),
         output:{
-            path:path.resolve(__dirname,'dist',project),
+            path:path.resolve(__dirname,'..',config.dist,project),
             filename:'[name].[chunkHash].bundle.js',
             publicPath: config.build.publicPath
             //publicPath:"dist"//页面上引入的路径 比如js/xxx就会变成dist/js/xxx
@@ -128,14 +128,14 @@ function getExports(project){
             //require('xxx')先去src目录下找没有才去node_modules从左到右
             //作用于项目中，webpack配置文件中无法使用
             // path.resolve(config.parentMainDir)
-            modules: [path.resolve("node_modules")/*path.resolve(`${config.mainDir}/${project}`)*/],
+            modules: [path.resolve(__dirname,'..',"node_modules")/*path.resolve(`${config.mainDir}/${project}`)*/],
             //原本在文件夹里去找package.json只会找main和module现在fuck和shit也会去找优先级从左到右
             mainFields:['main','module','fuck','shit'], 
             //给引入的模块取个别名可以是文件全路径也可以是文件夹
             alias:Object.assign(alias,{
-                '@parent':path.resolve(config.parentMainDir),
+                '@parent':path.resolve(__dirname,config.parentMainDir),
                 'vue$': 'vue/dist/vue.esm.js',
-                'nms':path.resolve(__dirname,'node_modules')
+                'nms':path.resolve(__dirname,'..','node_modules')
             })
         },
         resolveLoader: {
@@ -143,7 +143,7 @@ function getExports(project){
             //     testLoader:path.resolve('./loaders/testLoader.js')
             // },
             mainFields:['main'],
-            modules: [path.resolve("node_modules"),path.resolve("loaders")]
+            modules: [path.resolve(__dirname,'..',"node_modules"),path.resolve(__dirname,"loaders")]
         },
         module:{
             //不去解析的文件
@@ -163,15 +163,15 @@ function getExports(project){
                     use:{
                         loader:'notFoudLoader',
                         options:{
-                            mainDir:config.mainDir.replace('./',''),
+                            mainDir:config.mainDir.replace('../',''),
                             project:project
                         }
                     },
-                    exclude:[path.resolve('./dist'),/node_modules/],
+                    exclude:[path.resolve(__dirname,'..',config.dist),/node_modules/],
                     //exclude: file => (
                     //    /node_modules/.test(file) && !/\.vue\.js/.test(file)
                     //),
-                    include:[path.resolve(`${config.mainDir}`),path.resolve(`${config.parentMainDir}`)]
+                    include:[path.resolve(__dirname,`${config.mainDir}`),path.resolve(__dirname,`${config.parentMainDir}`)]
                 },
 
                 //解析html页面上的img标签 但是htmlWebpackPlugin.options.title无法读取 可用express静态资源解决
@@ -197,7 +197,7 @@ function getExports(project){
                             limit:1024*1000000//小于8KB会被转成base64
                         }
                     },
-                    exclude:[path.resolve(`./${config.dist}`)]//排除解析dist文件夹
+                    exclude:[path.resolve(__dirname,'..',`${config.dist}`)]//排除解析dist文件夹
                     //include:[path.resolve('./projects/project1/src')]//只编译src文件夹 但是node_modules除外
                 },
                 {
@@ -216,8 +216,8 @@ function getExports(project){
                         },
                         {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
-                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
-                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve(__dirname,'..',config.dist), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(__dirname,`${config.mainDir}/${project}`),path.resolve(__dirname,`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
                 },
                 {
                     test: /\.less/,
@@ -238,8 +238,8 @@ function getExports(project){
                             loader: "less-loader"
                         }
                     ],
-                    exclude: [path.resolve('./dist'), /node_modules/],//排除解析dist文件夹
-                    include: [path.resolve(`${config.mainDir}/${project}`),path.resolve(`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve(__dirname,'..',config.dist), /node_modules/],//排除解析dist文件夹
+                    include: [path.resolve(__dirname,`${config.mainDir}/${project}`),path.resolve(__dirname,`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
                 },
 
                 //解析打包json文件
@@ -280,7 +280,7 @@ function getExports(project){
             new webpack.ProvidePlugin({
                 $:path.resolve(__dirname,`${config.mainDir}/${project}/portal/assets/jquery-1.11.1.min.js`)
             }),
-            new CleanWebpackPlugin(['./dist/'+project]),//删除文件夹插件
+            new CleanWebpackPlugin([path.resolve(__dirname,'..',config.dist+project)]),//删除文件夹插件
             //清除没用到的样式，只有在抽离css的模式生效,指定的是模板html文件
             /*new PurifyCSSPlugin({
                 // Give paths to parse for rules. These should be absolute!

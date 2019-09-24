@@ -9,8 +9,8 @@ let chokidar = require('chokidar')
 let path = require('path')
 class addMainDirFilePlugin{
     constructor(options){
-        this.mainDir = options.mainDir
-        this.parentDir = options.parentDir
+        this.mainDir = options.mainDir.replace('../','')
+        this.parentDir = options.parentDir.replace('../','')
     }
     findModule(path,modules){
         let module = modules.find((m,i)=>{
@@ -19,10 +19,11 @@ class addMainDirFilePlugin{
         return module
     }
     apply(compiler){
+        var _this = this
         let watcher = chokidar.watch('../', {
             persistent: true,
             ignoreInitial:true,
-            cwd: path.resolve(this.mainDir,config.project)
+            cwd: path.resolve(path.resolve(__dirname,'..','..',_this.mainDir,config.project))
         })
         compiler.hooks.compilation.tap('compilation',(compilation)=>{
             //console.log(compilation.modules);
@@ -30,7 +31,7 @@ class addMainDirFilePlugin{
                 //原来被删除的文件又恢复了
                 watcher.on('add',(url)=>{
                     // console.log(url,'新增');
-                    let basePath = path.resolve(this.mainDir,config.project)
+                    let basePath = path.resolve(__dirname,'..','..',_this.mainDir,config.project)
                     let addFullPath = `${basePath}${path.sep}${url}`
                     let module = this.findModule(addFullPath,compilation.modules)
                     //console.log(moduleIndex,'index')
@@ -49,7 +50,7 @@ class addMainDirFilePlugin{
 
             //原来有的文件被删除了 就去parent里找
             compilation.hooks.buildModule.tap('NotFoundPlugin', (module) => {
-                let mainDir = this.mainDir.replace('./',''),parentDir = this.parentDir.replace('./','')
+                let mainDir = this.mainDir,parentDir = this.parentDir
                 if (module.resource && new RegExp(`\\\\${mainDir}\\\\`).test(module.resource)
                     && !new RegExp(`node_modules`).test(module.resource)) {
                     if(!fs.existsSync(module.resource)&&!(/\.vue\?.+/.test(module.resource))){
