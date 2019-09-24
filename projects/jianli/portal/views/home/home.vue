@@ -177,6 +177,18 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('yanhua.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/05.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>烟花</h4>
+                                <p>漂亮的烟花效果</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
                     <!--<div class="col-md-3 col-xs-6 ">
                         <div class="imgbox">
                             <img src="@portal/images/07.jpg" alt="作品配图">

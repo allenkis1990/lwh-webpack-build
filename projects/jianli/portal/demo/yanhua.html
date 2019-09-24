@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title></title>
+    <style>
+        body{overflow: hidden;background:#000}
+    </style>
+</head>
+<body>
+<a style="color:red;
+display:inline-block;
+font-weight:bold;
+text-decoration:none;
+font-size:20px;
+cursor:pointer;
+margin-bottom:10px;" href="/">
+    <—返回首页
+</a>
+
+
+<script type="text/javascript" src="/demo/js/jquery-1.9.1.min.js"></script>
+<script>
+    var colorMap = {
+        0:'red',
+        1:'blue',
+        3:'pink',
+        4:'yellow',
+        5:'green',
+        6:'deepskyblue',
+        7:'greenyellow',
+        8:'rosybrown',
+        9:'aquamarine'
+    }
+
+    $(document).click(function(e){
+        var x= e.clientX;
+        var y= e.clientY;
+        var docheight=$(document).height();
+        console.log(docheight);
+        var docwidth=$(document).width();
+        var odiv=$("<div></div>");
+        odiv.css({"width":"10px","height":"65px","backgroundColor":"red","position":"absolute","top":docheight,"left":x});
+        $("body").append(odiv);
+        odiv.animate({"top":y},400,function(){
+            odiv.remove();
+            var arr=[];
+            for(var i=0;i<20;i++){
+                var randomNum = Math.round(Math.random()*9)
+                var curColor = colorMap[randomNum]
+//                console.log(randomNum);
+                arr[i]=$("<div></div>");
+                arr[i].css({"width":"5px","height":"5px","backgroundColor":curColor,"left":x,"top":y,"position":"absolute"})
+                $("body").append(arr[i]);
+                arr[i].speedX=parseInt(Math.random()*20-10);
+                arr[i].speedY=parseInt(Math.random()*20-10);
+            }
+            setInterval(function(){
+                for(var j=0;j<20;j++){
+                arr[j].css({"left":arr[j].offset().left+arr[j].speedX,"top":arr[j].offset().top+arr[j].speedY});
+                    arr[j].speedY+=0.7;
+                    if(arr[j].offset().left<0 || arr[j].offset().left>docwidth || arr[j].offset().top<0 || arr[j].offset().top>docheight){
+                           arr[j].remove();
+                    }
+                }
+
+            },50);
+        });
+
+    });
+</script>
+
+</body>
+</html>
