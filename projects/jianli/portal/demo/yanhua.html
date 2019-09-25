@@ -19,16 +19,19 @@
             }
         }
         *{margin:0;padding:0;cursor:pointer}
-        html{height:100%;}
-        body{overflow: hidden;background:#000;height:100%;}
-        h1{color:#fff;height:100%;display:flex;align-items: center;justify-content:center;
+        body{overflow: hidden;background:#000;}
+        h1{color:#fff;text-align: center;display:none}
+        .ani{
             -webkit-animation: 1s down_to_up linear;
             -o-animation: 1s down_to_up linear;
-            animation: 1s down_to_up linear;}
+            animation: 1s down_to_up linear;
+        }
     </style>
 </head>
 <body>
 <a style="color:red;
+top:0;left:0;
+position:fixed;
 display:inline-block;
 font-weight:bold;
 text-decoration:none;
@@ -44,6 +47,13 @@ margin-bottom:10px;" href="/">
 
 <script type="text/javascript" src="/demo/js/jquery-1.9.1.min.js"></script>
 <script>
+
+
+    $('h1').css({
+        'height':$(window).height()+'px',
+        'line-height':$(window).height()+'px'
+    }).show().addClass('ani')
+
     var colorMap = {
         0:'red',
         1:'blue',
