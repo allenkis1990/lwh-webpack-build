@@ -20,7 +20,7 @@
         }
         *{margin:0;padding:0;cursor:pointer}
         body{overflow: hidden;background:#000;}
-        h1{color:#fff;text-align: center;display:none}
+        h1{text-align:center;color:#fff;display:flex;align-content:center;justify-content: center;align-items: center}
         .ani{
             -webkit-animation: 1s down_to_up linear;
             -o-animation: 1s down_to_up linear;
@@ -48,10 +48,8 @@ margin-bottom:10px;" href="/">
 <script type="text/javascript" src="/demo/js/jquery-1.9.1.min.js"></script>
 <script>
 
-
     $('h1').css({
-        'height':$(window).height()+'px',
-        'line-height':$(window).height()+'px'
+        'height':$(window).height()+'px'
     }).show().addClass('ani')
 
     var colorMap = {
