@@ -6,7 +6,25 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title></title>
     <style>
-        body{overflow: hidden;background:#000}
+        @keyframes down_to_up {
+            from{
+                transform: translateY(30px);
+                -o-transform: translateY(30px);
+                -webkit-transform: translateY(30px);
+            }
+            to{
+                transform: translateY(0px);
+                -o-transform: translateY(0px);
+                -webkit-transform: translateY(0px);
+            }
+        }
+        *{margin:0;padding:0;cursor:pointer}
+        html{height:100%;}
+        body{overflow: hidden;background:#000;height:100%;}
+        h1{color:#fff;height:100%;display:flex;align-items: center;justify-content:center;
+            -webkit-animation: 1s down_to_up linear;
+            -o-animation: 1s down_to_up linear;
+            animation: 1s down_to_up linear;}
     </style>
 </head>
 <body>
@@ -19,6 +37,9 @@ cursor:pointer;
 margin-bottom:10px;" href="/">
     <—返回首页
 </a>
+<h1>
+    点击屏幕任意位置享受烟花带给你的快乐！
+</h1>
 
 
 <script type="text/javascript" src="/demo/js/jquery-1.9.1.min.js"></script>
@@ -35,7 +56,11 @@ margin-bottom:10px;" href="/">
         9:'aquamarine'
     }
 
+    var init = false
     $(document).click(function(e){
+        if(!init){
+            $('h1').hide();
+        }
         var x= e.clientX;
         var y= e.clientY;
         var docheight=$(document).height();
@@ -68,6 +93,8 @@ margin-bottom:10px;" href="/">
 
             },50);
         });
+
+        init = true
 
     });
 </script>
