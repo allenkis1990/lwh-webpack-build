@@ -1,6 +1,6 @@
 <template>
     <div>
-        <test :dataSource="obj" @say="fn()"></test>
+        <test :dataSource="obj" @say="fn()" class="abc"></test>
     </div>
 </template>
 

@@ -7,6 +7,7 @@
 
 <script>
 
+    //父组件上的attrs会穿透到子组件上
     export default {
         inheritAttrs:false,
         components:{
@@ -30,7 +31,8 @@
             }
         },
         mounted(){
-
+            console.log(this.$attrs,1);
+            console.log(this.$listeners,2);
         }
     }
 </script>
