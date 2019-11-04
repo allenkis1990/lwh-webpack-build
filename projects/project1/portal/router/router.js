@@ -119,6 +119,31 @@ export default new VueRouter({
                     ]
                 },
                 {
+                    name:'commu',
+                    path: 'commu',
+                    component: () => import(/* webpackChunkName: "portal/chunk/commu" */'@portal/views/parent-child-commu/index.vue'),
+                    children:[
+                        {
+                            name: '$parent$children',
+                            path: '$parent$children',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/$parent$children" */'@portal/views/parent-child-commu/$parent$children.vue')
+                                }
+                            }
+                        },
+                        {
+                            name: 'attrs&listeners',
+                            path: 'attrs&listeners',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/attrs&listeners" */'@portal/views/parent-child-commu/attrs&listeners.vue')
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
                     name:'vuex',
                     path: 'vuex',
                     component: () => import(/* webpackChunkName: "portal/chunk/vuex" */'@portal/views/vuex/vuex.vue'),

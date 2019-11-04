@@ -10,6 +10,7 @@
                 <li><a href="javascript:void(0)" @click="goState('directive')">directive</a></li>
                 <li><a href="javascript:void(0)" @click="goState('filter')">filter</a></li>
                 <li><a href="javascript:void(0)" @click="goState('component')">component</a></li>
+                <li><a href="javascript:void(0)" @click="goState('commu')">父子组件通讯</a></li>
                 <li><a href="javascript:void(0)" @click="goState('vuex')">vuex</a></li>
             </ul>
             <!--<img src="@portal/images/afei.jpg">
