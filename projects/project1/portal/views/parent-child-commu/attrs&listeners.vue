@@ -1,6 +1,7 @@
 <template>
     <div>
-        <test @click="fn" lwh="haha"></test>
+        <test @click="fn" lwh="haha" class="aaa" :aaa="1"></test>
+        <!--<test @click.native="fn()"></test>-->
     </div>
 </template>
 

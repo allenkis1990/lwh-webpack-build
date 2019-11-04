@@ -7,7 +7,7 @@
 
 <script>
 
-    //父组件上的attrs会穿透到子组件上
+    //如果非inheritAttrs:false  组件标签元素上的attr会加到div上 如果加了inheritAttrs:false 组件标签元素上的attrs就没了
     export default {
         inheritAttrs:false,
         components:{

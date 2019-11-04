@@ -32,6 +32,16 @@
             }
         },
         mounted(){
+            /**
+             * 父子组件传值方法：
+             * 1.在组件元素上加@click.native="fn()"  <test @click.native="fn()"></test>
+             * 2.$parent $children
+             * 3.$refs
+             * 4.props
+             * 5.$attrs $listeners
+             * 6.vuex
+             * 7.this.$emit('fuck')
+             */
         },
         methods: {
             stateGo(name){
