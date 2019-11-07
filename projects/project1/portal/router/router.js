@@ -94,7 +94,16 @@ export default new VueRouter({
                             path: 'orderList',
                             components:{
                                 default:function(){
-                                    return import(/* webpackChunkName: "portal/chunk/component-demoOrderList" */'@portal/views/component/component-demo-orderList.vue')
+                                    return import(/* webpackChunkName: "portal/chunk/component-demo-orderList" */'@portal/views/component/component-demo-orderList.vue')
+                                }
+                            }
+                        },
+                        {
+                            name: 'component-list',
+                            path: 'list',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/component-demo-digui" */'@portal/views/component/component-demo-digui.vue')
                                 }
                             }
                         },
