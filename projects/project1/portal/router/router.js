@@ -108,6 +108,15 @@ export default new VueRouter({
                             }
                         },
                         {
+                            name: 'component-ball',
+                            path: 'ball',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/component-demo-ball" */'@portal/views/component/component-demo-ball.vue')
+                                }
+                            }
+                        },
+                        {
                             name: 'component-async',
                             path: 'async',
                             components:{

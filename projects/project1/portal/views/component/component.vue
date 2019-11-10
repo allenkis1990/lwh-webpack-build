@@ -9,6 +9,7 @@
                 <li><a href="javascript:void(0)" @click="stateGo('component-async')">component-async</a></li>
                 <li><a href="javascript:void(0)" @click="stateGo('component-orderList')">demo-orderList</a></li>
                 <li><a href="javascript:void(0)" @click="stateGo('component-list')">demo-diguiList</a></li>
+                <li><a href="javascript:void(0)" @click="stateGo('component-ball')">demo-ball</a></li>
                 <li><a href="javascript:void(0)" @click="stateGo('$attrs$listeners')">$attrs$listeners</a></li>
             </ul>
         </div>
