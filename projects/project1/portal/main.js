@@ -18,6 +18,20 @@ Vue.prototype.$http = axios
 // 混合
 Vue.mixin(mixin)
 
+router.beforeEach(function(to,form,next){
+    console.log(`全局的router拦截from+to`,form,to)
+    next()
+})
+
+router.beforeResolve(function(to,form,next){
+    console.log('beforeResolve')
+    next()
+})
+
+router.afterEach(function(){
+    console.log('路由跳转完成');
+})
+
 var vm = new Vue({
     el:'#app',
     router,

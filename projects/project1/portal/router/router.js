@@ -30,6 +30,17 @@ export default new VueRouter({
                     component: () => import(/* webpackChunkName: "portal/chunk/home" */'@portal/views/home/home.vue')
                 },
                 {
+                    name:'router',
+                    path:'router',
+                    component:function(){
+                        return import(/* webpackChunkName: "portal/chunk/router" */'@portal/views/router/router.vue')
+                    },
+                    beforeEnter(to,form,next){
+                        console.log(form,'路由表里的form');
+                        next()
+                    }
+                },
+                {
                     name: 'test1',
                     path: 'test1',
                     component: () => import(/* webpackChunkName: "portal/chunk/test1" */'@portal/views/test1/test1.vue')
