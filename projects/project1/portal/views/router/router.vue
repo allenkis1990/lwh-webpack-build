@@ -27,7 +27,7 @@
             })
         },
         mounted() {
-
+//            console.log(this.$route,9999);
         },
         methods: {
             fn(){

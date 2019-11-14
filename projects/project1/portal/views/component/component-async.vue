@@ -18,6 +18,8 @@
             }
         },
         mounted(){
+            //matched能匹配到自己也可以匹配到父亲儿子
+            console.log(this.$route,999999);
         },
         methods: {
             fn(){

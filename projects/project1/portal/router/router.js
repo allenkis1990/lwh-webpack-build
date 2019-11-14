@@ -32,6 +32,9 @@ export default new VueRouter({
                 {
                     name:'router',
                     path:'router',
+                    meta:{
+                        name:'allen'
+                    },
                     component:function(){
                         return import(/* webpackChunkName: "portal/chunk/router" */'@portal/views/router/router.vue')
                     },
@@ -71,6 +74,9 @@ export default new VueRouter({
                 {
                     name:'component',
                     path: 'component',
+                    meta:{
+                        age:18
+                    },
                     component: () => import(/* webpackChunkName: "portal/chunk/component" */'@portal/views/component/component.vue'),
                     children:[
                         {
