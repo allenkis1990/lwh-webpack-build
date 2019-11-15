@@ -227,6 +227,15 @@ export default new VueRouter({
                                     return import(/* webpackChunkName: "portal/chunk/vuex-modules" */'@portal/views/vuex/vuex-modules.vue')
                                 }
                             }
+                        },
+                        {
+                            name: 'vuex-demo1',
+                            path: 'vuex-demo1',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/vuex-demo1" */'@portal/views/vuex/vuex-demo1.vue')
+                                }
+                            }
                         }
                     ]
                 }

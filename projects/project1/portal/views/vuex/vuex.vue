@@ -8,6 +8,7 @@
         <li><a href="javascript:void(0)" @click="stateGo('vuex-mutation')">mutation</a></li>
         <li><a href="javascript:void(0)" @click="stateGo('vuex-actions')">actions</a></li>
         <li><a href="javascript:void(0)" @click="stateGo('vuex-modules')">modules</a></li>
+        <li><a href="javascript:void(0)" @click="stateGo('vuex-demo1')">vuex-demo1</a></li>
       </ul>
     </div>
 
