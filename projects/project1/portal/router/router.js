@@ -72,6 +72,11 @@ export default new VueRouter({
                     component: () => import(/* webpackChunkName: "portal/chunk/filter" */'@portal/views/filter/filter.vue')
                 },
                 {
+                    name:'vuePlugin',
+                    path: 'vuePlugin',
+                    component: () => import(/* webpackChunkName: "portal/chunk/vuePlugin" */'@portal/views/vuePlugin/vuePlugin.vue')
+                },
+                {
                     name:'component',
                     path: 'component',
                     meta:{
