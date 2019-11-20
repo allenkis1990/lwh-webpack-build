@@ -17,7 +17,7 @@
             Fk
         },
         mounted(){
-            console.log(this.ojbk,'000');
+            console.log(this.ojbk,'0001');
         },
         methods: {
 
