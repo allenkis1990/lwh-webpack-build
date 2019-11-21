@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <style>
+        .canvas {
+            display: block;
+            position:absolute;
+            left:0;top:0
+        }
+        #canvas{width:100%;height:100%;z-index:99}
+        #canvas2{width:100%;height:100%;}
+        .main{width:500px;height:500px;margin:50px auto;position:relative;}
+    </style>
+</head>
+<body>
+<a style="color:red;
+display:inline-block;
+font-weight:bold;
+text-decoration:none;
+font-size:20px;
+cursor:pointer;
+margin-bottom:10px;" href="/">
+    <—返回首页
+</a>
+<button id="play">动！</button>
+<button id="stop">停！</button>
+<div class="main">
+    <canvas class="canvas" width="500" height="500" id="canvas"></canvas>
+    <canvas class="canvas" width="500" height="500" id="canvas2"></canvas>
+</div>
+<script>
+    var canvas = document.getElementById('canvas')
+    var ctx = canvas.getContext('2d')
+    createBgCanvas()
+    function createBgCanvas(){
+        var canvas2 = document.getElementById('canvas2')
+        var ctx2 = canvas2.getContext('2d')
+        ctx2.beginPath()
+        var gradient = ctx2.createLinearGradient(0,0,500,0)
+        gradient.addColorStop(0,'palevioletred')
+        gradient.addColorStop(0.5,'lightskyblue')
+        gradient.addColorStop(1,'pink')
+//        gradient.addColorStop(0.6,'green')
+//        gradient.addColorStop(0.8,'yellow')
+//        gradient.addColorStop(1,'blue')
+        ctx2.fillStyle = gradient
+        ctx2.fillRect(0,0,500,500)
+    }
+    var circleArr = []
+
+    var timerrr = null
+
+
+    var play = document.getElementById('play')
+    var stop = document.getElementById('stop')
+
+    play.addEventListener('click',function(){
+        if(timerrr){
+            return false
+        }
+        drawCircle()
+    })
+    stop.addEventListener('click',function(){
+        clearInterval(timerrr)
+        timerrr = null
+    })
+    createCircleArr(30)
+    drawCircle()
+
+    function drawCircle() {
+        timerrr = setInterval(function(){
+            ctx.clearRect(0, 0, 500, 500)
+
+            circleArr.forEach(function (circleItem) {
+                ctx.beginPath()
+                ctx.fillStyle = circleItem.rgba
+                if(circleItem.circleCenterX-circleItem.radius/2<0&&circleItem.speedX<0){
+                    circleItem.speedX = -circleItem.speedX
+                }
+
+                if(circleItem.circleCenterX+circleItem.radius/2>500&&circleItem.speedX>0){
+                    circleItem.speedX = -circleItem.speedX
+                }
+
+                if(circleItem.circleCenterY-circleItem.radius/2<0&&circleItem.speedY<0){
+                    circleItem.speedY = -circleItem.speedY
+                }
+
+                if(circleItem.circleCenterY+circleItem.radius/2>500&&circleItem.speedY>0){
+                    circleItem.speedY = -circleItem.speedY
+                }
+                circleItem.circleCenterX += circleItem.speedX
+                circleItem.circleCenterY += circleItem.speedY
+
+
+//                console.log(circleItem.circleCenterX,circleItem.circleCenterY);
+                ctx.arc(circleItem.circleCenterX, circleItem.circleCenterY, circleItem.radius, 0, 2 * Math.PI)
+                ctx.fill()
+            })
+        },20)
+    }
+    function createCircleArr(max) {
+        var timer = setInterval(function () {
+            //超过规定的个数就清除定时器，别再生成球了
+            if (circleArr.length >= max - 1) {
+                clearInterval(timer)
+            }
+            var circleCenterX = 100 + Math.ceil(Math.random() * 300)
+            var circleCenterY = 100 + Math.ceil(Math.random() * 300)
+            var speedX = -2+Math.ceil(Math.random()*4)
+            var speedY = -2+Math.ceil(Math.random()*4)
+            var radius = 8+Math.ceil(Math.random()*5)
+            var rgba = getRgba()
+            //如果两个都为0了球就不动了
+            if(speedX||speedY){
+                circleArr.push({
+                    circleCenterX,
+                    circleCenterY,
+                    rgba,
+                    speedX,
+                    speedY,
+                    radius
+                })
+            }
+        }, 1000 / 30)
+    }
+    function getRgba() {
+        var r = Math.floor(Math.random() * 256)
+        var g = Math.floor(Math.random() * 256)
+        var b = Math.floor(Math.random() * 256)
+        var a = 0.5 + Math.random() * 0.2
+        var rgba = `rgba(${r},${g},${b},${a})`
+        return rgba
+    }
+</script>
+</body>
+</html>
