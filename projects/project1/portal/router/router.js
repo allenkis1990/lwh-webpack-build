@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
+import {Routers} from '@portal/utils/plugin-loader'
 import Root from '@portal/views/root/root.vue'
 
 // meta: {
@@ -24,6 +25,7 @@ export default new VueRouter({
             name:'root',
             component: Root,
             children: [
+                ...Routers,
                 {
                     name: 'home',
                     path: 'home',
@@ -70,11 +72,6 @@ export default new VueRouter({
                     name:'filter',
                     path: 'filter',
                     component: () => import(/* webpackChunkName: "portal/chunk/filter" */'@portal/views/filter/filter.vue')
-                },
-                {
-                    name:'vuePlugin',
-                    path: 'vuePlugin',
-                    component: () => import(/* webpackChunkName: "portal/chunk/vuePlugin" */'@portal/views/vuePlugin/vuePlugin.vue')
                 },
                 {
                     name:'component',
