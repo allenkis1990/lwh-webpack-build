@@ -5,5 +5,8 @@ export const mutations = {
     },
     rootMuta1(){
         console.log('rootMuta1')
+    },
+    setUserInfo(state,userInfo){
+        state.$$userInfo = userInfo
     }
 }

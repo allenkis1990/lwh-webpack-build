@@ -43,6 +43,9 @@ app.get('/',function(req,res){
     res.redirect('/portal');
 })
 
+let mock = require('./server/mock/index')
+mock(app)
+
 
 
 function tryHasConFigServer(url){
