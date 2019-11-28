@@ -13,7 +13,7 @@
                 <li><a href="javascript:void(0)" @click="goState('commu')">父子组件通讯</a></li>
                 <li><a href="javascript:void(0)" @click="goState('vuex')">vuex</a></li>
                 <li><a href="javascript:void(0)" @click="goState('router')">路由</a></li>
-                <li><a href="javascript:void(0)" @click="goState('demo1Plugin')">demo1Plugin</a></li>
+                <li><a href="javascript:void(0)" @click="goState('ajaxRequest')">axios请求demo</a></li>
             </ul>
             <!--<img src="@portal/images/afei.jpg">
             <img src="@portal/images/皮卡22.jpg">-->

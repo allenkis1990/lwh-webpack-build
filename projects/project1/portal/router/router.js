@@ -3,7 +3,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
-import {Routers} from '@portal/utils/plugin-loader'
 import Root from '@portal/views/root/root.vue'
 
 // meta: {
@@ -25,7 +24,6 @@ export default new VueRouter({
             name:'root',
             component: Root,
             children: [
-                ...Routers,
                 {
                     name: 'home',
                     path: 'home',
@@ -59,6 +57,11 @@ export default new VueRouter({
                     name:'onlyPortal',
                     path: 'onlyPortal',
                     component: () => import(/* webpackChunkName: "portal/chunk/onlyPortal" */'@portal/views/onlyPortal/onlyPortal.vue')
+                },
+                {
+                    name:'ajaxRequest',
+                    path: 'ajaxRequest',
+                    component: () => import(/* webpackChunkName: "portal/chunk/ajaxRequest" */'@portal/views/ajaxRequest/index.vue')
                 },
                 {
                     name:'directive',

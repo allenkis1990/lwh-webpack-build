@@ -55,12 +55,12 @@ let config = {
     project:_project,
     dist:'dist',
     //port:!argv.design?'8080':'8181',
-    port:'8888',
+    port:'9999',
     designPort:'8181',
     // apps:['portal','center'],
     apps:['portal'],
-    // host:'127.0.0.1',
-    host:'192.168.28.248',
+    host:'127.0.0.1',
+    // host:'192.168.28.253',
     dev:{
         publicPath:'/'
     },

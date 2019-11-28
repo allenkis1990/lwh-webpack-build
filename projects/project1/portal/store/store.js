@@ -5,7 +5,6 @@ import {mutations} from '@portal/store/mutations'
 import {getters} from '@portal/store/getters'
 import {actions} from '@portal/store/actions'
 import {modules} from '@portal/store/modules'
-import {Stores} from '@portal/utils/plugin-loader'
 
 
 Vue.use(Vuex);
@@ -16,10 +15,7 @@ export default new Vuex.Store({
     mutations,
     getters,
     actions,
-    modules:{
-        ...modules,
-        ...Stores
-    }
+    modules
 })
 
 

@@ -10,9 +10,7 @@ import axios from 'axios'
 import mixin from '@portal/utils/mixin'
 import elementUi from '@portal/utils/element-ui'
 import dialogPlugin from '@portal/utils/dialog'
-import pluginLoader from '@portal/utils/plugin-loader'
 Vue.use(dialogPlugin)
-pluginLoader(Vue)
 
 
 //使用element-ui并且把各插件挂载到Vue上

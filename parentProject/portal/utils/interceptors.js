@@ -36,3 +36,7 @@ axios.interceptors.response.use(function (response) {
     }
     return Promise.reject(error);
 });
+
+//添加全局header头
+axios.defaults.headers.common['lwh'] = 'liuweiheng';
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
