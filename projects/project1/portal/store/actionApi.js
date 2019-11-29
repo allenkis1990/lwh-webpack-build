@@ -16,6 +16,12 @@ export const getUserInfoApi = function(){
         }
     })
 }
+export const getListApi = function(){
+    return $http.request({
+        url:'/getList',
+        method:'get'
+    })
+}
 export const getErrApi = function(){
     return $http.request({
         url:'/err',

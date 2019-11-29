@@ -1,5 +1,5 @@
 //actions的context相当于整个store可以调用state mutations getters调用的时候this.$store.dispatch('changeName')
-import {getUserInfoApi,getErrApi} from '@portal/store/actionApi'
+import {getUserInfoApi,getErrApi,getListApi} from '@portal/store/actionApi'
 import { Message } from 'element-ui'
 export const actions = {
     changeName: function (context, name) {
@@ -31,7 +31,19 @@ export const actions = {
             if(res.code===200){
                 context.commit('setUserInfo',res.info)
                 Message({
-                    message:'请求成功',
+                    message:'请求用户信息成功',
+                    type:'success'
+                })
+            }
+        })
+    },
+    getList(context){
+        getListApi().then(function(data){
+            var res = data.data
+            if(res.code===200){
+                context.commit('setList',res.info)
+                Message({
+                    message:'请求列表成功',
                     type:'success'
                 })
             }

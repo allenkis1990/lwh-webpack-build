@@ -8,5 +8,8 @@ export const mutations = {
     },
     setUserInfo(state,userInfo){
         state.$$userInfo = userInfo
+    },
+    setList(state,list){
+        state.$$list = list
     }
 }
