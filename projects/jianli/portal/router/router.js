@@ -48,6 +48,16 @@ export default new VueRouter({
                     name: 'projectPc',
                     path: 'projectPc',
                     component: () => import(/* webpackChunkName: "chunk/projectPc" */'@portal/views/projectJy/projectPc.vue')
+                },
+                {
+                    name: 'projectFwh',
+                    path: 'projectFwh',
+                    component: () => import(/* webpackChunkName: "chunk/projectFwh" */'@portal/views/projectJy/projectFwh.vue')
+                },
+                {
+                    name: 'projectXcx',
+                    path: 'projectXcx',
+                    component: () => import(/* webpackChunkName: "chunk/projectXcx" */'@portal/views/projectJy/projectXcx.vue')
                 }
             ]
         },

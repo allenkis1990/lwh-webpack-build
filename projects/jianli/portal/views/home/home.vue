@@ -305,7 +305,7 @@
                     </div>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('puxian-erji.html')">
                         <div class="imgbox">
-                            <img src="@portal/images/01.jpg" alt="作品配图">
+                            <img src="@portal/images/02.jpg" alt="作品配图">
                         </div>
                         <a href="javascript:void(0)">
                             <div class="zp-cover">
@@ -317,7 +317,7 @@
                     </div>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('puxian-sanji.html')">
                         <div class="imgbox">
-                            <img src="@portal/images/01.jpg" alt="作品配图">
+                            <img src="@portal/images/03.jpg" alt="作品配图">
                         </div>
                         <a href="javascript:void(0)">
                             <div class="zp-cover">
@@ -329,7 +329,7 @@
                     </div>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('phonePage1.html')">
                         <div class="imgbox">
-                            <img src="@portal/images/01.jpg" alt="作品配图">
+                            <img src="@portal/images/04.jpg" alt="作品配图">
                         </div>
                         <a href="javascript:void(0)">
                             <div class="zp-cover">
@@ -341,7 +341,7 @@
                     </div>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('phonePage2.html')">
                         <div class="imgbox">
-                            <img src="@portal/images/01.jpg" alt="作品配图">
+                            <img src="@portal/images/05.jpg" alt="作品配图">
                         </div>
                         <a href="javascript:void(0)">
                             <div class="zp-cover">
@@ -353,7 +353,7 @@
                     </div>
                     <div class="col-md-3 col-xs-6" @click="openDemoPage('xys1.html')">
                         <div class="imgbox">
-                            <img src="@portal/images/01.jpg" alt="作品配图">
+                            <img src="@portal/images/06.jpg" alt="作品配图">
                         </div>
                         <a href="javascript:void(0)">
                             <div class="zp-cover">
@@ -406,6 +406,31 @@
                             <div class="zp-cover">
                                 <h4>PC端项目</h4>
                                 <p>华博继续教育培训平台</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-3 col-xs-6" @click="stateGo('projectFwh')">
+                        <div class="imgbox">
+                            <img src="@portal/images/02.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>微信服务号项目(h5)</h4>
+                                <p>福建省会计继续教育培训平台服务号</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="stateGo('projectXcx')">
+                        <div class="imgbox">
+                            <img src="@portal/images/03.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>微信小程序项目</h4>
+                                <p>福建省会计继续教育培训平台小程序</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
