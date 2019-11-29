@@ -1,9 +1,5 @@
 
 console.log('当前是否开发环境'+dev);
-import axios from 'axios'
-//全局ajax拦截器
-import interceptors from '@portal/utils/interceptors'
-interceptors(axios)
 import Vue from 'vue'
 import App from '@portal/App.vue'
 import router from '@portal/router/router'
@@ -13,11 +9,16 @@ import elementUi from '@portal/utils/element-ui'
 import dialogPlugin from '@portal/utils/dialog'
 Vue.use(dialogPlugin)
 
+// import instance from '@portal/utils/ajaxRequest'
+// var $http = instance.create()
+// $http.request({
+//     url:'/aaaaaa',
+//     method:'get'
+// })
+
 
 //使用element-ui并且把各插件挂载到Vue上
 elementUi(Vue)
-//把axios挂载到Vue原型链上
-Vue.prototype.$http = axios
 // 混合
 Vue.mixin(mixin)
 

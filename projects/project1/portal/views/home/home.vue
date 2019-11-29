@@ -26,19 +26,6 @@
 <script>
     export default {
         mounted() {
-//            console.log(this.$http,'this');
-            this.$http.get('/aaa', {
-                params: {
-                    a: '1'
-                },
-                headers: {
-                    fuck: '2222'
-                }
-            }).then((data) => {
-                if(data){
-                    console.log(data.data, 'this');
-                }
-            })
         },
         methods: {
             goState: function (stateName) {
