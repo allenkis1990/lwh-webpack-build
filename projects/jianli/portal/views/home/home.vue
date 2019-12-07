@@ -201,30 +201,6 @@
                             </div>
                         </a>
                     </div>
-                    <!--<div class="col-md-3 col-xs-6 ">
-                        <div class="imgbox">
-                            <img src="@portal/images/07.jpg" alt="作品配图">
-                        </div>
-                        <a href="http://www.cbecm.com/Live/Index/m_index" target="_blank">
-                            <div class="zp-cover">
-                                <h4>移动端页面</h4>
-                                <p>列表页，兼容安卓、ios、平板</p>
-                                <img src="@portal/images/search.png" alt="查看">
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="imgbox">
-                            <img src="@portal/images/08.jpg" alt="作品配图">
-                        </div>
-                        <a href="drip.html" target="_blank">
-                            <div class="zp-cover">
-                                <h4>我的技术博客</h4>
-                                <p>自己平时的知识点积累~</p>
-                                <img src="@portal/images/search.png" alt="查看">
-                            </div>
-                        </a>
-                    </div>-->
                 </div>
             </div>
 
@@ -357,7 +333,19 @@
                         </div>
                         <a href="javascript:void(0)">
                             <div class="zp-cover">
-                                <h4>响应式页面</h4>
+                                <h4>响应式页面1</h4>
+                                <p>兼容平板、安卓、IOS、PC等各种不同终端。</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('xys2.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/07.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>响应式页面2</h4>
                                 <p>兼容平板、安卓、IOS、PC等各种不同终端。</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>

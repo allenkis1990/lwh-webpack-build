@@ -1,0 +1,266 @@
+/*页面重置*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+body {
+    font-size: 14px;
+    color: #222;
+}
+
+button {
+    border: none;
+    outline: none
+}
+
+a{text-decoration:none;color:#5e81d2}
+a:hover{text-decoration:underline}
+
+li {
+    list-style-type: none;
+}
+
+
+.mt30 {
+    margin-top: 0.3rem
+}
+
+.pd45 {
+    padding-left:0.45rem;
+    padding-right:0.45rem;
+}
+.overflow-a{overflow:auto}
+/*页面重置*/
+
+
+.boby-bg {
+    background: url('/demo/images/bodybg.jpg');
+    background-size: 100%;
+}
+
+.title-logo {
+    margin: 0.5rem 0 0.5rem;
+}
+
+.logo {
+    text-align: center
+}
+
+.logo-year {
+    width: 3.15rem;
+    height: 1rem;
+    margin-bottom: 0.1rem;
+}
+
+.logo-str {
+    width: 8.6rem;
+    height: 0.55rem;
+    margin-bottom: 0.3rem;
+}
+
+.logo-bm {
+    width: 4.22rem;
+    height: 1rem;
+}
+
+.container {
+    margin: 0 auto
+}
+
+.box {
+    position: relative;
+}
+
+.innerBox {
+    border: 3px solid #222;
+    background: #fff;
+    border-radius: 0.2rem;
+    position: relative;
+}
+
+.dateBox .innerBox {
+    padding: 0.32rem 0;
+}
+
+/*圆形图钉*/
+.innerBox:before, .innerBox:after {
+    content: '';
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: #ffe868;
+    border-radius: 50%;
+    position: absolute;
+    border: 2px solid #222;
+    top: 0.15rem
+}
+
+.innerBox:before {
+    left: 0.2rem
+}
+
+.innerBox:after {
+    right: 0.2rem
+}
+
+/*圆形图钉*/
+.box:after {
+    content: '';
+    display: block;
+    z-index: -2;
+    height: 1rem;
+    background: #ffe868;
+    position: absolute;
+    border: 3px solid #222;
+    border-radius: 0.2rem;
+    width: 100%;
+    box-sizing: border-box;
+    left: 0;
+    bottom: -0.1rem
+}
+
+.date {
+    line-height: 1.5;
+    text-align: center;
+}
+
+.content-cell {
+    position: relative;
+    border-bottom: 3px solid #222;
+}
+
+.content-cell .tit {
+    text-align: center;
+    font-size: 0.24rem;
+    font-weight: bold;
+    width: 3.2rem;
+    height: 0.66rem;
+    line-height: 0.66rem;
+    background-image: url('../images/tit-bg.png');
+    -webkit-background-size: 100%;
+    background-size: 100%;
+    position: absolute;
+    left: 50%;
+    top: -3px;
+    margin-left: -1.6rem;
+}
+
+.descri {
+    line-height: 1.9;
+    padding: 0.9rem 0rem .35rem;
+    text-indent: 0.3rem
+}
+
+.bm-zhuyi {
+    margin-top: 0.78rem;
+    position: relative;
+}
+
+.bm-zhuyi .bm-zhuyi-main {
+    width:99.5%;
+    position: relative;
+    z-index: 2;
+    background: #cfe7fa;
+    border: 1px solid #222;
+    padding: 0.12rem 0.1rem 0.12rem 0.2rem;
+}
+
+.bm-zhuyi .bm-zhuyi-after {
+    z-index: 1;
+    position: absolute;
+    width: 99.5%;
+    height: 100%;
+    background: #4fa4e5;
+    left: 3px;
+    top: 3px;
+    border: 1px solid #222;
+}
+
+.bm-zhuyi .arrow {
+    border-top: 14px solid transparent;
+    border-right: 14px solid #4fa4e5;
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    z-index:2;
+    background: #fff;
+}
+
+.bm-zhuyi span {
+    font-weight: bold
+}
+
+.bm-zhuyi button {
+    width: 77px;
+    height: 25px;
+    color: #fff;
+    text-align: center;
+    line-height: 25px;
+    background: #e43f4a;
+    border-radius: 12px;
+    margin: 0 5px 0;
+}
+
+.table {
+    display: table;
+    border-collapse: collapse;
+    width:100%;
+    border:1px solid #ddd;
+    margin:0.1rem 0 0.15rem 0;
+}
+
+.tr, .th {
+    border-bottom:1px solid #ddd;
+    display: table-row;
+}
+
+.th {
+    font-weight: bold;
+    background:#f2f2f2;
+}
+
+.th .td{
+    padding: 0.17rem 5px;
+}
+
+.tr .td{
+    padding:0.13rem 5px;
+}
+
+
+.td {
+    vertical-align: middle;
+    text-align:center;
+    border-right:1px solid #ddd;
+    display: table-cell;
+}
+.content-cell:last-child{border-bottom: none}
+.bm-tip{margin-bottom:0.28rem;color:#e43f4a;text-align:center}
+.ewm-text{margin-top:0.9rem;}
+.ewm-text span{font-weight:bold;}
+.ewm{text-align:center;padding:0.25rem 0}
+
+.footer{color:#fff;text-align:center;padding:0.3rem 0;line-height:2;}
+.footer a{text-decoration:none;color:#fff;}
+
+/*媒体查询*/
+@media screen and (min-width: 900px) {
+    .container {
+        width: 9rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .container {
+        width: 95%;
+    }
+    .bm-zhuyi .arrow {
+        border-top: 10px solid transparent;
+        border-right: 10px solid #4fa4e5;
+    }
+    .table{margin-top:10px;}
+}
