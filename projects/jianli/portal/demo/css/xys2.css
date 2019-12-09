@@ -38,6 +38,7 @@ li {
 .boby-bg {
     background: url('/demo/images/bodybg.jpg');
     background-size: 100%;
+    -webkit-background-size:100%;
 }
 
 .title-logo {
@@ -139,8 +140,8 @@ li {
     height: 0.66rem;
     line-height: 0.66rem;
     background-image: url('../images/tit-bg.png');
-    -webkit-background-size: 100%;
     background-size: 100%;
+    -webkit-background-size: 100%;
     position: absolute;
     left: 50%;
     top: -3px;
@@ -263,4 +264,7 @@ li {
         border-right: 10px solid #4fa4e5;
     }
     .table{margin-top:10px;}
+    .dateBox .innerBox {
+        padding: 0.32rem 36px;
+    }
 }
