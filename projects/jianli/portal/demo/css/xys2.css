@@ -37,8 +37,8 @@ li {
 
 .boby-bg {
     background: url('/demo/images/bodybg.jpg');
-    background-size: 100%;
     -webkit-background-size:100%;
+    background-size: 100%;
 }
 
 .title-logo {
