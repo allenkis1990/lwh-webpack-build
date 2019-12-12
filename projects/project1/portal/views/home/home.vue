@@ -14,6 +14,7 @@
                 <li><a href="javascript:void(0)" @click="goState('vuex')">vuex</a></li>
                 <li><a href="javascript:void(0)" @click="goState('router')">路由</a></li>
                 <li><a href="javascript:void(0)" @click="goState('ajaxRequest')">axios请求demo</a></li>
+                <li><a href="javascript:void(0)" @click="goState('render')">render函数</a></li>
             </ul>
             <!--<img src="@portal/images/afei.jpg">
             <img src="@portal/images/皮卡22.jpg">-->
