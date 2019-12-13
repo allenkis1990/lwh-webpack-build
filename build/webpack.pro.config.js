@@ -27,7 +27,7 @@ function getExports(project){
         if(config.apps.length>1){
             dirName = `${app}/`
         }
-        entry[`${dirName}app`] = path.resolve(__dirname,`${config.mainDir}/${project}/${app}/main.js`)
+        entry[`${dirName}app`] = ['core-js/es6/promise',path.resolve(__dirname,`${config.mainDir}/${project}/${app}/main.js`)]
         cacheGroups[`${app}Assets`] = {
             chunks: 'initial',// 只对入口文件处理
             test: path.resolve(__dirname,`${config.mainDir}/${project}/${app}/assets`),

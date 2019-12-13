@@ -22,3 +22,8 @@
 
 ### 运行压缩后的代码
 npm run dev:dist 详情见pro-server.js
+
+
+
+###问题与修复
+1.修复了ie11下Promise对象找不到 原因是异步懒加载babel-runtime识别不到Promise所以垫片失败需要手动引入corejs下的promise

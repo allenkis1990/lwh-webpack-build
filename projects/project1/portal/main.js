@@ -1,4 +1,4 @@
-
+// import 'babel-polyfill'
 console.log('当前是否开发环境'+dev);
 import Vue from 'vue'
 import App from '@portal/App.vue'
@@ -8,6 +8,8 @@ import mixin from '@portal/utils/mixin'
 import elementUi from '@portal/utils/element-ui'
 import dialogPlugin from '@portal/utils/dialog'
 Vue.use(dialogPlugin)
+
+
 
 // import instance from '@portal/utils/ajaxRequest'
 // var $http = instance.create()

@@ -33,7 +33,8 @@ function getExports(project){
     let alias = {}
     let rules = []
     config.apps.forEach((app)=>{
-        entry[`${app}/app`] = [path.resolve(__dirname,`${config.mainDir}/${project}/${app}/main.js`),path.resolve(__dirname,'dev-client.js')]
+    // ,path.resolve(__dirname,'dev-client.js')
+        entry[`${app}/app`] = ['core-js/es6/promise',path.resolve(__dirname,`${config.mainDir}/${project}/${app}/main.js`)]
 
         let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4|swf)`)
         rules.push(
@@ -265,7 +266,16 @@ function getExports(project){
                 use:[{
                     loader:'babel-loader',
                     query:{
-                        presets:['env','stage-0','react'],//把es6 es7转成es语法
+                        presets:['env','stage-0'],//把es6 es7转成es语法 stage-0 包含-1 -2 -x //env包含es-2015 16 17..
+                        // presets:[['env', {
+                        //     "targets": {
+                        //         "browsers": ["IE >= 8"]
+                        //     },
+                        //     "useBuiltIns": 'usage'
+                        // }],'stage-0'],//把es6 es7转成es语法
+
+                        //babel-polyfill是全局实现一次es6
+                        //babel-runtime是按需 和babel-plugin-transform-runtime合用
                         plugins: [
                             [
                                 'transform-runtime',
@@ -273,7 +283,9 @@ function getExports(project){
                                     corejs: true,
                                     helpers: true,
                                     regenerator: true,
+                                    //设置为true的话就彻底不支持ie了 如果设置为false就需要引入babel-polyfill
                                     useESModules: true,
+                                    // useBuiltIns: 'usage',
                                     moduleName: 'babel-runtime'
                                 },
                                 "component",
@@ -285,6 +297,7 @@ function getExports(project){
                         ]
                     }
                 }],
+                verboseWhenProfiling:false,
                 threads: 3,//你要开启多少个子进程去处理这一类型的文件
                 verbose: true//是否要输出详细的日志 verbose
             }),
