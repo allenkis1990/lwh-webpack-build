@@ -351,6 +351,18 @@
                             </div>
                         </a>
                     </div>
+                    <div class="col-md-3 col-xs-6" @click="openDemoPage('xys3.html')">
+                        <div class="imgbox">
+                            <img src="@portal/images/07.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>响应式页面3</h4>
+                                <p>兼容平板、安卓、IOS、PC等各种不同终端。</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
 
