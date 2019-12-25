@@ -64,8 +64,13 @@
                     <!--<p class="center"><img src="@portal/images/mypic.jpg" alt="头像" /></p>-->
                     <div class="my-intro">
                         <p>
-                            我叫Allen，是一个来自福州的前端工程师，这个简历博客存放了一些平常自己做的一些简单的小DEMO，博客使用的技术是：前端框架：Vuejs，后端：nodejs的express框架，构建工具：webpack，web静态资源服务：NGINX，
-                            项目工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal')">https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal</a>。
+                            我叫Allen，是一个来自福州的前端工程师，这个简历博客存放了一些平常自己做的一些简单的小DEMO，和以往做过的作品，博客使用的技术是：前端框架：Vuejs，后端：nodejs的express框架，构建工具：webpack，代理服务器：NGINX，
+                            博客工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal')">https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal</a>。
+                        </p>
+                        <p>
+                            在前端工作中为了提高工作效率和契合某些业务场景，使用webpack+vue搭建过一些脚手架。<br>
+                            多子项目前端脚手架工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build')">https://github.com/allenkis1990/lwh-webpack-build</a><br>
+                            微服务前端脚手架工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh2-webpack-build')">https://github.com/allenkis1990/lwh2-webpack-build</a>
                         </p>
                     </div>
                 </div>
