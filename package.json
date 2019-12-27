@@ -94,6 +94,7 @@
     "object.values": "^1.0.4",
     "postcss-discard-comments": "^4.0.1",
     "postcss-minify-gradients": "^4.0.1",
+    "prerender-spa-plugin": "^3.4.0",
     "sax": "^1.2.4",
     "socket.io": "^1.0.2",
     "video.js": "^7.2.3",

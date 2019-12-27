@@ -16,7 +16,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");//提取css到�
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//压缩css插件
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-
+// const PrerenderSPAPlugin = require('prerender-spa-plugin')
 function getExports(project){
     let entry = {}
     let cacheGroups = {}
@@ -346,6 +346,11 @@ function getExports(project){
                     }
                 }
             }),
+            //服务端预渲染，适合静态页面
+            // new PrerenderSPAPlugin({
+            //     staticDir:path.resolve(__dirname,'..',config.dist,project),
+            //     routes:['/home']
+            // })
             //new MoveAssetsToDirPlugin()
         ])
     }
