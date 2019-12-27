@@ -82,6 +82,22 @@ export default new VueRouter({
                     component: () => import(/* webpackChunkName: "portal/chunk/render" */'@portal/views/render/render.vue')
                 },
                 {
+                    name:'demo',
+                    path:'demo',
+                    component:()=>import(/* webpackChunkName: "portal/chunk/demo" */'@portal/views/demo/index.vue'),
+                    children:[
+                        {
+                            name:'demo-sku',
+                            path:'demo-sku',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/demo-sku" */'@portal/views/demo/sku.vue')
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
                     name:'component',
                     path: 'component',
                     meta:{

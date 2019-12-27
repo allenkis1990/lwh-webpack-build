@@ -39,6 +39,9 @@
         mounted(){
 
         },
+        activated(){
+
+        },
         methods: {
             getCurDiatance(init){
                 console.log(this[init]);
