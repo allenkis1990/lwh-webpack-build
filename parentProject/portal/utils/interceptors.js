@@ -73,5 +73,5 @@ export default function(instance){
 }
 
 //添加全局header头
-axios.defaults.headers.common['lwh'] = 'liuweiheng';
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// axios.defaults.headers.common['lwh'] = 'liuweiheng123';
+axios.defaults.headers.post['Content-Type'] = 'application/json';

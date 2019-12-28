@@ -13,3 +13,10 @@ export const getSkuDetailApi = function(){
         method:'get'
     })
 }
+export const getSkuItemArrApi = function(params){
+    return $http.request({
+        url:'/getSkuItemArr',
+        method:'post',
+        data:params
+    })
+}

@@ -166,6 +166,46 @@ export function setCookie(key,value){
     localStorage.setItem(key,value)
 }
 
+
+function isObj(obj){
+    var type = Object.prototype.toString.call(obj)
+    if(type==='[object Object]'){
+        return true
+    }else{
+        return false
+    }
+}
+
+
 export function getCookie(key){
     return localStorage.getItem(key)
+}
+
+export function deepCopy(target){
+    var result
+    var objType = isObj(target)?'object':(Array.isArray(target)?'array':'')
+    if(typeof target!=='object'&&target!==null){
+        result = target
+    }else if(objType==='object'){
+        result = {}
+        for(let key in target){
+            if(typeof target[key]==='object'){
+                result[key] = deepCopy(target[key])
+            }else{
+                result[key] = target[key]
+            }
+        }
+    }else if(objType==='array'){
+        result = []
+        for(let i = 0;i<target.length;i++){
+            if(typeof target[i]==='array'){
+                result[i] = deepCopy(target[i])
+            }else{
+                result[i] = target[i]
+            }
+        }
+    }else{
+        result = target
+    }
+    return result
 }

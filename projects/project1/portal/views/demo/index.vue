@@ -34,8 +34,25 @@
         },
         methods: {
             stateGo(name){
+                var urlParams = [
+                    {
+                        propertyCode:'year',
+                        value:'skuItem002',
+                        valueCode:'2019',
+                        valueName:'2019'
+                    },
+                    {
+                        propertyCode:'area',
+                        value:'skuItem103',
+                        valueCode:'quanzhou',
+                        valueName:'泉州'
+                    }
+                ]
                 this.$router.push({
-                    name:name
+                    name:name,
+                    query:{
+                        urlParams:JSON.stringify(urlParams)
+                    }
                 })
             }
         }
