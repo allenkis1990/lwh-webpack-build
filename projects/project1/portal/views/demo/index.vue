@@ -50,9 +50,9 @@
                 ]
                 this.$router.push({
                     name:name,
-                    query:{
-                        urlParams:JSON.stringify(urlParams)
-                    }
+//                    query:{
+//                        urlParams:JSON.stringify(urlParams)
+//                    }
                 })
             }
         }

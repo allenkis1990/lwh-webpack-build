@@ -30,7 +30,7 @@
                 this.skuItemData.valueCode = item.valueCode
                 this.skuItemData.valueName = item.valueName
                 this.skuItemData.show = false
-                this.$emit('itemChanged')
+                this.$emit('itemChanged',item)
             }
         }
     }

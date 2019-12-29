@@ -1,28 +1,28 @@
 <template>
     <div>
         <sku-list :sku-data="skuData"
+                  @itemChanged="itemChanged"
+                  @cancelSelect="cancelSelect"
                   @skuLoaded="skuLoaded"
                   ref="skuComponent"
                   v-model="skuParams"></sku-list>
 
-        <div v-for="(item,index) in skuParams.skuList" :key="item.propertyCode">
+        <div v-for="(item,index) in skuParams" :key="item.propertyCode">
             propertyId:{{item.propertyId}} ,propertyCode:{{item.propertyCode}} ,value:{{item.value}} ,,valueCode:{{item.valueCode}}
         </div>
-
-        <!--<button @click="clickBtn">btn</button>-->
     </div>
 </template>
 
 <script>
     import {mapActions} from 'vuex'
-    import skuList from '@portal/views/demo/component/skuList.vue'
+    import skuList from '@portal/views/demo/component/skuComponent/skuList.vue'
 
     export default {
         data() {
             return {
                 skuData: [],
-                skuParams: {},
-                urlParams:{}
+                skuParams: [],
+                urlParams:[]
             }
         },
         mounted() {
@@ -35,21 +35,31 @@
             ...mapActions('demo', {
                 getSkuActions: 'getSkuDetail'
             }),
-            clickBtn(){
-//                console.log(this.$refs.skuList);
-                var skuListComponent = this.$refs.skuComponent
-                skuListComponent.hideItem('year')
-            },
             setUrlParamsInSkuList(){
                 this.urlParams = JSON.parse(this.$route.query.urlParams)
-                var skuListComponent = this.$refs.skuComponent
-                this.urlParams.forEach((item)=>{
-                    skuListComponent.hideItem(item.propertyCode)
-                    skuListComponent.setItemValue(item.propertyCode,item.value,item.valueCode,item.valueName)
-                })
+                if(Array.isArray(this.urlParams)&&this.urlParams.length){
+                    this.skuParams = this.urlParams
+                    console.log(this.skuParams,3333);
+                }
             },
             skuLoaded(){
-                this.setUrlParamsInSkuList()
+                this.urlParams = this.$route.query.urlParams
+                if(this.urlParams){
+                    this.setUrlParamsInSkuList()
+                }
+            },
+            itemChanged(item){
+                var skuListComponent = this.$refs.skuComponent
+                if(item.valueCode==='quanzhou'){
+                    skuListComponent.hideItem('year')
+                    skuListComponent.setItemValue('year','','','')
+                }
+            },
+            cancelSelect(item){
+                var skuListComponent = this.$refs.skuComponent
+                if(item.valueCode==='quanzhou'){
+                    skuListComponent.showItem('year')
+                }
             }
         },
         components: {

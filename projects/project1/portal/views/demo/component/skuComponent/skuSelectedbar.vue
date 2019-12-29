@@ -5,7 +5,7 @@
             class="skuSelectedItem">
             {{item.propertyCName}}:
             <button class="btn current">{{item.valueName}}
-                <span class="close" @click="cancel($event,item.propertyCode,index)">x</span>
+                <span class="close" @click="cancel($event,item,index)">x</span>
             </button>
         </li>
     </ul>
@@ -27,10 +27,11 @@
         mounted(){
         },
         methods: {
-            cancel(e,propertyCode,idx){
+            cancel(e,item,idx){
                 e.stopPropagation()
                 this.seletedData.splice(idx,1)
-                this.$emit('cancelSelect',propertyCode)
+                console.log(item);
+                this.$emit('cancelSelect',item)
             }
         }
     }

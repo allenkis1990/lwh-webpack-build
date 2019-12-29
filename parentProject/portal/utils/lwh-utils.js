@@ -209,3 +209,9 @@ export function deepCopy(target){
     }
     return result
 }
+
+export function isSameObj(obj1,obj2){
+    var obj1Sort = JSON.stringify(obj1).split('').sort()
+    var obj2Sort = JSON.stringify(obj2).split('').sort()
+    return JSON.stringify(obj1Sort)===JSON.stringify(obj2Sort)
+}
