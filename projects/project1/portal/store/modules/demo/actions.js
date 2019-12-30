@@ -1,4 +1,4 @@
-import {getSkuDetailApi,getSkuItemArrApi} from '@portal/store/modules/demo/actionApi'
+import {getSkuDetailApi,getSkuItemArrApi,getShoppingCartListApi} from '@portal/store/modules/demo/actionApi'
 export const actions = {
     getSkuDetail: function (context) {
         return new Promise((resolve,reject)=>{
@@ -15,6 +15,18 @@ export const actions = {
     getSkuItemArr: function (context,params) {
         return new Promise((resolve,reject)=>{
             getSkuItemArrApi(params).then(function (data) {
+                let res = data.data
+                if(res.code==200){
+                    resolve(res)
+                }else{
+                    reject()
+                }
+            })
+        })
+    },
+    getShoppingCartList: function (context) {
+        return new Promise((resolve,reject)=>{
+            getShoppingCartListApi().then(function (data) {
                 let res = data.data
                 if(res.code==200){
                     resolve(res)

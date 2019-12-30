@@ -3,20 +3,30 @@
  */
 import instance from '@portal/utils/ajaxRequest'
 
-var $http = instance.create({
+var base1 = instance.create({
     baseURL: 'http://127.0.0.1:8989/sku'
+})
+var base2 = instance.create({
+    baseURL: 'http://127.0.0.1:8989/shoppingCart'
 })
 
 export const getSkuDetailApi = function(){
-    return $http.request({
+    return base1.request({
         url:'/getSkuDetail',
         method:'get'
     })
 }
 export const getSkuItemArrApi = function(params){
-    return $http.request({
+    return base1.request({
         url:'/getSkuItemArr',
         method:'post',
         data:params
+    })
+}
+
+export const getShoppingCartListApi = function(params){
+    return base2.request({
+        url:'/getShoppingCartList',
+        method:'get'
     })
 }

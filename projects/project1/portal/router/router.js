@@ -94,6 +94,15 @@ export default new VueRouter({
                                     return import(/* webpackChunkName: "portal/chunk/demo-sku" */'@portal/views/demo/sku.vue')
                                 }
                             }
+                        },
+                        {
+                            name:'demo-shoppingCart',
+                            path:'demo-shoppingCart',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/demo-shoppingCart" */'@portal/views/demo/shoppingCart.vue')
+                                }
+                            }
                         }
                     ]
                 },

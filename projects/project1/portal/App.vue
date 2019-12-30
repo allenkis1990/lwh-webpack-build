@@ -38,6 +38,8 @@ export default {
   /*css 和 less都可以引入*/
   .fuck-enter,.fuck-leave-active{margin-left:-200px;}
   .fuck-enter-active,.fuck-leave-active{transition:all 1s ease;}
+</style>
+<style lang="less">
   @import '~@portal/less/main.less';/*完整*/
 </style>
 

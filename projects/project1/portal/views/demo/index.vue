@@ -3,6 +3,7 @@
         <div v-if="showNav">
             <ul>
                 <li><a href="javascript:void(0)" @click="stateGo('demo-sku')">sku组件</a></li>
+                <li><a href="javascript:void(0)" @click="stateGo('demo-shoppingCart')">购物车组件</a></li>
             </ul>
         </div>
 
