@@ -1,7 +1,9 @@
 <template>
-    <div>
+
+    <div style="width:780px;margin:20px auto" class="shoppingCart">
         <shopping-cart :shopping-cart-data="shoppingCartList"></shopping-cart>
     </div>
+
 </template>
 
 <script>
@@ -11,11 +13,11 @@
     export default {
         data() {
             return {
-                shoppingCartList:[]
+                shoppingCartList: []
             }
         },
         mounted() {
-            this.getShoppingCartActions().then((data)=>{
+            this.getShoppingCartActions().then((data) => {
                 this.shoppingCartList = data.info
             })
         },
@@ -27,14 +29,11 @@
         components: {
             shoppingCart
         },
-        watch:{
-
-        }
+        watch: {}
     }
 </script>
 <style>
-    body, html {
-        width: 100%;
-        height: 100%;
-    }
+    .shoppingCart table:last-child td{border-top:none}
+    .shoppingCart table:first-child td{border-top:1px solid #fff}
+    .shoppingCart table td{padding:5px 10px;text-align: center}
 </style>
