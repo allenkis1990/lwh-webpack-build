@@ -1,6 +1,6 @@
 <template>
     <div>
-        {{shoppingCartList}}
+        <!--{{shoppingCartList}}-->
         <table>
             <tr>
                 <td width="50">No.</td>
@@ -9,7 +9,12 @@
                 <td width="150">操作</td>
             </tr>
             <template v-for="(item,index) in shoppingCartList">
-                <shopping-cart-cell :key="item.name" :cell-data="item"></shopping-cart-cell>
+                <!--@selectOneUnit="selectOneUnit"-->
+                <!--@selectItem="selectItem"-->
+                <shopping-cart-cell :key="item.name"
+                                    @deleteOneUnit="deleteOneUnit"
+                                    v-on="$listeners"
+                                    :cell-data="item"></shopping-cart-cell>
             </template>
         </table>
     </div>
@@ -34,10 +39,25 @@
         },
         methods: {
             initData(item){
-                item.checked=false
+                this.$set(item,'checked',false)
                 item.subList.forEach((subItem)=>{
-                    subItem.checked = false
+                    this.$set(subItem,'checked',false)
                 })
+            },
+            selectOneUnitUtils(cellData,boolean){
+                cellData.subList.forEach((item)=>{
+                    item.checked = boolean
+                })
+                cellData.checked = boolean
+            },
+            //cell组件删除掉整个单位的item时需要大item也删掉
+            deleteOneUnit(id){
+                let idx = this.shoppingCartList.findIndex((item)=>{
+                    return item.id===id
+                })
+                if(idx>-1){
+                    this.shoppingCartList.splice(idx,1)
+                }
             }
         },
         components:{
@@ -46,7 +66,6 @@
         watch:{
             shoppingCartData(nv){
                 if(nv&&nv.length){
-                    console.log(nv,1);
                     var shoppingCartList = deepCopy(nv)
                     shoppingCartList.forEach((item)=>{
                         this.initData(item)

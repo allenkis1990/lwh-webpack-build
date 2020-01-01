@@ -1,7 +1,15 @@
 <template>
 
-    <div style="width:780px;margin:20px auto" class="shoppingCart">
-        <shopping-cart :shopping-cart-data="shoppingCartList"></shopping-cart>
+    <div style="width:780px;margin:20px auto;position:relative" class="shoppingCart">
+        <!--<button @click="fn">click</button>-->
+        <shopping-cart :shopping-cart-data="shoppingCartList"
+                       ref="shoppingCartList"
+                       @beforeSelectOneUnit="beforeSelectOneUnit"
+                       @selectOneUnit="selectOneUnit"
+                       @beforeSelectItem="beforeSelectItem"
+                       @selectItem="selectItem"
+                       @beforeDeleteItem="beforeDeleteItem"
+                       @deleteItem="deleteItem"></shopping-cart>
     </div>
 
 </template>
@@ -24,7 +32,25 @@
         methods: {
             ...mapActions('demo', {
                 getShoppingCartActions: 'getShoppingCartList'
-            })
+            }),
+            beforeSelectItem(item,cellData,next){
+                next()
+            },
+            beforeSelectOneUnit(cellData,next){
+                next()
+            },
+            selectItem(item,cellData){
+                console.log(item,cellData,123);
+            },
+            selectOneUnit(cellData){
+                console.log(cellData,99);
+            },
+            beforeDeleteItem(item,next){
+                next()
+            },
+            deleteItem(){
+                console.log('删除成功');
+            }
         },
         components: {
             shoppingCart

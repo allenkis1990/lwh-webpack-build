@@ -4,10 +4,10 @@
 import instance from '@portal/utils/ajaxRequest'
 
 var base1 = instance.create({
-    baseURL: 'http://127.0.0.1:8989/sku'
+    baseURL: 'http://127.0.0.1:8787/sku'
 })
 var base2 = instance.create({
-    baseURL: 'http://127.0.0.1:8989/shoppingCart'
+    baseURL: 'http://127.0.0.1:8787/shoppingCart'
 })
 
 export const getSkuDetailApi = function(){
