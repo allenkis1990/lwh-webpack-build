@@ -2,9 +2,20 @@
     <ul>
         <sku-selected-bar
                 :seleted-data="seletedData"
-                @cancelSelect="cancelSelect"></sku-selected-bar>
+                @clearSelectedBar="clearSelectedBar"
+                @cancelSelect="cancelSelect">
+            <template #default>
+                <li style="margin-right:10px"
+                    class="skuSelectedItem fl">
+                    爱好:
+                    <button class="btn current">运动</button>
+                </li>
+            </template>
+
+        </sku-selected-bar>
         <template v-for="(item,index) in skuList">
             <sku-item :sku-item-data="item"
+                      @beforeItemChanged="beforeItemChanged"
                       @itemChanged="itemChanged"></sku-item>
         </template>
     </ul>
@@ -38,10 +49,54 @@
                 //获取单个SKU列表的请求
                 getSkuItemArrActions:'getSkuItemArr'
             }),
+            //判断当前事件是否存在emit事件
+            hasEmitEvents(eventName){
+                let bol
+                if(this._events&&this._events[eventName]&&this._events[eventName].length){
+                    bol = true
+                }else{
+                    bol = false
+                }
+                return bol
+            },
+            //清空已选tab
+            clearSelectedBar(arr){
+                let context = this
+                let hasEmitEvents = this.hasEmitEvents('beforeClearSelected')
+                if(hasEmitEvents){
+                    this.$emit('beforeClearSelected',this.seletedData,()=>{
+                        clearSelectedBar(context)
+                    })
+                }else{
+                    clearSelectedBar(context)
+                }
+                function clearSelectedBar(context){
+                    if(arr.length){
+                        console.log(arr);
+                        //对比取消掉了哪些，把取消掉的恢复显示SKU恢复成空
+                        context.skuList.forEach((item)=>{
+                            arr.forEach((subItem)=>{
+                                if(item.propertyCode===subItem){
+                                    item.value=''
+                                    item.valueName=''
+                                    item.valueCode=''
+                                    context.showItem(item.propertyCode)
+                                }
+                            })
+                        })
+                        context.setModelValue()
+                    }
+                    context.seletedData = []
+                    context.$emit('clearSelectedBar')
+                }
+            },
             //每个item被选的时候促发，每次被选都要设置一下v-model和更新已选UI
             itemChanged(item){
                 this.$emit('itemChanged',item)
                 this.setModelValue()
+            },
+            beforeItemChanged(item,next){
+                this.$emit('beforeItemChanged',item,next)
             },
             //取消选择时促发，取消选择后显示出来
             cancelSelect(item){
@@ -140,19 +195,22 @@
             skuSelectedBar
         },
         watch:{
-            //拿到传进来的dataSource后为了不污染，先进行深拷贝
-            skuData(nv){
-                if(nv&&nv.length){
-                    var skuList = deepCopy(nv)
-                    skuList.forEach((item)=>{
-                        this.initSkuData(item)
-                        this.getSkuItemList(item)
-                    })
-                    this.skuList = skuList
-                    this.setModelValue()
-                    //v-model就绪后暴露出去的方法
-                    this.$emit('skuLoaded')
-                }
+            skuData:{
+                handler(nv){
+                    if(nv&&nv.length){
+                        //拿到传进来的dataSource后为了不污染，先进行深拷贝
+                        var skuList = deepCopy(nv)
+                        skuList.forEach((item)=>{
+                            this.initSkuData(item)
+                            this.getSkuItemList(item)
+                        })
+                        this.skuList = skuList
+                        this.setModelValue()
+                        //v-model就绪后暴露出去的方法
+                        this.$emit('skuLoaded')
+                    }
+                },
+                deep:true
             },
             value:{
                 //主要是用来v-model有回填时候

@@ -1,12 +1,17 @@
 <template>
-    <ul>
+    <ul class="clear">
+        <slot></slot>
         <li v-for="(item,index) in seletedData"
+            style="margin-right:10px"
             :key="item.propertyCode"
-            class="skuSelectedItem">
+            class="skuSelectedItem fl">
             {{item.propertyCName}}:
             <button class="btn current">{{item.valueName}}
                 <span class="close" @click="cancel($event,item,index)">x</span>
             </button>
+        </li>
+        <li>
+            <a href="javascript:void(0)" @click="clearSelectedBar">清空已选SKU</a>
         </li>
     </ul>
 </template>
@@ -27,6 +32,12 @@
         mounted(){
         },
         methods: {
+            clearSelectedBar(){
+                let arr = this.seletedData.map((item)=>{
+                    return item.propertyCode
+                })
+                this.$emit('clearSelectedBar',arr)
+            },
             cancel(e,item,idx){
                 e.stopPropagation()
                 this.seletedData.splice(idx,1)
@@ -36,9 +47,8 @@
         }
     }
 </script>
-<style scoped>
+<style>
     .skuSelectedItem{margin-bottom:15px;}
-    .skuSelectedItem:last-child{margin-bottom:0}
     .skuSelectedItem .btn{position:relative}
     .skuSelectedItem .close{font-size:18px;position:absolute;right:2px;top:7px;line-height:0;}
 </style>

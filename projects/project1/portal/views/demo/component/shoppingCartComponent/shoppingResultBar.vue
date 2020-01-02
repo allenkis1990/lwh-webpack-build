@@ -5,7 +5,7 @@
                      @change="selectAll()"></el-checkbox>
         全选
         <span style="margin-left:30px;">
-            当前共选中<span class="blue">{{selectedCount}}</span>件商品
+            当前共选中<span class="blue">{{selectedCount}}</span>件商品，总价<span class="blue">{{totalPrice}}</span>元
         </span>
         <el-button type="primary"
                    @click="batchDelete"
@@ -51,10 +51,21 @@
                     })
                 })
                 return count
+            },
+            totalPrice(){
+                let res = 0
+                this.shoppingCartData.forEach((item)=>{
+                    item.subList.forEach((subItem)=>{
+                        if(subItem.checked){
+                            res = (res*1000 + subItem.price*1000)/1000
+                        }
+                    })
+                })
+                return res
             }
         },
         methods: {
-            loadingDailog(msg){
+            loadingDailog(){
                 let loading = this.$loading.service({
                     lock: true,
                     spinner: 'el-icon-loading',
@@ -193,7 +204,7 @@
                     showCancelButton:true,
                     beforeClose(type,dialog,done){
                         function batchDelete(context){
-                            let loading = context.loadingDailog('删除商品中请稍后')
+                            let loading = context.loadingDailog()
                             context.batchDeleteAction(()=>{
                                 context.doBatchDelete()
                                 loading.close()
@@ -229,7 +240,6 @@
             shoppingCartData:{
                 handler(nv){
                     this.doCheck(nv)
-//                    console.log(nv,1212121212,this.checked);
                 },
                 deep:true
             }

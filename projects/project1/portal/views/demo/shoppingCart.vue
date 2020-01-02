@@ -5,6 +5,9 @@
                    @click="getShoppingCartList"
                    :loading="loading">刷新购物车数据
         </el-button>
+        <el-button type="primary"
+                   @click="getSubmitData">获取提交数据
+        </el-button>
         <shopping-cart :shopping-cart-data="shoppingCartList"
                        ref="shoppingCartList"
                        @beforeSelectOneUnit="beforeSelectOneUnit"
@@ -15,10 +18,10 @@
                        @deleteItem="deleteItem"
                        @beforeSelectAll="beforeSelectAll"
                        @selectAll="selectAll"
-                       @beforeGoPay="beforeGoPay"
-                       @goPay="goPay"
                        @beforeBatchDelete="beforeBatchDelete"
-                       @batchDelete="batchDelete"></shopping-cart>
+                       @batchDelete="batchDelete"
+                       @beforeGoPay="beforeGoPay"
+                       @goPay="goPay"></shopping-cart>
     </div>
 
 </template>
@@ -42,6 +45,11 @@
             ...mapActions('demo', {
                 getShoppingCartActions: 'getShoppingCartList'
             }),
+            getSubmitData(){
+                let shoppingCartListComponent = this.$refs.shoppingCartList
+                let result = shoppingCartListComponent.getPayParams()
+                console.log('购物车提交的数据======>',result);
+            },
             getShoppingCartList(){
                 this.loading = true
                 this.getShoppingCartActions().then((data) => {

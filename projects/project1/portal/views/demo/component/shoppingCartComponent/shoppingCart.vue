@@ -17,6 +17,7 @@
             </template>
         </table>
         <shopping-result-bar
+                ref="shoppingResultBar"
                 v-if="shoppingCartList.length"
                 v-on="$listeners"
                 @changeShoppingData="changeShoppingData"
@@ -38,8 +39,7 @@
         },
         data(){
             return {
-                shoppingCartList:[],
-                noData:false
+                shoppingCartList:[]
             }
         },
         mounted(){
@@ -55,12 +55,6 @@
                     this.$set(subItem,'checked',false)
                 })
             },
-            selectOneUnitUtils(cellData,boolean){
-                cellData.subList.forEach((item)=>{
-                    item.checked = boolean
-                })
-                cellData.checked = boolean
-            },
             //cell组件删除掉整个单位的item时需要大item也删掉
             deleteOneUnit(id){
                 let idx = this.shoppingCartList.findIndex((item)=>{
@@ -69,6 +63,12 @@
                 if(idx>-1){
                     this.shoppingCartList.splice(idx,1)
                 }
+            },
+            //暴露给组件外部使用
+            getPayParams(){
+                let shoppingResultBarComponent = this.$refs.shoppingResultBar
+                let result = shoppingResultBarComponent.getPayParams()
+                return result
             }
         },
         components:{
@@ -85,16 +85,6 @@
                             this.initData(item)
                         })
                         this.shoppingCartList = shoppingCartList
-                    }
-                },
-                deep:true
-            },
-            shoppingCartList:{
-                handler(nv){
-                    if(nv&&nv.length){
-                        this.noData = false
-                    }else{
-                        this.noData = true
                     }
                 },
                 deep:true

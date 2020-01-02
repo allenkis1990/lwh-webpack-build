@@ -26,11 +26,32 @@
         },
         methods: {
             clickItem(item){
-                this.skuItemData.value = item.value
-                this.skuItemData.valueCode = item.valueCode
-                this.skuItemData.valueName = item.valueName
-                this.skuItemData.show = false
-                this.$emit('itemChanged',item)
+                let context = this
+                let hasEmitEvents = this.hasEmitEvents('beforeItemChanged')
+                if(hasEmitEvents){
+                    context.$emit('beforeItemChanged',item,()=>{
+                        itemChanged(context)
+                    })
+                }else{
+                    itemChanged(context)
+                }
+                function itemChanged(context){
+                    context.skuItemData.value = item.value
+                    context.skuItemData.valueCode = item.valueCode
+                    context.skuItemData.valueName = item.valueName
+                    context.skuItemData.show = false
+                    context.$emit('itemChanged',item)
+                }
+            },
+            //判断当前事件是否存在emit事件
+            hasEmitEvents(eventName){
+                let bol
+                if(this._events&&this._events[eventName]&&this._events[eventName].length){
+                    bol = true
+                }else{
+                    bol = false
+                }
+                return bol
             }
         }
     }
