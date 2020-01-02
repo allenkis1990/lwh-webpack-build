@@ -198,7 +198,7 @@ export function deepCopy(target){
     }else if(objType==='array'){
         result = []
         for(let i = 0;i<target.length;i++){
-            if(typeof target[i]==='array'){
+            if(typeof target[i]==='object'){
                 result[i] = deepCopy(target[i])
             }else{
                 result[i] = target[i]

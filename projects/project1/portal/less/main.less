@@ -6,12 +6,22 @@
 li {
   list-style-type: none
 }
-
+.fl{float:left}
+.fr{float:right}
+.clear:before,.clear:after{
+  display: table;
+}
+.clear:after{
+  content: '';
+  height:0;
+  clear:both;
+  visibility: hidden;
+}
 button {
   border: none;
   outline: none;
 }
-
+.blue{color:deepskyblue}
 .btn {
   width: 90px;
   height: 40px;

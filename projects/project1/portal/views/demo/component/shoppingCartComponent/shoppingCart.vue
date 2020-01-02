@@ -1,7 +1,6 @@
 <template>
     <div>
-        <!--{{shoppingCartList}}-->
-        <table>
+        <table v-if="shoppingCartList.length">
             <tr>
                 <td width="50">No.</td>
                 <td>商品名称</td>
@@ -17,11 +16,18 @@
                                     :cell-data="item"></shopping-cart-cell>
             </template>
         </table>
+        <shopping-result-bar
+                v-if="shoppingCartList.length"
+                v-on="$listeners"
+                @changeShoppingData="changeShoppingData"
+                :shopping-cart-data="shoppingCartList"></shopping-result-bar>
+        <div style="text-align:center" v-if="!shoppingCartList.length">暂无数据</div>
     </div>
 </template>
 
 <script>
     import shoppingCartCell from '@portal/views/demo/component/shoppingCartComponent/shoppingCartCell.vue'
+    import shoppingResultBar from '@portal/views/demo/component/shoppingCartComponent/shoppingResultBar.vue'
     import {deepCopy} from '@portal/utils/lwh-utils'
     export default {
         props:{
@@ -32,12 +38,17 @@
         },
         data(){
             return {
-                shoppingCartList:[]
+                shoppingCartList:[],
+                noData:false
             }
         },
         mounted(){
         },
         methods: {
+            //批量删除的时候触发 参数是改变后的数组
+            changeShoppingData(nv){
+                this.shoppingCartList = nv
+            },
             initData(item){
                 this.$set(item,'checked',false)
                 item.subList.forEach((subItem)=>{
@@ -61,17 +72,32 @@
             }
         },
         components:{
-            shoppingCartCell
+            shoppingCartCell,
+            shoppingResultBar
         },
         watch:{
-            shoppingCartData(nv){
-                if(nv&&nv.length){
-                    var shoppingCartList = deepCopy(nv)
-                    shoppingCartList.forEach((item)=>{
-                        this.initData(item)
-                    })
-                    this.shoppingCartList = shoppingCartList
-                }
+            shoppingCartData:{
+                handler(nv){
+                    if(nv&&nv.length){
+                        console.log('购物车数据初始化');
+                        let shoppingCartList = deepCopy(nv)
+                        shoppingCartList.forEach((item)=>{
+                            this.initData(item)
+                        })
+                        this.shoppingCartList = shoppingCartList
+                    }
+                },
+                deep:true
+            },
+            shoppingCartList:{
+                handler(nv){
+                    if(nv&&nv.length){
+                        this.noData = false
+                    }else{
+                        this.noData = true
+                    }
+                },
+                deep:true
             }
         }
     }

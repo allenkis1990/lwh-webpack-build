@@ -44,7 +44,7 @@
                 });
                 return loading
             },
-            //获取当前组件下emit出去的事件return
+            //判断当前事件是否存在emit事件
             hasEmitEvents(eventName){
                 let bol
                 if(this._events&&this._events[eventName]&&this._events[eventName].length){
@@ -56,7 +56,7 @@
             },
             selectItem(item){
                 let context = this
-                function beforeSelectItem(context){
+                function selectItem(context){
                     item.checked = !item.checked
                     let selectOneUnit = context.cellData.subList.every((item)=>{
                         return item.checked
@@ -70,10 +70,10 @@
                 }
                 let hasEmitEvents = this.hasEmitEvents('beforeSelectItem')
                 if(!hasEmitEvents){
-                    beforeSelectItem(context)
+                    selectItem(context)
                 }else{
                     this.$emit('beforeSelectItem',item,this.cellData,()=>{
-                        beforeSelectItem(context)
+                        selectItem(context)
                     })
                 }
             },
@@ -81,15 +81,15 @@
                 let context = this
                 let hasEmitEvents =  this.hasEmitEvents('beforeSelectOneUnit')
                 if(!hasEmitEvents){
-                    beforeSelectOneUnit(context)
+                    selectOneUnit(context)
                 }else{
                     this.$emit('beforeSelectOneUnit',this.cellData,()=>{
-                        beforeSelectOneUnit(context)
+                        selectOneUnit(context)
                     })
                 }
 
 
-                function beforeSelectOneUnit(context){
+                function selectOneUnit(context){
                     cellData.checked = !cellData.checked
                     if(cellData.checked){
                         context.selectUnit(cellData,true)
@@ -112,7 +112,7 @@
                     message:'确定删除当前商品吗?',
                     showCancelButton:true,
                     beforeClose(type,dialog,done){
-                        function beforeDeleteItem(context){
+                        function deleteItem(context){
                             let loading = context.loading('删除商品中请稍后')
                             context.deleteAction(()=>{
                                 loading.close();
@@ -127,10 +127,10 @@
                         if(type==='confirm'){
                             let hasEmitEvents =  context.hasEmitEvents('beforeDeleteItem')
                             if(!hasEmitEvents){
-                                beforeDeleteItem(context)
+                                deleteItem(context)
                             }else{
                                 context.$emit('beforeDeleteItem',item,()=>{
-                                    beforeDeleteItem(context)
+                                    deleteItem(context)
                                 })
                             }
                         }else{
@@ -138,7 +138,9 @@
                         }
                     },
                     callback(type,dialog){
-                        context.$emit('deleteItem',item)
+                        if(type==='confirm'){
+                            context.$emit('deleteItem',item)
+                        }
                     },
                 })
             },

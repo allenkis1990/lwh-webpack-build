@@ -1,7 +1,10 @@
 <template>
 
     <div style="width:780px;margin:20px auto;position:relative" class="shoppingCart">
-        <!--<button @click="fn">click</button>-->
+        <el-button type="primary"
+                   @click="getShoppingCartList"
+                   :loading="loading">刷新购物车数据
+        </el-button>
         <shopping-cart :shopping-cart-data="shoppingCartList"
                        ref="shoppingCartList"
                        @beforeSelectOneUnit="beforeSelectOneUnit"
@@ -9,30 +12,45 @@
                        @beforeSelectItem="beforeSelectItem"
                        @selectItem="selectItem"
                        @beforeDeleteItem="beforeDeleteItem"
-                       @deleteItem="deleteItem"></shopping-cart>
+                       @deleteItem="deleteItem"
+                       @beforeSelectAll="beforeSelectAll"
+                       @selectAll="selectAll"
+                       @beforeGoPay="beforeGoPay"
+                       @goPay="goPay"
+                       @beforeBatchDelete="beforeBatchDelete"
+                       @batchDelete="batchDelete"></shopping-cart>
     </div>
 
 </template>
 
 <script>
     import {mapActions} from 'vuex'
+    import {Button} from 'element-ui'
     import shoppingCart from '@portal/views/demo/component/shoppingCartComponent/shoppingCart.vue'
 
     export default {
         data() {
             return {
-                shoppingCartList: []
+                shoppingCartList: [],
+                loading:false
             }
         },
         mounted() {
-            this.getShoppingCartActions().then((data) => {
-                this.shoppingCartList = data.info
-            })
+            this.getShoppingCartList()
         },
         methods: {
             ...mapActions('demo', {
                 getShoppingCartActions: 'getShoppingCartList'
             }),
+            getShoppingCartList(){
+                this.loading = true
+                this.getShoppingCartActions().then((data) => {
+                    this.loading = false
+                    this.shoppingCartList = data.info
+                },function(){
+                    this.loading = false
+                })
+            },
             beforeSelectItem(item,cellData,next){
                 next()
             },
@@ -40,20 +58,41 @@
                 next()
             },
             selectItem(item,cellData){
-                console.log(item,cellData,123);
+//                console.log(item,cellData,123);
             },
             selectOneUnit(cellData){
-                console.log(cellData,99);
+//                console.log(cellData,99);
             },
             beforeDeleteItem(item,next){
                 next()
             },
             deleteItem(){
                 console.log('删除成功');
+            },
+            beforeSelectAll(next){
+//                console.log('选择全部之前触发');
+                next()
+            },
+            selectAll(){
+//                console.log('选择全部之后触发');
+            },
+            beforeGoPay(next){
+                next()
+            },
+            goPay(){
+                console.log('去结算回调');
+            },
+            beforeBatchDelete(next){
+                console.log('批量删除之前');
+                next()
+            },
+            batchDelete(){
+                console.log('批量删除之后');
             }
         },
         components: {
-            shoppingCart
+            shoppingCart,
+            elButton: Button
         },
         watch: {}
     }
