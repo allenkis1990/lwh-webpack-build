@@ -4,14 +4,7 @@
                 :seleted-data="seletedData"
                 @clearSelectedBar="clearSelectedBar"
                 @cancelSelect="cancelSelect">
-            <template #default>
-                <li style="margin-right:10px"
-                    class="skuSelectedItem fl">
-                    爱好:
-                    <button class="btn current">运动</button>
-                </li>
-            </template>
-
+            <slot></slot>
         </sku-selected-bar>
         <template v-for="(item,index) in skuList">
             <sku-item :sku-item-data="item"

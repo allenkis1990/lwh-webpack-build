@@ -11,14 +11,20 @@ var utils = {
         }
     },
     processLoading(url){
-        if(requestMapper.hasOwnProperty(url)){
+        setTimeout(()=>{
             delete requestMapper[url]
-        }
+            if(JSON.stringify(requestMapper)==='{}'){
+                console.log('隐藏loading')
+                setTimeout(()=>{
+                    loadingInstance.close()
+                },100)
+                // loadingInstance.close()
+            }
+        })
         // console.log(requestMapper,55);
-        if(JSON.stringify(requestMapper)==='{}'){
-            console.log('隐藏loading')
-            loadingInstance.close()
-        }
+        /*setTimeout(()=>{
+            console.log(requestMapper);
+        },3000)*/
     }
 }
 export default function(instance){
@@ -42,11 +48,11 @@ export default function(instance){
         utils.processLoading(url)
         return response;
     }, function (error,a,b) {
+        setTimeout(function(){
+            utils.processLoading(url)
+        })
         if (error.response) {
             var url = error.response.config.url
-            setTimeout(function(){
-                utils.processLoading(url)
-            })
             if (error.response.status === 404) {
                 Message({
                     message:'请求404',
@@ -65,10 +71,7 @@ export default function(instance){
                 return;
             }
         }else{
-            //超时了隐藏loading
-            setTimeout(()=>{
-                loadingInstance.close()
-            },500)
+
         }
         return Promise.reject(error);
     });

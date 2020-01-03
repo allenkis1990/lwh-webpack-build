@@ -4,6 +4,7 @@ const merge = require('webpack-merge')
 const app = express()
 const webpack  = require('webpack')
 const path = require('path')
+let fs = require('fs')
 //console.log(path.resolve(__dirname,'projects/project1/src'),12121212);
 // let webpackConfig = require('./webpack.dev.config')
 let webpackConfig = require('./webpack.dev.config')
@@ -43,30 +44,15 @@ app.get('/',function(req,res){
     res.redirect('/portal');
 })
 
-let mock = require('./server/mock/index')
-mock(app)
+let mockUrl = `./mock/${config.project}/index.js`
 
-
-
-function tryHasConFigServer(url){
-    var res = true
-    try {
-        // require.resolve(actionSeverPath).start(app)
-        require.resolve(url)
-    }catch(e){
-        console.log(colors.red(`没有配置url为: 《${url}》 的服务`))
-        res = false
+fs.access(path.resolve(__dirname,mockUrl),function(e){
+    if(!e){
+        let mock = require(mockUrl)
+        mock(app)
     }
-    return res
-}
+})
 
-var routerSeverPath = `./server/${config.project}/expressRouters/routers.js`
-var hasConfigRouters = tryHasConFigServer(routerSeverPath)
-
-if(hasConfigRouters){
-    // express前端路由
-    require(routerSeverPath)(app)
-}
 
 
 //纠正VUE history模式下刷新404问题
@@ -77,19 +63,10 @@ app.use(devMiddleware);
 
 
 //////////////////////代理////////////////////////////
-let proxyList = {
-    '/actions': {
-        target: 'http://192.168.28.248:8080/'
-        // changeOrigin: false
-    },
-    '/socket.io': {
-        target: 'http://192.168.28.248:8080/'
-        // changeOrigin: false
-    }
-}
+
 const proxyMiddleware = require('http-proxy-middleware')
-Object.keys(proxyList).forEach(function (context) {
-    var options = proxyList[context]
+Object.keys(config.proxyList).forEach(function (context) {
+    var options = config.proxyList[context]
     if (typeof options === 'string') {
         options = {target: options}
     }

@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-button type="primary"
+                   style="margin-bottom:15px;"
                    @click="getSkuData">刷新SKU列表
         </el-button>
         <sku-list :sku-data="skuData"
@@ -11,13 +12,23 @@
                   @beforeClearSelected="beforeClearSelected"
                   @clearSelectedBar="clearSelectedBar"
                   ref="skuComponent"
-                  v-model="skuParams"></sku-list>
+                  v-model="skuParams">
+
+            <template #default>
+                <li style="margin-right:10px"
+                    class="skuSelectedItem fl">
+                    爱好:
+                    <button class="btn current">运动</button>
+                </li>
+            </template>
+        </sku-list>
 
         <div>已选SKU：</div>
         <div v-for="(item,index) in skuParams" :key="item.propertyCode">
             propertyId:{{item.propertyId}} ,propertyCode:{{item.propertyCode}} ,value:{{item.value}} ,,valueCode:{{item.valueCode}}
         </div>
         <el-button type="primary"
+                   style="margin-top:15px;"
                    @click="openMdDialog">readme.md
         </el-button>
         <el-dialog
@@ -39,7 +50,7 @@
     import skuList from '@portal/views/demo/component/skuComponent/skuList.vue'
     import instance from '@portal/utils/ajaxRequest'
     var $http = instance.create({
-        baseURL: 'http://192.168.28.253:8787/md'
+        baseURL: '/actions'
     })
     let marked = require('@portal/assets/marked.min')
     export default {
@@ -66,7 +77,7 @@
             },
             initMdContainer(){
                 $http.request({
-                    url: '/sku-readme.md',
+                    url: '/md/sku-readme.md',
                     method: 'get'
                 }).then((data) => {
                     let res = data.data

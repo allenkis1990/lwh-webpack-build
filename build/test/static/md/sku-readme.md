@@ -77,6 +77,25 @@ components: {
 ]
 ```
 
+## 9.插槽里的内容会被插入到已选筛选条件后面，(目前就只支持default插槽)显示或者删除逻辑可自行控制，例子：
+```
+<sku-list :sku-data="skuData"
+          ref="skuComponent"
+          v-model="skuParams">
+
+        <template #default>
+            <li style="margin-right:10px"
+                class="skuSelectedItem fl">
+                爱好:
+                <button class="btn current">运动</button>
+            </li>
+        </template>
+
+</sku-list>
+```
+
+
+
 ## 如果需要回显，需要在@skuLoaded事件里手动给v-model赋值，结构必须和组件输出的结果一样
 
 

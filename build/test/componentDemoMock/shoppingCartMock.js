@@ -3,13 +3,6 @@ let path = require('path')
 
 
 module.exports = function(app){
-    app.use(function (req, res, next) {
-        res.setHeader('Access-control-Allow-Methods', '*')
-        res.setHeader('Access-control-Allow-Origin', '*')
-        res.setHeader('Access-control-Allow-Headers', 'Content-Type,fuck,lwh')
-        next()
-    })
-
     let shoppingCartList = [
         {
             name: 'Allen体育用品店',
@@ -85,7 +78,7 @@ module.exports = function(app){
         }
     ]
 
-    app.get('/shoppingCart/getShoppingCartList', function (req, res) {
+    app.get('/actions/getShoppingCartList', function (req, res) {
         res.send({
             status: true,
             code: 200,

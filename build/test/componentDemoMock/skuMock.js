@@ -1,7 +1,6 @@
 
 let path = require('path')
-
-
+let url = require('url')
 
 module.exports = function(app){
     var formdata = require('formidable');
@@ -20,13 +19,6 @@ module.exports = function(app){
         });
         form.parse(req);
     }
-    app.use(function(req,res,next){
-        res.setHeader('Access-control-Allow-Methods','*')
-        res.setHeader('Access-control-Allow-Origin','*')
-        res.setHeader('Access-control-Allow-Headers','Content-Type,fuck,lwh')
-        next()
-    })
-
     var skuList = [
         {
             propertyCode:'year',
@@ -44,7 +36,7 @@ module.exports = function(app){
             propertyId:'sku3'
         }
     ]
-    app.get('/sku/getSkuDetail',function(req,res){
+    app.get('/actions/getSkuDetail',function(req,res){
         res.send({
             status:true,
             code:200,
@@ -70,7 +62,7 @@ module.exports = function(app){
         ]
     }
 
-    app.post('/sku/getSkuItemArr',function(req,res){
+    app.post('/actions/getSkuItemArr',function(req,res){
         onData(req,function(obj){
             let data = obj.data
             // console.log(data);
@@ -95,6 +87,15 @@ module.exports = function(app){
                 })
             }
         })
+    })
+
+
+    app.get('/actions/md/*',function(req,res){
+        let pathname = url.parse(req.url).pathname
+        // console.log(url.parse(req.url));
+        // console.log(pathname);
+        pathname = pathname.replace('/actions','')
+        res.sendFile(path.join(__dirname,'..','static',pathname))
     })
 }
 
