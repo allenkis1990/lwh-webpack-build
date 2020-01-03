@@ -17,20 +17,38 @@
         <div v-for="(item,index) in skuParams" :key="item.propertyCode">
             propertyId:{{item.propertyId}} ,propertyCode:{{item.propertyCode}} ,value:{{item.value}} ,,valueCode:{{item.valueCode}}
         </div>
+        <el-button type="primary"
+                   @click="openMdDialog">readme.md
+        </el-button>
+        <el-dialog
+                   :visible.sync="showReadmeDialog"
+                   :fullscreen="true">
+            <h2 slot="title" style="color:#333">
+                remdme.md
+            </h2>
+            <div class="read-content">
+
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
     import {mapActions} from 'vuex'
-    import {Button} from 'element-ui'
+    import {Button,Dialog} from 'element-ui'
     import skuList from '@portal/views/demo/component/skuComponent/skuList.vue'
-
+    import instance from '@portal/utils/ajaxRequest'
+    var $http = instance.create({
+        baseURL: 'http://192.168.28.253:8787/md'
+    })
+    let marked = require('@portal/assets/marked.min')
     export default {
         data() {
             return {
                 skuData: [],
                 skuParams: [],
-                urlParams:[]
+                urlParams: [],
+                showReadmeDialog:false
             }
         },
         mounted() {
@@ -40,45 +58,65 @@
             ...mapActions('demo', {
                 getSkuActions: 'getSkuDetail'
             }),
-            getSkuData(){
+            openMdDialog(){
+                this.showReadmeDialog=true
+                setTimeout(()=>{
+                    this.initMdContainer()
+                },100)
+            },
+            initMdContainer(){
+                $http.request({
+                    url: '/sku-readme.md',
+                    method: 'get'
+                }).then((data) => {
+                    let res = data.data
+                    console.log(res);
+                    document.querySelector('.read-content').innerHTML = marked(res)
+                    let codeItems = document.querySelectorAll('.read-content code')
+                    codeItems.forEach((code)=>{
+                        code.setAttribute('class','hljs javascript')
+                    })
+                })
+            },
+            getSkuData() {
                 let _this = this
                 this.getSkuActions().then(function (data) {
                     _this.skuData = data.info
                 })
             },
             //取消全部之前
-            beforeClearSelected(selectedArr,next){
+            beforeClearSelected(selectedArr, next) {
                 console.log('取消全部之前');
                 next()
             },
-            clearSelectedBar(){
+            clearSelectedBar() {
                 console.log('取消全部之后');
             },
-            setUrlParamsInSkuList(){
+            setUrlParamsInSkuList() {
                 this.urlParams = JSON.parse(this.$route.query.urlParams)
-                if(Array.isArray(this.urlParams)&&this.urlParams.length){
+                if (Array.isArray(this.urlParams) && this.urlParams.length) {
                     this.skuParams = this.urlParams
-                    console.log(this.skuParams,3333);
+                    console.log(this.skuParams, 3333);
                 }
             },
-            skuLoaded(){
+            skuLoaded() {
                 this.urlParams = this.$route.query.urlParams
-                if(this.urlParams){
+                if (this.urlParams) {
                     this.setUrlParamsInSkuList()
                 }
             },
-            beforeItemChanged(item,next){
+            beforeItemChanged(item, next) {
                 console.log('点击前调用');
                 next()
             },
-            itemChanged(item){
+            itemChanged(item) {
 //                var skuListComponent = this.$refs.skuComponent
 //                if(item.valueCode==='quanzhou'){
 //                    skuListComponent.hideItem('year')
 //                    skuListComponent.setItemValue('year','','','')
 //                }
             },
-            cancelSelect(item){
+            cancelSelect(item) {
 //                var skuListComponent = this.$refs.skuComponent
 //                if(item.valueCode==='quanzhou'){
 //                    skuListComponent.showItem('year')
@@ -87,10 +125,10 @@
         },
         components: {
             skuList,
-            elButton: Button
+            elButton: Button,
+            elDialog: Dialog
         },
-        watch:{
-        }
+        watch: {}
     }
 </script>
 <style>

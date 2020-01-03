@@ -66,7 +66,9 @@ export default function(instance){
             }
         }else{
             //超时了隐藏loading
-            loadingInstance.close()
+            setTimeout(()=>{
+                loadingInstance.close()
+            },500)
         }
         return Promise.reject(error);
     });

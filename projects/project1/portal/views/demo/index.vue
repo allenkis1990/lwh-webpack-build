@@ -20,6 +20,23 @@
 </template>
 
 <script>
+    import '@portal/assets/tomorrow-night-blue.css'
+    let hljs = require('@portal/assets/highlight.min')
+    hljs.initHighlightingOnLoad();
+    let marked = require('@portal/assets/marked.min')
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        highlight: function (code) {
+            return hljs.highlightAuto(code).value;
+        }
+    });
     export default {
         data(){
             return {

@@ -7,13 +7,16 @@ components: {
 }
 <sku-list :sku-data="skuData"
             v-model="skuParams"
+          @beforeItemChanged="beforeItemChanged"
           @itemChanged="itemChanged"
           @cancelSelect="cancelSelect"
           @skuLoaded="skuLoaded"
+          @beforeClearSelected="beforeClearSelected"
+          @clearSelectedBar="clearSelectedBar"
           ref="skuComponent"></sku-list>
 
 ### 参数
-### 1.sku-data：类型：Array 传进来的数据源，结构：
+### 1.sku-data： (必需) 类型：Array 传进来的数据源，结构：
 [
     {
         propertyCode:'year',
@@ -32,12 +35,18 @@ components: {
     }
 ]
 
-### 2.@itemChanged 类型：Function 选择sku的时候促发，入参是当前选择的item对象
-### 3.@cancelSelect 类型：Function 取消选择的时候促发，入参是当前取消选择的item对象
+### 2.@beforeItemChanged (非必需) 类型：Function 选择sku之前促发，入参是
+    (1).当前选择的item对象
+    (2).next方法，需要手动调用才能触发@itemChanged事件否则不触发
+### 3.@itemChanged  (非必需) 类型：Function 选择sku的时候促发，入参是当前选择的item对象
+### 4.@cancelSelect (非必需) 类型：Function 取消选择的时候促发，入参是当前取消选择的item对象
+### 5.@beforeClearSelected (非必需) 类型：Function 清空已选SKU之前触发，入参是
+      (1).已经选择的SKU数组
+      (2).next方法，需要手动调用才能触发@clearSelectedBar事件否则不触发
+### 6.@clearSelectedBar (非必需) 类型：Function 清空已选SKU后触发
+### 7.@skuLoaded (非必需) 类型：Function sku组件就绪后促发，只促发一次
 
-### 4.@skuLoaded 类型：Function sku组件就绪后促发，只促发一次
-
-### 5.v-model：类型：Array 最终输出的结果，结构
+### 8.v-model：(必需) 类型：Array 最终输出的结果，结构
 [
     {
         propertyCode:'year',
