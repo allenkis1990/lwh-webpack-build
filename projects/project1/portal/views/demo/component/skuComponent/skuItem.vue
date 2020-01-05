@@ -1,17 +1,17 @@
 <template>
-    <li class="skuItem" v-if="skuItemData.show">
-        {{skuItemData.propertyCName}}
+    <li class="skuItem" v-if="dataSource.show">
+        {{dataSource.propertyCName}}
         <button class="btn"
-                :class="{'current':skuItemData.value===item.value}"
+                :class="{'current':dataSource.value===item.value}"
                 @click="clickItem(item)"
-                v-for="(item,index) in skuItemData.skuItemArr">{{item.valueName}}</button>
+                v-for="(item,index) in dataSource.skuItemArr">{{item.valueName}}</button>
     </li>
 </template>
 
 <script>
     export default {
         props:{
-            skuItemData:{
+            dataSource:{
                 type:Object,
                 default:{}
             }
@@ -36,10 +36,10 @@
                     itemChanged(context)
                 }
                 function itemChanged(context){
-                    context.skuItemData.value = item.value
-                    context.skuItemData.valueCode = item.valueCode
-                    context.skuItemData.valueName = item.valueName
-                    context.skuItemData.show = false
+                    context.dataSource.value = item.value
+                    context.dataSource.valueCode = item.valueCode
+                    context.dataSource.valueName = item.valueName
+                    context.dataSource.show = false
                     context.$emit('itemChanged',item)
                 }
             },

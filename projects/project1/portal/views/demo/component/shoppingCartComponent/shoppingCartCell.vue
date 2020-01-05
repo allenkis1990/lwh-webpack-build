@@ -2,12 +2,12 @@
     <tbody>
         <tr>
             <td colspan="4" style="text-align:left">
-                <el-checkbox :value="cellData.checked"
-                             @change="selectOneUnit(cellData)"
-                             style="vertical-align:2px;margin-left:12px;"></el-checkbox>{{cellData.name}}
+                <el-checkbox :value="dataSource.checked"
+                             @change="selectOneUnit(dataSource)"
+                             style="vertical-align:2px;margin-left:12px;"></el-checkbox>{{dataSource.name}}
             </td>
         </tr>
-        <tr v-for="(item,index) in cellData.subList" :key="item.id">
+        <tr v-for="(item,index) in dataSource.subList" :key="item.id">
             <td><el-checkbox style="vertical-align:2px;"
                              :value="item.checked"
                              @change="selectItem(item)"></el-checkbox>{{index+1}}</td>
@@ -23,7 +23,7 @@
     import {Checkbox} from 'element-ui'
     export default {
         props:{
-            cellData:{
+            dataSource:{
                 type:Object,
                 default:[]
             }
@@ -58,45 +58,45 @@
                 let context = this
                 function selectItem(context){
                     item.checked = !item.checked
-                    let selectOneUnit = context.cellData.subList.every((item)=>{
+                    let selectOneUnit = context.dataSource.subList.every((item)=>{
                         return item.checked
                     })
                     if(selectOneUnit){
-                        context.cellData.checked = true
+                        context.dataSource.checked = true
                     }else{
-                        context.cellData.checked = false
+                        context.dataSource.checked = false
                     }
-                    context.$emit('selectItem',context,context.cellData)
+                    context.$emit('selectItem',context,context.dataSource)
                 }
                 let hasEmitEvents = this.hasEmitEvents('beforeSelectItem')
                 if(!hasEmitEvents){
                     selectItem(context)
                 }else{
-                    this.$emit('beforeSelectItem',item,this.cellData,()=>{
+                    this.$emit('beforeSelectItem',item,this.dataSource,()=>{
                         selectItem(context)
                     })
                 }
             },
-            selectOneUnit(cellData){
+            selectOneUnit(dataSource){
                 let context = this
                 let hasEmitEvents =  this.hasEmitEvents('beforeSelectOneUnit')
                 if(!hasEmitEvents){
                     selectOneUnit(context)
                 }else{
-                    this.$emit('beforeSelectOneUnit',this.cellData,()=>{
+                    this.$emit('beforeSelectOneUnit',this.dataSource,()=>{
                         selectOneUnit(context)
                     })
                 }
 
 
                 function selectOneUnit(context){
-                    cellData.checked = !cellData.checked
-                    if(cellData.checked){
-                        context.selectUnit(cellData,true)
+                    dataSource.checked = !dataSource.checked
+                    if(dataSource.checked){
+                        context.selectUnit(dataSource,true)
                     }else{
-                        context.selectUnit(cellData,false)
+                        context.selectUnit(dataSource,false)
                     }
-                    context.$emit('selectOneUnit',cellData)
+                    context.$emit('selectOneUnit',dataSource)
                 }
             },
             deleteAction(cb){
@@ -116,10 +116,10 @@
                             let loading = context.loading('删除商品中请稍后')
                             context.deleteAction(()=>{
                                 loading.close();
-                                let subList = context.cellData.subList
+                                let subList = context.dataSource.subList
                                 subList.splice(idx,1)
                                 if(!subList.length){
-                                    context.$emit('deleteOneUnit',context.cellData.id)
+                                    context.$emit('deleteOneUnit',context.dataSource.id)
                                 }
                                 done()
                             })
@@ -144,8 +144,8 @@
                     },
                 })
             },
-            selectUnit(cellData,boolean){
-                cellData.subList.forEach((item)=>{
+            selectUnit(dataSource,boolean){
+                dataSource.subList.forEach((item)=>{
                     item.checked = boolean
                 })
             }

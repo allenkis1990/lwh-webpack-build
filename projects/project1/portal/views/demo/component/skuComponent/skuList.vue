@@ -1,13 +1,13 @@
 <template>
     <ul>
         <sku-selected-bar
-                :seleted-data="seletedData"
+                :data-source="seletedData"
                 @clearSelectedBar="clearSelectedBar"
                 @cancelSelect="cancelSelect">
             <slot></slot>
         </sku-selected-bar>
         <template v-for="(item,index) in skuList">
-            <sku-item :sku-item-data="item"
+            <sku-item :data-source="item"
                       @beforeItemChanged="beforeItemChanged"
                       @itemChanged="itemChanged"></sku-item>
         </template>
@@ -21,7 +21,7 @@
     import {mapActions} from 'vuex'
     export default {
         props:{
-            skuData:{
+            dataSource:{
                 type:Array,
                 default:[]
             },
@@ -188,7 +188,7 @@
             skuSelectedBar
         },
         watch:{
-            skuData:{
+            dataSource:{
                 handler(nv){
                     if(nv&&nv.length){
                         //拿到传进来的dataSource后为了不污染，先进行深拷贝

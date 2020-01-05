@@ -4,7 +4,7 @@
                    style="margin-bottom:15px;"
                    @click="getSkuData">刷新SKU列表
         </el-button>
-        <sku-list :sku-data="skuData"
+        <sku-list :data-source="skuData"
                   @itemChanged="itemChanged"
                   @beforeItemChanged="beforeItemChanged"
                   @cancelSelect="cancelSelect"
@@ -27,39 +27,22 @@
         <div v-for="(item,index) in skuParams" :key="item.propertyCode">
             propertyId:{{item.propertyId}} ,propertyCode:{{item.propertyCode}} ,value:{{item.value}} ,,valueCode:{{item.valueCode}}
         </div>
-        <el-button type="primary"
-                   style="margin-top:15px;"
-                   @click="openMdDialog">readme.md
-        </el-button>
-        <el-dialog
-                   :visible.sync="showReadmeDialog"
-                   :fullscreen="true">
-            <h2 slot="title" style="color:#333">
-                remdme.md
-            </h2>
-            <div class="read-content">
-
-            </div>
-        </el-dialog>
+        <md-component :md-content="mdContent"></md-component>
     </div>
 </template>
 
 <script>
     import {mapActions} from 'vuex'
-    import {Button,Dialog} from 'element-ui'
+    import {Button} from 'element-ui'
     import skuList from '@portal/views/demo/component/skuComponent/skuList.vue'
-    import instance from '@portal/utils/ajaxRequest'
-    var $http = instance.create({
-        baseURL: '/actions'
-    })
-    let marked = require('@portal/assets/marked.min')
+    import mdComponent from '@portal/views/demo/component/mdComponent/index.vue'
     export default {
         data() {
             return {
                 skuData: [],
                 skuParams: [],
                 urlParams: [],
-                showReadmeDialog:false
+                mdContent:require('@portal/views/demo/component/skuComponent/readme.md')
             }
         },
         mounted() {
@@ -69,26 +52,6 @@
             ...mapActions('demo', {
                 getSkuActions: 'getSkuDetail'
             }),
-            openMdDialog(){
-                this.showReadmeDialog=true
-                setTimeout(()=>{
-                    this.initMdContainer()
-                },100)
-            },
-            initMdContainer(){
-                $http.request({
-                    url: '/md/sku-readme.md',
-                    method: 'get'
-                }).then((data) => {
-                    let res = data.data
-                    console.log(res);
-                    document.querySelector('.read-content').innerHTML = marked(res)
-                    let codeItems = document.querySelectorAll('.read-content code')
-                    codeItems.forEach((code)=>{
-                        code.setAttribute('class','hljs javascript')
-                    })
-                })
-            },
             getSkuData() {
                 let _this = this
                 this.getSkuActions().then(function (data) {
@@ -137,7 +100,7 @@
         components: {
             skuList,
             elButton: Button,
-            elDialog: Dialog
+            mdComponent:mdComponent
         },
         watch: {}
     }

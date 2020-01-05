@@ -156,7 +156,15 @@ function getExports(project){
                         loader:'vue-loader'
                     }
                 },
-
+                {
+                    test:/\.(md)$/,
+                    //test: /\.(js)(\?.*)?$/,
+                    use:{
+                        loader:'strLoader'
+                    },
+                    exclude:[path.resolve(__dirname,'..',`${config.dist}`),/node_modules/],
+                    include:[path.resolve(__dirname,`${config.mainDir}`),path.resolve(__dirname,`${config.parentMainDir}`)]
+                },
                 {
                     test:/\.(js|vue)$/,
                     //test: /\.(js)(\?.*)?$/,

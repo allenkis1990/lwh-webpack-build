@@ -8,7 +8,7 @@
         <el-button type="primary"
                    @click="getSubmitData">获取提交数据
         </el-button>
-        <shopping-cart :shopping-cart-data="shoppingCartList"
+        <shopping-cart :data-source="shoppingCartList"
                        ref="shoppingCartList"
                        @beforeSelectOneUnit="beforeSelectOneUnit"
                        @selectOneUnit="selectOneUnit"
@@ -22,6 +22,8 @@
                        @batchDelete="batchDelete"
                        @beforeGoPay="beforeGoPay"
                        @goPay="goPay"></shopping-cart>
+
+        <md-component :md-content="mdContent"></md-component>
     </div>
 
 </template>
@@ -30,12 +32,13 @@
     import {mapActions} from 'vuex'
     import {Button} from 'element-ui'
     import shoppingCart from '@portal/views/demo/component/shoppingCartComponent/shoppingCart.vue'
-
+    import mdComponent from '@portal/views/demo/component/mdComponent/index.vue'
     export default {
         data() {
             return {
                 shoppingCartList: [],
-                loading:false
+                loading:false,
+                mdContent:require('@portal/views/demo/component/shoppingCartComponent/readme.md')
             }
         },
         mounted() {
@@ -100,7 +103,8 @@
         },
         components: {
             shoppingCart,
-            elButton: Button
+            elButton: Button,
+            mdComponent:mdComponent
         },
         watch: {}
     }

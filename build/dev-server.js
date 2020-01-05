@@ -5,12 +5,12 @@ const app = express()
 const webpack  = require('webpack')
 const path = require('path')
 let fs = require('fs')
+let config = require('./config/config')
 //console.log(path.resolve(__dirname,'projects/project1/src'),12121212);
 // let webpackConfig = require('./webpack.dev.config')
 let webpackConfig = require('./webpack.dev.config')
 // webpackConfig.mode = 'development'
 webpackConfig.mode = 'development'
-let config = require('./config/config')
 Object.keys(webpackConfig.entry).forEach(function (name) {
     // console.log(name);
     //if (name !== 'index') {
@@ -44,11 +44,9 @@ app.get('/',function(req,res){
     res.redirect('/portal');
 })
 
-let mockUrl = `./mock/${config.project}/index.js`
-
-fs.access(path.resolve(__dirname,mockUrl),function(e){
+fs.access(path.resolve(__dirname,config.mockUrl),function(e){
     if(!e){
-        let mock = require(mockUrl)
+        let mock = require(config.mockUrl)
         mock(app)
     }
 })

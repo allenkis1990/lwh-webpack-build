@@ -26,7 +26,7 @@
 
     export default {
         props: {
-            shoppingCartData: {
+            dataSource: {
                 type: Array,
                 default: []
             }
@@ -43,7 +43,7 @@
         computed:{
             selectedCount(){
                 let count = 0
-                this.shoppingCartData.forEach((item)=>{
+                this.dataSource.forEach((item)=>{
                     item.subList.forEach((subItem)=>{
                         if(subItem.checked){
                             count+=1
@@ -54,7 +54,7 @@
             },
             totalPrice(){
                 let res = 0
-                this.shoppingCartData.forEach((item)=>{
+                this.dataSource.forEach((item)=>{
                     item.subList.forEach((subItem)=>{
                         if(subItem.checked){
                             res = (res*1000 + subItem.price*1000)/1000
@@ -96,7 +96,7 @@
             },
             doSelect(){
                 this.checked = !this.checked
-                this.shoppingCartData.forEach((item)=>{
+                this.dataSource.forEach((item)=>{
                     item.checked = this.checked
                     item.subList.forEach((subItem)=>{
                         subItem.checked = this.checked
@@ -120,7 +120,7 @@
             },
             getPayParams(){
                 let result = []
-                this.shoppingCartData.forEach((item)=>{
+                this.dataSource.forEach((item)=>{
                     item.subList.forEach((subItem)=>{
                         if(subItem.checked){
                             result.push({
@@ -169,7 +169,7 @@
                 },2000)
             },
             doBatchDelete(){
-                let shoppingCartList = deepCopy(this.shoppingCartData)
+                let shoppingCartList = deepCopy(this.dataSource)
                 if(this.checked){
                     shoppingCartList = []
                 }else{
@@ -237,7 +237,7 @@
             elButton: Button
         },
         watch: {
-            shoppingCartData:{
+            dataSource:{
                 handler(nv){
                     this.doCheck(nv)
                 },

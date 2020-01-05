@@ -1,7 +1,7 @@
 <template>
     <ul class="clear">
         <slot></slot>
-        <li v-for="(item,index) in seletedData"
+        <li v-for="(item,index) in dataSource"
             style="margin-right:10px"
             :key="item.propertyCode"
             class="skuSelectedItem fl">
@@ -19,7 +19,7 @@
 <script>
     export default {
         props:{
-            seletedData:{
+            dataSource:{
                 type:Array,
                 default:[]
             }
@@ -33,14 +33,14 @@
         },
         methods: {
             clearSelectedBar(){
-                let arr = this.seletedData.map((item)=>{
+                let arr = this.dataSource.map((item)=>{
                     return item.propertyCode
                 })
                 this.$emit('clearSelectedBar',arr)
             },
             cancel(e,item,idx){
                 e.stopPropagation()
-                this.seletedData.splice(idx,1)
+                this.dataSource.splice(idx,1)
                 console.log(item);
                 this.$emit('cancelSelect',item)
             }

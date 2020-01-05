@@ -13,7 +13,7 @@
                 <shopping-cart-cell :key="item.name"
                                     @deleteOneUnit="deleteOneUnit"
                                     v-on="$listeners"
-                                    :cell-data="item"></shopping-cart-cell>
+                                    :data-source="item"></shopping-cart-cell>
             </template>
         </table>
         <shopping-result-bar
@@ -21,7 +21,7 @@
                 v-if="shoppingCartList.length"
                 v-on="$listeners"
                 @changeShoppingData="changeShoppingData"
-                :shopping-cart-data="shoppingCartList"></shopping-result-bar>
+                :data-source="shoppingCartList"></shopping-result-bar>
         <div style="text-align:center" v-if="!shoppingCartList.length">暂无数据</div>
     </div>
 </template>
@@ -32,7 +32,7 @@
     import {deepCopy} from '@portal/utils/lwh-utils'
     export default {
         props:{
-            shoppingCartData:{
+            dataSource:{
                 type:Array,
                 default:[]
             }
@@ -76,7 +76,7 @@
             shoppingResultBar
         },
         watch:{
-            shoppingCartData:{
+            dataSource:{
                 handler(nv){
                     if(nv&&nv.length){
                         console.log('购物车数据初始化');

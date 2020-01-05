@@ -60,12 +60,23 @@ let config = {
     // apps:['portal','center'],
     apps:['portal'],
     host:'127.0.0.1',
-    // host:'192.168.28.253',
+     //host:'192.168.0.112',
     dev:{
         publicPath:'/'
     },
     build:{
         publicPath:'/'
+    },
+    mockUrl:path.resolve(__dirname,'../mock',_project,'index.js'),
+    proxyList : {
+        '/actions': {
+            target: 'http://192.168.0.112:8787/'
+            // changeOrigin: false
+        },
+        '/socket.io': {
+            target: 'http://192.168.28.248:8080/'
+            // changeOrigin: false
+        }
     }
 }
 if(argv.design){
