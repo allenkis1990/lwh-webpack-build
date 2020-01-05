@@ -6,7 +6,8 @@
         </el-button>
         <el-dialog
                    :visible.sync="showReadmeDialog"
-                   :fullscreen="true">
+                   width="90%"
+                   top="1vh">
             <h2 slot="title" style="color:#333">
                 remdme.md
             </h2>

@@ -10,10 +10,10 @@
         </el-button>
         <shopping-cart :data-source="shoppingCartList"
                        ref="shoppingCartList"
-                       @beforeSelectOneUnit="beforeSelectOneUnit"
-                       @selectOneUnit="selectOneUnit"
                        @beforeSelectItem="beforeSelectItem"
                        @selectItem="selectItem"
+                       @beforeSelectOneUnit="beforeSelectOneUnit"
+                       @selectOneUnit="selectOneUnit"
                        @beforeDeleteItem="beforeDeleteItem"
                        @deleteItem="deleteItem"
                        @beforeSelectAll="beforeSelectAll"
