@@ -4,7 +4,7 @@ export default function(context){
             hide:context.ui.loginInput
         },
         domProps: {
-            innerHTML: 'loginInput'
+            innerHTML: 'loginInput '
         },
         on:{
             click(){
