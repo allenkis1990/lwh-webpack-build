@@ -78,8 +78,5 @@
     }
 </script>
 <style>
-    body, html {
-        width: 100%;
-        height: 100%;
-    }
+    .read-content table td,.read-content table th{border:1px solid #333;text-align:center}
 </style>

@@ -103,6 +103,15 @@ export default new VueRouter({
                                     return import(/* webpackChunkName: "portal/chunk/demo-shoppingCart" */'@portal/views/demo/shoppingCart.vue')
                                 }
                             }
+                        },
+                        {
+                            name:'demo-regist',
+                            path:'demo-regist',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/demo-regist" */'@portal/views/demo/regist.vue')
+                                }
+                            }
                         }
                     ]
                 },

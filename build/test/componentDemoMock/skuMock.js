@@ -88,14 +88,5 @@ module.exports = function(app){
             }
         })
     })
-
-
-    app.get('/actions/md/*',function(req,res){
-        let pathname = url.parse(req.url).pathname
-        // console.log(url.parse(req.url));
-        // console.log(pathname);
-        pathname = pathname.replace('/actions','')
-        res.sendFile(path.join(__dirname,'..','static',pathname))
-    })
 }
 

@@ -1,3 +1,4 @@
+
 # sku组件
 ## 作者：Allen Liu
 ## demo：
@@ -10,7 +11,7 @@ components: {
 ```
 
 ```
-<sku-list :sku-data="skuData"
+<sku-list :data-source="skuData"
             v-model="skuParams"
           @beforeItemChanged="beforeItemChanged"
           @itemChanged="itemChanged"
@@ -21,7 +22,7 @@ components: {
           ref="skuComponent"></sku-list>
 ```
 ## 参数
-## 1.sku-data： (必需) 类型：Array 传进来的数据源，结构：
+## 1.data-source： (必需) 类型：Array 传进来的数据源，结构：
 ```
 [
     {
@@ -79,7 +80,7 @@ components: {
 
 ## 9.插槽里的内容会被插入到已选筛选条件后面，(目前就只支持default插槽)显示或者删除逻辑可自行控制，例子：
 ```
-<sku-list :sku-data="skuData"
+<sku-list :data-source="skuData"
           ref="skuComponent"
           v-model="skuParams">
 
