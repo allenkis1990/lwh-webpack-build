@@ -1,11 +1,11 @@
 <template>
     <div class="regist">
         <regist :data-source="registSource">
-            <template #userNameSlot="{registInfo}">
-                <!--{{registInfo}}-->
+            <!--<template #userNameSlot="{registInfo}">
+                &lt;!&ndash;{{registInfo}}&ndash;&gt;
                 <input type="text" v-model="registInfo.userName">
                 userNameSlot
-            </template>
+            </template>-->
         </regist>
     </div>
 </template>
@@ -15,11 +15,10 @@
     export default {
         data() {
             return {
-//                registSource:['userName','passWord','loginInput'],
                 registSource:[
-                    {key:'userName',show:true,require:true},
-                    {key:'passWord',show:true,require:true},
-                    {key:'loginInput',show:false,require:true}
+//                    {key:'userName',required:false},
+//                    {key:'passWord',show:false},
+                    {key:'loginInput'}
                 ]
             }
         },
