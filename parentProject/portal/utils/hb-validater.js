@@ -13,7 +13,7 @@
  * needRegValid 是否校验正则 默认为false
  * validate:
  * 如果validate是个对象结构是{reg:/^\d+$/,msg:'编号必须为数字'}
- * 如果validate是个数组结构是[{value:'',reg:'',msg:''}]
+ * 如果validate是个数组结构是[{key:'',value:'',reg:'',msg:''}]
  * 例子：
  var list= [{
         value:$scope.model.num,

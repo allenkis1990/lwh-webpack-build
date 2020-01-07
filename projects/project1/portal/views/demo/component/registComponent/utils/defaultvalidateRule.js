@@ -10,5 +10,17 @@ export default [
             reg:/^\d+$/,
             msg:'账号密码为数字'
         }
+    },
+    {
+        key:'userName',
+        msg:'请输入用户名'
+    },
+    {
+        key:'passWord',
+        msg:'请输入密码'
+    },
+    {
+        key:'sex',
+        msg:'请选择性别'
     }
 ]

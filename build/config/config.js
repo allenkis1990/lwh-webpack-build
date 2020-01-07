@@ -59,8 +59,8 @@ let config = {
     designPort:'8181',
     // apps:['portal','center'],
     apps:['portal'],
-    // host:'127.0.0.1',
-     host:'192.168.28.253',
+    host:'127.0.0.1',
+     // host:'192.168.28.253',
     dev:{
         publicPath:'/'
     },
@@ -70,7 +70,7 @@ let config = {
     mockUrl:path.resolve(__dirname,'../mock',_project,'index.js'),
     proxyList : {
         '/actions': {
-            target: 'http://192.168.28.253:8787/'
+            target: 'http://127.0.0.1:8787/'
             // changeOrigin: false
         },
         '/socket.io': {

@@ -89,6 +89,7 @@
     "css-select-base-adapter": "^0.1.1",
     "import-fresh": "^2.0.0",
     "is-resolvable": "^1.1.0",
+    "jsdom": "^15.2.1",
     "lodash.memoize": "^4.1.2",
     "lodash.uniq": "^4.5.0",
     "object.values": "^1.0.4",

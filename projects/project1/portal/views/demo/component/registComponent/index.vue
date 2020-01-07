@@ -4,7 +4,7 @@
     import {mapActions} from 'vuex'
     import {Message} from 'element-ui'
     import componentReader from '@portal/views/demo/component/registComponent/utils/componentReader'
-    import defaultValidateRule from '@portal/views/demo/component/registComponent/utils/defaultvalidateRule'
+    import rules from '@portal/views/demo/component/registComponent/utils/defaultvalidateRule'
 
     let hbValidater = require('@portal/utils/hb-validater')
 
@@ -46,11 +46,14 @@
         },
         mounted(){
 //            this.initData()
+            setTimeout(()=>{
+                console.log(this.ui);
+            },3000)
         },
         methods:{
             getNodeArr(createEle,context){
                 let nodesArr = []
-                this.dataSource.forEach((item)=>{
+                this.copyDataSource.forEach((item)=>{
                     let slot = this.$scopedSlots[`${item.key}Slot`]//认#a='{user}'
 //                    let slot = this.$slots.aaa//只认#a后面带了作用域参数不认
                     if(slot){
@@ -58,11 +61,15 @@
                             registInfo:context.registInfo
                         })))
                     }else{
-                        nodesArr.push(createEle('li',{
-                            class:{
-                                hide:!context.ui.show[item.key]
-                            }
-                        }, componentReader(context,item.key,createEle)[item.key]))
+                        let reader = componentReader(context,item.key,createEle)[item.key]
+                        //如果组件reader里有才加进dom
+                        if(reader){
+                            nodesArr.push(createEle('li',{
+                                class:{
+                                    hide:!context.ui.show[item.key]
+                                }
+                            }, componentReader(context,item.key,createEle)[item.key]))
+                        }
                     }
                 })
                 return nodesArr
@@ -90,6 +97,62 @@
                     this.$set(item,'placeholder',item.placeholder)
                     this.$set(item,'keyName',item.keyName)
                 })
+            },
+            getValidateRule(){
+                let res = []
+                this.copyDataSource.forEach((item)=>{
+                    let temp = {
+                        key:item.key,
+                        required:item.required,
+                    }
+                    if(item.msg){
+                        temp.msg = item.msg
+                    }
+                    temp.needRegValid = item.needRegValid===undefined?false:item.needRegValid
+                    if(typeof item.validate==='object'){
+                        temp.validate = item.validate
+                    }
+                    res.push(temp)
+                })
+                return res
+            },
+            setRegValueAndMerge(){
+                let curValidateRule = this.getValidateRule()
+                let defaultValidateRule = deepCopy(rules)
+                curValidateRule.forEach((item)=>{
+                    defaultValidateRule.forEach((subItem)=>{
+                        if(item.key===subItem.key){
+                            for (let key in subItem) {
+                                if (!item.hasOwnProperty(key)) {
+                                    item[key] = subItem[key]
+                                }
+                            }
+                        }
+                    })
+                    item.value = this.registInfo[item.key]
+                    let isArr= Array.isArray(item.validate)
+                    if(isArr){
+                        item.validate.forEach((subItem,idx)=>{
+                            if(!subItem.key){
+                                throw 'item.validate數組的key沒有配置'
+                            }else{
+                                if(this.registInfo.hasOwnProperty(subItem.key)){
+                                    subItem.value = this.registInfo[subItem.key]
+                                }else{
+                                    throw `表單裏沒有找到key:${subItem.key}`
+                                }
+                            }
+                        })
+                    }
+                })
+                return curValidateRule
+            },
+            //ref暴露出去的方法
+            showItem(key){
+                this.ui.show[key] = true
+            },
+            hideItem(key){
+                this.ui.show[key] = false
             }
         },
         render(createEle){
@@ -105,14 +168,19 @@
                     },
                     on:{
                         click(){
+                            let regRules = _this.setRegValueAndMerge()
+//                            console.log(regRules,33333);
 //                            _this.$emit('haha',_this.registInfo)
-//                            _this.ui.loginInput = true
-                            console.log(_this.registInfo);
-                            defaultValidateRule.forEach((item)=>{
-                                item.value = _this.registInfo[item.key]
-                            })
-                            let r = valider.validate(defaultValidateRule)
-                            console.log(r);
+
+                            let r = valider.validate(regRules)
+//                            console.log(regRules,33);
+                            console.log('注册要提交的信息',_this.registInfo);
+                            if(r){
+                                console.log('过');
+                            }else{
+                                console.log('不过');
+                            }
+
                         }
                     }
                 })
