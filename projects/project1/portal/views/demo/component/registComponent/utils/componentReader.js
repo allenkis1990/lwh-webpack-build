@@ -6,12 +6,14 @@ import userName from '@portal/views/demo/component/registComponent/components/us
 import passWord from '@portal/views/demo/component/registComponent/components/passWord'
 import loginInput from '@portal/views/demo/component/registComponent/components/loginInput'
 import sex from '@portal/views/demo/component/registComponent/components/sex'
+import fav from '@portal/views/demo/component/registComponent/components/fav'
 
 export default function(...arg){
     return {
         userName:userName(...arg),
         passWord:passWord(...arg),
         loginInput:loginInput(...arg),
-        sex:sex(...arg)
+        sex:sex(...arg),
+        fav:fav(...arg)
     }
 }

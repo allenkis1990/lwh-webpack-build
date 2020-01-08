@@ -1,13 +1,13 @@
 <template>
     <div class="regist">
         <regist :data-source="registSource" ref="regist">
-            <!--<template #userNameSlot="{registInfo}">
-                &lt;!&ndash;{{registInfo}}&ndash;&gt;
-                <input type="text" v-model="registInfo.userName">
-                userNameSlot
-            </template>-->
+            <template #userName="{registInfo}" style="display:none">
+                <!--{{registInfo}}-->
+                <span class="red">*</span>userNameSlot：<input type="text" v-model="registInfo.userName">
+            </template>
         </regist>
         <button @click="hide">隐藏一个</button>
+        <button @click="show">显示一个</button>
     </div>
 </template>
 
@@ -30,15 +30,16 @@
                                 msg: '请输入lwh'
                             },
                             {
-                                key: 'passWord',
+                                key: 'userName',
                                 reg: /^123$/,
-                                msg: '账号为lwh的时候密码一定要是123'
+                                msg: '账号为lwh的时候userName一定要是123'
                             }
                         ]
                     },
-                    {key: 'userName',placeholder:'用户名啊'},
+                    {key: 'userName',placeholder:'用户名啊',show:false},
                     {key: 'passWord'},
-                    {key: 'sex'}
+                    {key: 'sex'},
+                    {key: 'fav',required:false}
                 ]
             }
         },
@@ -52,6 +53,10 @@
             hide(){
                 let component = this.$refs.regist
                 component.hideItem('userName')
+            },
+            show(){
+                let component = this.$refs.regist
+                component.showItem('userName')
             }
         },
         components: {

@@ -62,7 +62,8 @@ var processUtils = {
                 let regItem = regObj[i]
                 let value = regObj[i].value
                 let msg = regObj[i].msg
-                if(!regItem.reg.test(value)){
+                //item.validate的item的值存在才校验，不存在的话走的是这个key本身的校验，存在才走这个sub的校验
+                if(value&&!regItem.reg.test(value)&&regItem.required!==false){
                     context.dialogFn('提示', msg);
                     return false
                 }

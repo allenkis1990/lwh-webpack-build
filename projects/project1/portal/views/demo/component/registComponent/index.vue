@@ -54,12 +54,18 @@
             getNodeArr(createEle,context){
                 let nodesArr = []
                 this.copyDataSource.forEach((item)=>{
-                    let slot = this.$scopedSlots[`${item.key}Slot`]//认#a='{user}'
+                    let slot = this.$scopedSlots[`${item.key}`]//认#a='{user}'
 //                    let slot = this.$slots.aaa//只认#a后面带了作用域参数不认
                     if(slot){
-                        nodesArr.push(createEle('li', slot({
-                            registInfo:context.registInfo
-                        })))
+                        nodesArr.push(createEle('li', {
+                            class:{
+                                hide:!context.ui.show[item.key]
+                            }
+                        },[
+                            slot({
+                                registInfo:context.registInfo
+                            })
+                        ]))
                     }else{
                         let reader = componentReader(context,item.key,createEle)[item.key]
                         //如果组件reader里有才加进dom
@@ -133,6 +139,8 @@
                     let isArr= Array.isArray(item.validate)
                     if(isArr){
                         item.validate.forEach((subItem,idx)=>{
+                            //给个默认的required,否则下面会被延续
+                            subItem.required = true
                             if(!subItem.key){
                                 throw 'item.validate數組的key沒有配置'
                             }else{
@@ -140,6 +148,24 @@
                                     subItem.value = this.registInfo[subItem.key]
                                 }else{
                                     throw `表單裏沒有找到key:${subItem.key}`
+                                }
+                            }
+                        })
+                    }
+                    if(!this.ui.show[item.key]){
+                        item.required = false
+                        item.needRegValid = false
+                    }
+                })
+
+                //如果其中一个字段被隐藏起来了，校验数组里有引用到这个字段那么把校验数组的这一项的required设置成false
+                curValidateRule.forEach((item)=>{
+                    if(item.validate&&Array.isArray(item.validate)){
+                        item.validate.forEach((subItem)=>{
+                            if(item.key!==subItem.key){
+                                this.ui.show[subItem.key]
+                                if(!this.ui.show[subItem.key]){
+                                    subItem.required = false
                                 }
                             }
                         })
@@ -167,13 +193,16 @@
                         innerHTML: '提交'
                     },
                     on:{
+                        //在点击提交前先看看有没有隐藏的，隐藏的自动把required设置为false needRegValid也设置为false
+                        //如果sub校验是个数组并且引用到的key是show为false的 sub的required也设置为false
+                        //默认sub的required会给一个true
                         click(){
                             let regRules = _this.setRegValueAndMerge()
 //                            console.log(regRules,33333);
 //                            _this.$emit('haha',_this.registInfo)
 
                             let r = valider.validate(regRules)
-//                            console.log(regRules,33);
+                            console.log(regRules,33);
                             console.log('注册要提交的信息',_this.registInfo);
                             if(r){
                                 console.log('过');
