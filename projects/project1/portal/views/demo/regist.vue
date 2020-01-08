@@ -6,8 +6,8 @@
                 <span class="red">*</span>userNameSlot：<input type="text" v-model="registInfo.userName">
             </template>
         </regist>
-        <button @click="hide">隐藏一个</button>
-        <button @click="show">显示一个</button>
+        <button @click="hide">隐藏userName</button>
+        <button @click="show">显示userName</button>
     </div>
 </template>
 
@@ -17,7 +17,6 @@
     export default {
         data() {
             return {
-                haha: 'haha',
                 registSource: [
 //                    {key:'loginInput',value:'123',placeholder:'xxx',keyName:'ss',require:true,show:true},
                     {
@@ -36,10 +35,10 @@
                             }
                         ]
                     },
-                    {key: 'userName',placeholder:'用户名啊',show:false},
+                    {key: 'userName',placeholder:'用户名啊'},
                     {key: 'passWord'},
                     {key: 'sex'},
-                    {key: 'fav',required:false}
+                    {key: 'fav'}
                 ]
             }
         },

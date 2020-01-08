@@ -22,5 +22,9 @@ export default [
     {
         key:'sex',
         msg:'请选择性别'
+    },
+    {
+        key:'fav',
+        msg:'请选择爱好'
     }
 ]
