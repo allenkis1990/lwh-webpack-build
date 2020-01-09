@@ -105,11 +105,11 @@ export default new VueRouter({
                             }
                         },
                         {
-                            name:'demo-regist',
-                            path:'demo-regist',
+                            name:'demo-formComponent',
+                            path:'demo-formComponent',
                             components:{
                                 default:function(){
-                                    return import(/* webpackChunkName: "portal/chunk/demo-regist" */'@portal/views/demo/regist.vue')
+                                    return import(/* webpackChunkName: "portal/chunk/demo-formComponent" */'@portal/views/demo/formComponent.vue')
                                 }
                             }
                         }

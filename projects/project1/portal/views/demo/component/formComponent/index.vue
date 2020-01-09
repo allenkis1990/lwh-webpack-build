@@ -3,8 +3,8 @@
     import {deepCopy} from '@portal/utils/lwh-utils'
     import {mapActions} from 'vuex'
     import {Message} from 'element-ui'
-    import componentReader from '@portal/views/demo/component/registComponent/utils/componentReader'
-    import rules from '@portal/views/demo/component/registComponent/utils/defaultvalidateRule'
+    import componentReader from '@portal/views/demo/component/formComponent/utils/componentReader'
+    import rules from '@portal/views/demo/component/formComponent/utils/defaultvalidateRule'
 
     let hbValidater = require('@portal/utils/hb-validater')
 
@@ -17,14 +17,14 @@
     let valider = new hbValidater(warnTip)
     export default {
         props:{
-            dataSource:{
+            dataConfig:{
                 type:Array
             }
         },
         data(){
             return {
-                copyDataSource:[],
-                registInfo:{
+                config:[],
+                formData:{
 
                 },
                 haha:'',
@@ -53,7 +53,7 @@
         methods:{
             getNodeArr(createEle,context){
                 let nodesArr = []
-                this.copyDataSource.forEach((item)=>{
+                this.config.forEach((item)=>{
                     let slot = this.$scopedSlots[`${item.key}`]//认#a='{user}'
 //                    let slot = this.$slots.aaa//只认#a后面带了作用域参数不认
                     if(slot){
@@ -63,7 +63,7 @@
                             }
                         },[
                             slot({
-                                registInfo:context.registInfo
+                                formData:context.formData
                             })
                         ]))
                     }else{
@@ -91,10 +91,10 @@
                     //初始化keyName
                     this.$set(this.ui.keyName,item.key,item.keyName)
                     //初始化注册MODEL字段
-                    this.$set(this.registInfo,item.key,item.value)
+                    this.$set(this.formData,item.key,item.value)
                 })
             },
-            initDataSource(nv){
+            initConfig(nv){
                 //item属性：required:是否必填  show:是否显示 value:默认值
                 nv.forEach((item)=>{
                     item.required===false?this.$set(item,'required',false):this.$set(item,'required',true)
@@ -106,7 +106,7 @@
             },
             getValidateRule(){
                 let res = []
-                this.copyDataSource.forEach((item)=>{
+                this.config.forEach((item)=>{
                     let temp = {
                         key:item.key,
                         required:item.required,
@@ -122,43 +122,32 @@
                 })
                 return res
             },
-            setRegValueAndMerge(){
-                let curValidateRule = this.getValidateRule()
-                let defaultValidateRule = deepCopy(rules)
-                curValidateRule.forEach((item)=>{
-                    defaultValidateRule.forEach((subItem)=>{
-                        if(item.key===subItem.key){
-                            for (let key in subItem) {
-                                if (!item.hasOwnProperty(key)) {
-                                    item[key] = subItem[key]
-                                }
+            //设置外层的value和内层的value,外层show为false的时候把这层的required,needRegValid设置为false
+            commonDo1(item){
+                item.value = this.formData[item.key]
+                let isArr= Array.isArray(item.validate)
+                if(isArr){
+                    item.validate.forEach((subItem,idx)=>{
+                        //给个默认的required,否则下面会被延续
+                        subItem.required = true
+                        if(!subItem.key){
+                            throw 'item.validate數組的key沒有配置'
+                        }else{
+                            if(this.formData.hasOwnProperty(subItem.key)){
+                                subItem.value = this.formData[subItem.key]
+                            }else{
+                                throw `表單裏沒有找到key:${subItem.key}`
                             }
                         }
                     })
-                    item.value = this.registInfo[item.key]
-                    let isArr= Array.isArray(item.validate)
-                    if(isArr){
-                        item.validate.forEach((subItem,idx)=>{
-                            //给个默认的required,否则下面会被延续
-                            subItem.required = true
-                            if(!subItem.key){
-                                throw 'item.validate數組的key沒有配置'
-                            }else{
-                                if(this.registInfo.hasOwnProperty(subItem.key)){
-                                    subItem.value = this.registInfo[subItem.key]
-                                }else{
-                                    throw `表單裏沒有找到key:${subItem.key}`
-                                }
-                            }
-                        })
-                    }
-                    if(!this.ui.show[item.key]){
-                        item.required = false
-                        item.needRegValid = false
-                    }
-                })
-
-                //如果其中一个字段被隐藏起来了，校验数组里有引用到这个字段那么把校验数组的这一项的required设置成false
+                }
+                if(!this.ui.show[item.key]){
+                    item.required = false
+                    item.needRegValid = false
+                }
+            },
+            //如果其中一个字段被隐藏起来了，校验数组里有引用到这个字段那么把校验数组的这一项的required，设置成false
+            commonDo2(curValidateRule){
                 curValidateRule.forEach((item)=>{
                     if(item.validate&&Array.isArray(item.validate)){
                         item.validate.forEach((subItem)=>{
@@ -171,6 +160,36 @@
                         })
                     }
                 })
+            },
+            //如果没有自定义表单策略用的是默认的 那么校验规则直接使用defaultValidateRule
+            //如果有自定义表单策略 那么校验规则则是当前的覆盖默认的
+            setRegValueAndMerge(){
+                let curValidateRule = []
+                if(this.dataConfig&&this.dataConfig.length){
+                    curValidateRule = this.getValidateRule()
+                    let defaultValidateRule = deepCopy(rules)
+                    curValidateRule.forEach((item)=>{
+                        defaultValidateRule.forEach((subItem)=>{
+                            if(item.key===subItem.key){
+                                for (let key in subItem) {
+                                    if (!item.hasOwnProperty(key)) {
+                                        item[key] = subItem[key]
+                                    }
+                                }
+                            }
+                        })
+                        this.commonDo1(item)
+                    })
+
+                    this.commonDo2(curValidateRule)
+                }else{
+                    curValidateRule = deepCopy(rules)
+                    curValidateRule.forEach((item)=>{
+                        this.commonDo1(item)
+                    })
+                    this.commonDo2(curValidateRule)
+                }
+
                 return curValidateRule
             },
             //ref暴露出去的方法
@@ -185,7 +204,9 @@
             let _this = this
             let nodeArr = this.getNodeArr(createEle,this)
             return createEle('div',{
-                //dom上原有的属性
+                class:{
+                    hide:!_this.config.length
+                }
             },[
                 createEle('ul',{},nodeArr),
                 createEle('button',{
@@ -199,11 +220,10 @@
                         click(){
                             let regRules = _this.setRegValueAndMerge()
 //                            console.log(regRules,33333);
-//                            _this.$emit('haha',_this.registInfo)
-
-                            let r = valider.validate(regRules)
+//                            _this.$emit('haha',_this.formData)
                             console.log(regRules,33);
-                            console.log('注册要提交的信息',_this.registInfo);
+                            let r = valider.validate(regRules)
+                            console.log('注册要提交的信息',_this.formData);
                             if(r){
                                 console.log('过');
                             }else{
@@ -216,14 +236,31 @@
             ])
         },
         watch:{
-            dataSource:{
+            dataConfig:{
                 handler(nv){
+                    let config
+                    let _this = this
+                    function init(dataConfig){
+                        config = deepCopy(dataConfig)
+                        _this.initConfig(config)
+                        _this.initComponentData(config)
+                        _this.config = config
+                    }
                     if(nv&&nv.length){
-                        let copyDataSource
-                        copyDataSource = deepCopy(nv)
-                        this.initDataSource(copyDataSource)
-                        this.initComponentData(copyDataSource)
-                        this.copyDataSource = copyDataSource
+                        //有config传进来,使用传进来的config
+                        init(nv)
+                    }else{
+//                        console.log('没有config传进来,默认取全部表单');
+                        //没有config传进来,默认取全部表单
+                        let mapper = Object.keys(componentReader.formMap)
+                        let config = []
+                        mapper.forEach((key)=>{
+                            config.push({
+                                key:key
+                            })
+                        })
+//                        console.log(config);
+                        init(config)
                     }
                 },
                 immediate:true

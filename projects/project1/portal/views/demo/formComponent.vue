@@ -1,23 +1,23 @@
 <template>
     <div class="regist">
-        <regist :data-source="registSource" ref="regist">
-            <template #userName="{registInfo}" style="display:none">
-                <!--{{registInfo}}-->
-                <span class="red">*</span>userNameSlot：<input type="text" v-model="registInfo.userName">
+        <form-component :data-config="config" ref="formComponent">
+            <template #userName="{formData}" style="display:none">
+                <!--{{formData}}-->
+                <span class="red">*</span>userNameSlot：<input type="text" v-model="formData.userName">
             </template>
-        </regist>
+        </form-component>
         <button @click="hide">隐藏userName</button>
         <button @click="show">显示userName</button>
     </div>
 </template>
 
 <script>
-    import regist from '@portal/views/demo/component/registComponent/index.vue'
+    import formComponent from '@portal/views/demo/component/formComponent/index.vue'
 
     export default {
         data() {
             return {
-                registSource: [
+                config: [
 //                    {key:'loginInput',value:'123',placeholder:'xxx',keyName:'ss',require:true,show:true},
                     {
                         key: 'loginInput',
@@ -50,16 +50,16 @@
                 alert(1111)
             },
             hide(){
-                let component = this.$refs.regist
+                let component = this.$refs.formComponent
                 component.hideItem('userName')
             },
             show(){
-                let component = this.$refs.regist
+                let component = this.$refs.formComponent
                 component.showItem('userName')
             }
         },
         components: {
-            regist
+            formComponent
         },
         watch: {}
     }

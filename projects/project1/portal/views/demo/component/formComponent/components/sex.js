@@ -5,11 +5,11 @@ export default function (context, key, createEle) {//context是作用域  key是
                 innerHTML:name
             },
             class:{
-                current:context.registInfo[key]===sex
+                current:context.formData[key]===sex
             },
             on:{
                 click(){
-                    context.registInfo[key] = sex
+                    context.formData[key] = sex
                 }
             }
         }
@@ -38,7 +38,7 @@ export default function (context, key, createEle) {//context是作用域  key是
             /*on: {
                 input(e) {
                     let value = e.target.value
-                    context.registInfo[key] = value
+                    context.formData[key] = value
                 }
             }*/
         },[

@@ -13,19 +13,19 @@ export default function (context, key, createEle) {//context是作用域  key是
         //key的中文名
         createEle('span', {
             domProps: {
-                innerHTML: context.ui.keyName[key] ? `${context.ui.keyName[key]}:` : '用户名:'
+                innerHTML: context.ui.keyName[key] ? `${context.ui.keyName[key]}:` : '账号:'
             }
         }),
         createEle('input', {
             domProps: {
                 type: 'text',
-                value: context.registInfo[key],
-                placeholder: context.ui.placeholder[key] || '请输入用户名'
+                value: context.formData[key],
+                placeholder: context.ui.placeholder[key] || '请输入账号'
             },
             on: {
                 input(e) {
                     let value = e.target.value
-                    context.registInfo[key] = value
+                    context.formData[key] = value
                 }
             }
         })
