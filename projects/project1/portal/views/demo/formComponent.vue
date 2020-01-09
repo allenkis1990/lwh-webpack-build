@@ -1,6 +1,8 @@
 <template>
     <div class="regist">
-        <form-component :data-config="config" ref="formComponent">
+        <form-component :data-config="config"
+                        :not-config-show="false"
+                        ref="formComponent">
             <template #userName="{formData}" style="display:none">
                 <!--{{formData}}-->
                 <span class="red">*</span>userNameSlot：<input type="text" v-model="formData.userName">

@@ -19,6 +19,10 @@
         props:{
             dataConfig:{
                 type:Array
+            },
+            notConfigShow:{
+                type:Boolean,
+                default:true
             }
         },
         data(){
@@ -252,15 +256,18 @@
                     }else{
 //                        console.log('没有config传进来,默认取全部表单');
                         //没有config传进来,默认取全部表单
-                        let mapper = Object.keys(componentReader.formMap)
-                        let config = []
-                        mapper.forEach((key)=>{
-                            config.push({
-                                key:key
+                        //notConfigShow为false的时候不展示默认所有表单
+                        if(this.notConfigShow){
+                            let mapper = Object.keys(componentReader.formMap)
+                            let config = []
+                            mapper.forEach((key)=>{
+                                config.push({
+                                    key:key
+                                })
                             })
-                        })
 //                        console.log(config);
-                        init(config)
+                            init(config)
+                        }
                     }
                 },
                 immediate:true
