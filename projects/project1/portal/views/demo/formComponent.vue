@@ -3,7 +3,7 @@
         <form-component :data-config="config"
                         :not-config-show="false"
                         ref="formComponent">
-            <template #userName="{formData}" style="display:none">
+            <template #userName="{formData}">
                 <!--{{formData}}-->
                 <span class="red">*</span>userNameSlot：<input type="text" v-model="formData.userName">
             </template>

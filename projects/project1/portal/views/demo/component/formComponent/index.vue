@@ -2,7 +2,7 @@
 <script>
     import {deepCopy} from '@portal/utils/lwh-utils'
     import {mapActions} from 'vuex'
-    import {Message} from 'element-ui'
+    import {Message,Button} from 'element-ui'
     import componentReader from '@portal/views/demo/component/formComponent/utils/componentReader'
     import rules from '@portal/views/demo/component/formComponent/utils/defaultvalidateRule'
 
@@ -213,9 +213,16 @@
                 }
             },[
                 createEle('ul',{},nodeArr),
+                /*<button type="button" class="el-button el-button--primary" style="margin-top: 15px;">
+                    <span>readme.md
+                    </span>
+                </button>*/
                 createEle('button',{
                     domProps: {
                         innerHTML: '提交'
+                    },
+                    class:{
+                        hide:!_this.config.length
                     },
                     on:{
                         //在点击提交前先看看有没有隐藏的，隐藏的自动把required设置为false needRegValid也设置为false
