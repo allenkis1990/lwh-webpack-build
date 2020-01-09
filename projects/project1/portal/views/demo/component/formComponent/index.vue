@@ -25,6 +25,9 @@
                 default:true
             }
         },
+        components:{
+            elButton:Button
+        },
         data(){
             return {
                 config:[],
@@ -213,16 +216,15 @@
                 }
             },[
                 createEle('ul',{},nodeArr),
-                /*<button type="button" class="el-button el-button--primary" style="margin-top: 15px;">
-                    <span>readme.md
-                    </span>
-                </button>*/
-                createEle('button',{
+                /*createEle('button',{
                     domProps: {
                         innerHTML: '提交'
                     },
-                    class:{
+                    /!*class:{
                         hide:!_this.config.length
+                    },*!/
+                    attrs:{
+                        vIf:false
                     },
                     on:{
                         //在点击提交前先看看有没有隐藏的，隐藏的自动把required设置为false needRegValid也设置为false
@@ -242,6 +244,15 @@
                             }
 
                         }
+                    }
+                })*/
+                createEle('el-button',{
+                    domProps:{
+                        innerText:'提交'
+                    },
+                    attrs:{
+                        type:'primary',
+                        loading:true
                     }
                 })
             ])
