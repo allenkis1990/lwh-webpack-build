@@ -2,6 +2,7 @@
     <div class="regist">
         <form-component :data-config="config"
                         :not-config-show="false"
+                        @submit="submit"
                         @beforeSubmit="beforeSubmit"
                         ref="formComponent">
             <template #userName="{formData}">
@@ -12,15 +13,21 @@
         </form-component>
         <button @click="hide">隐藏userName</button>
         <button @click="show">显示userName</button>
+        <md-component :md-content="mdContent"></md-component>
     </div>
 </template>
-
+<style>
+    .regist table{
+        margin-top:15px;
+    }
+</style>
 <script>
     import formComponent from '@portal/views/demo/component/formComponent/index.vue'
-
+    import mdComponent from '@portal/views/demo/component/mdComponent/index.vue'
     export default {
         data() {
             return {
+                mdContent:require('@portal/views/demo/component/formComponent/readme.md'),
                 config: [
                     {
                         key: 'loginInput',
@@ -61,10 +68,14 @@
 //                console.log(formData);
 //                console.log('提交前事件没过');
                 next()
+            },
+            submit(formData){
+                console.log('最终结果===>>',formData);
             }
         },
         components: {
-            formComponent
+            formComponent,
+            mdComponent
         },
         watch: {}
     }

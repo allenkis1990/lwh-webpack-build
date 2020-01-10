@@ -41,6 +41,7 @@
                 let _this = this
                 function submit(){
                     _this.loading = true
+                    _this.context.$emit('submit',_this.formData)
                     setTimeout(()=>{
                         _this.loading = false
                     },3000)
