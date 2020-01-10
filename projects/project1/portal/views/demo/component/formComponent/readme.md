@@ -1,6 +1,7 @@
 # 表单组件
 ## 作者：Allen Liu
 ## 特点：集复用性、可维护性、可配置性、自定义模板、自定义校验为一体
+## 源码github地址：https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/project1/portal/views/demo/component/formComponent
 ## 使用场景：
 ## 适用于大量使用表单的平台，比如A页面需要的表单为：用户名，密码，B页面需要的表单为：性别、爱好，这个组件里默认集成了这个平台所有的表单，你只需要指定需要的表单字段就可以按需拉取表单。
 

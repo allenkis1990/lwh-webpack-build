@@ -19,6 +19,6 @@ shoppingCartMock(app)
 
 
 
-app.listen('8787', function () {
+app.listen('8787','192.168.28.253', function () {
     console.log('服务启动成功');
 })
