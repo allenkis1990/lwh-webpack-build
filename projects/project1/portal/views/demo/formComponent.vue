@@ -2,10 +2,12 @@
     <div class="regist">
         <form-component :data-config="config"
                         :not-config-show="false"
+                        @beforeSubmit="beforeSubmit"
                         ref="formComponent">
             <template #userName="{formData}">
-                <!--{{formData}}-->
-                <span class="red">*</span>userNameSlot：<input type="text" v-model="formData.userName">
+                <span class="red">*</span>
+                姓名插槽：<input type="text"
+                                    v-model="formData.userName">
             </template>
         </form-component>
         <button @click="hide">隐藏userName</button>
@@ -20,7 +22,6 @@
         data() {
             return {
                 config: [
-//                    {key:'loginInput',value:'123',placeholder:'xxx',keyName:'ss',require:true,show:true},
                     {
                         key: 'loginInput',
                         needRegValid: true,
@@ -28,19 +29,19 @@
                             {
                                 key: 'loginInput',
                                 reg: /^lwh$/,
-                                msg: '请输入lwh'
+                                msg: '账号必须为lwh'
                             },
                             {
                                 key: 'userName',
-                                reg: /^123$/,
-                                msg: '账号为lwh的时候userName一定要是123'
+                                reg: /^刘伟恒$/,
+                                msg: '账号为lwh的时候姓名一定要是刘伟恒'
                             }
                         ]
                     },
-                    {key: 'userName',placeholder:'用户名啊'},
+                    {key: 'userName',placeholder:'请输入姓名啊啊啊啊',keyName:'姓名'},
                     {key: 'passWord'},
                     {key: 'sex'},
-                    {key: 'fav'}
+                    {key: 'fav',required:false}
                 ]
             }
         },
@@ -48,9 +49,6 @@
 
         },
         methods: {
-            fn() {
-                alert(1111)
-            },
             hide(){
                 let component = this.$refs.formComponent
                 component.hideItem('userName')
@@ -58,6 +56,11 @@
             show(){
                 let component = this.$refs.formComponent
                 component.showItem('userName')
+            },
+            beforeSubmit(formData,next){
+//                console.log(formData);
+//                console.log('提交前事件没过');
+                next()
             }
         },
         components: {
