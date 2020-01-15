@@ -58,6 +58,40 @@ export default new VueRouter({
                     name: 'projectXcx',
                     path: 'projectXcx',
                     component: () => import(/* webpackChunkName: "chunk/projectXcx" */'@portal/views/projectJy/projectXcx.vue')
+                },
+                {
+                    name:'demo',
+                    path:'demo',
+                    component:()=>import(/* webpackChunkName: "chunk/demo" */'@portal/views/demo/index.vue'),
+                    children:[
+                        {
+                            name:'demo-sku',
+                            path:'demo-sku',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "chunk/demo-sku" */'@portal/views/demo/sku.vue')
+                                }
+                            }
+                        },
+                        {
+                            name:'demo-shoppingCart',
+                            path:'demo-shoppingCart',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "chunk/demo-shoppingCart" */'@portal/views/demo/shoppingCart.vue')
+                                }
+                            }
+                        },
+                        {
+                            name:'demo-formComponent',
+                            path:'demo-formComponent',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "chunk/demo-formComponent" */'@portal/views/demo/formComponent.vue')
+                                }
+                            }
+                        }
+                    ]
                 }
             ]
         },

@@ -31,7 +31,7 @@
                 <div id="nav-bar" class="bar">
                     <div class="container">
                         <a>
-                            <div class="fl">Allen博客</div>
+                            <div class="fl">Allen博客<button @click="stateGo('demo')">777</button></div>
                         </a>
                         <ul class="fr nav-ul" v-tab-nav>
                             <!--<li loc="scroll-aboutMe">关于我</li>-->
