@@ -22,7 +22,9 @@
                        @batchDelete="batchDelete"
                        @beforeGoPay="beforeGoPay"
                        @goPay="goPay"></shopping-cart>
-
+        <div v-if="result.length">
+            提交数据===>{{result}}
+        </div>
         <md-component :md-content="mdContent"></md-component>
     </div>
 
@@ -38,7 +40,8 @@
             return {
                 shoppingCartList: [],
                 loading:false,
-                mdContent:require('@portal/views/demo/component/shoppingCartComponent/readme.md')
+                mdContent:require('@portal/views/demo/component/shoppingCartComponent/readme.md'),
+                result:[]
             }
         },
         mounted() {
@@ -91,6 +94,10 @@
                 next()
             },
             goPay(){
+//                getPayParams
+                let shoppingCartListComponent = this.$refs.shoppingCartList
+                let res = shoppingCartListComponent.getPayParams()
+                this.result = res
                 console.log('去结算回调');
             },
             beforeBatchDelete(next){

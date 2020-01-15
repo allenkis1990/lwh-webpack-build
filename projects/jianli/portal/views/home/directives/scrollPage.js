@@ -4,7 +4,7 @@
 import {offset} from '@portal/utils/lwh-utils'
 export default {
     inserted(ele,binding,vNode){
-        var navlocs = ['scroll-aboutMe','scroll-jobSelect','scroll-demo','scroll-demo2','scroll-demo3','scroll-base','scroll-mvvm','scroll-projectJy','scroll-lastJob']
+        var navlocs = ['scroll-aboutMe','scroll-jobSelect','scroll-demo','scroll-demo2','scroll-demo3','scroll-demo4','scroll-base','scroll-mvvm','scroll-projectJy','scroll-lastJob']
         window.scrollListener = function(){
             bindScrollFn(navlocs);
         }

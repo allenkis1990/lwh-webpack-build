@@ -31,7 +31,7 @@
                 <div id="nav-bar" class="bar">
                     <div class="container">
                         <a>
-                            <div class="fl">Allen博客<button @click="stateGo('demo')">777</button></div>
+                            <div class="fl">Allen博客</div>
                         </a>
                         <ul class="fr nav-ul" v-tab-nav>
                             <!--<li loc="scroll-aboutMe">关于我</li>-->
@@ -364,6 +364,50 @@
                             <div class="zp-cover">
                                 <h4>响应式页面3</h4>
                                 <p>兼容平板、安卓、IOS、PC等各种不同终端。</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section demo-section">
+                <h2 class="scroll-demo4">作品集（Vue组件封装）</h2>
+                <hr>
+                <div class="container center fades">
+                    <p class="center intros">我们可能不需要造那些例如i-view、element-ui等UI组件的轮子，但是我们一定需要封装一些日常前端业务开发中常用到功能，这样才能提高工作效率和代码的可维护性。</p>
+                    <div class="col-md-3 col-xs-6" @click="stateGo('demo-sku')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>商品sku选择器组件</h4>
+                                <p>内含详细使用说明（readme.md）</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="stateGo('demo-shoppingCart')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>购物车组件</h4>
+                                <p>内含详细使用说明（readme.md）</p>
+                                <img src="@portal/images/search.png" alt="查看">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-xs-6" @click="stateGo('demo-formComponent')">
+                        <div class="imgbox">
+                            <img src="@portal/images/01.jpg" alt="作品配图">
+                        </div>
+                        <a href="javascript:void(0)">
+                            <div class="zp-cover">
+                                <h4>表单复用组件</h4>
+                                <p>内含详细使用说明（readme.md）</p>
                                 <img src="@portal/images/search.png" alt="查看">
                             </div>
                         </a>
