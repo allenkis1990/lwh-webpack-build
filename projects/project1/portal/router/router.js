@@ -289,6 +289,11 @@ export default new VueRouter({
                             }
                         }
                     ]
+                },
+                {
+                    name:'eventBus',
+                    path: 'eventBus',
+                    component: () => import(/* webpackChunkName: "portal/chunk/eventBus" */'@portal/views/eventBus/index.vue')
                 }
             ]
         }
