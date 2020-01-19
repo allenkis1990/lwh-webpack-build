@@ -1,12 +1,14 @@
 <template>
   <div id="app">
+    <!--top只要在第一个根上有就好-->
+    <router-view name="top"></router-view>
     <transition name="fuck" appear>
       <keep-alive>
         <router-view v-if="$route.meta.keepAlive || $route.meta.keepAlive===undefined"></router-view>
       </keep-alive>
     </transition>
     <transition name="fuck" appear>
-      <router-view v-if="$route.meta.keepAlive===false"></router-view>
+      <router-view  v-if="$route.meta.keepAlive===false"></router-view>
     </transition>
   </div>
 </template>

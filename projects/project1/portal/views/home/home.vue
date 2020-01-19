@@ -27,6 +27,10 @@
 
 <script>
     export default {
+        //可自定义
+//        hahah:{
+//            name:'lwh'
+//        },
         mounted() {
         },
         methods: {

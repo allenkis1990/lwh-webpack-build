@@ -4,10 +4,14 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 import Root from '@portal/views/root/root.vue'
+import Top from '@portal/views/root/top.vue'
 
 // meta: {
 //     keepAlive: false // 不需要被缓存
 // },
+//App.vue被作为初始化实例的组件标签
+
+//Root.vue被作为第一个页面，其他路由全在Root的children里
 export default new VueRouter({
     mode: 'history',
     base: __dirname,
@@ -22,7 +26,10 @@ export default new VueRouter({
                 }
             },
             name:'root',
-            component: Root,
+            components: {
+                default:Root,
+                top:Top
+            },
             children: [
                 {
                     name: 'home',
