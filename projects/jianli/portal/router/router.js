@@ -13,9 +13,9 @@ export default new VueRouter({
     base: __dirname,
     routes: [
         {
-            path: dev?'/portal':'/',
+            path: multiApp?'/portal':'/',
             redirect: function () {
-                if(dev){
+                if(multiApp){
                     return '/portal/home'
                 }else{
                     return '/home'

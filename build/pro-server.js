@@ -1,17 +1,22 @@
-let project = '../dist/jianli'
+let argv = require('yargs').argv
+// if(argv.project){
+//     argv.project = argv.project.replace(/\s+/ig,'')
+// }
+let project = `../dist/${argv.project}`
 let express = require('express')
 let app = express()
 let path = require('path')
 let historyFallback = require('./task/distHistoryFallback.js')
 let config = require('./config/config.js')
-//url访问/的时候固定重定向到portal去
 
-/*if(config.apps.length>1){
-    app.get('/', function (req, res) {
-        res.redirect('/portal');
-    })
-}*/
-
+//jianli专用
+app.get('/demo/*',function(req,res){
+    var url = req.url.replace('/','')
+    url = url.replace(/\?.+$/,'')
+    url = decodeURI(url)
+    var p = path.resolve(__dirname,'../projects/jianli/portal',url)
+    res.sendFile(p)
+})
 
 
 app.get('/*',function(req,res){
@@ -23,6 +28,6 @@ app.get('/*',function(req,res){
 
 
 
-app.listen('8888','127.0.0.1',function(){
+app.listen('9898',function(){
     console.log('dist代码启动成功');
 })

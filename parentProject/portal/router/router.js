@@ -7,11 +7,11 @@ import Home from '@portal/views/home/home.vue'
 console.log('22688');
 
 export default new VueRouter({
-    mode: isHistoryModel?'history':'hash',
+    mode: 'history',
     base: __dirname,
     routes: [
         {
-            path: isHistoryModel?'/portal':'/',
+            path: multiApp?'/portal':'/',
             name:'home',
             component: Home,
             children: [

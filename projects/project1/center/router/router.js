@@ -6,11 +6,11 @@ import Home from '@center/views/home/home.vue'
 
 
 export default new VueRouter({
-    mode: isHistoryModel?'history':'hash',
+    mode: 'history',
     base: __dirname,
     routes: [
         {
-            path: isHistoryModel?'/center':'/',
+            path: multiApp?'/center':'/',
             name:'home',
             component: Home,
             children: [

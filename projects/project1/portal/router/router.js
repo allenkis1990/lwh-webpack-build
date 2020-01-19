@@ -10,16 +10,16 @@ import Top from '@portal/views/root/top.vue'
 //     keepAlive: false // 不需要被缓存
 // },
 //App.vue被作为初始化实例的组件标签
-
+console.log(multiApp,333);
 //Root.vue被作为第一个页面，其他路由全在Root的children里
 export default new VueRouter({
     mode: 'history',
     base: __dirname,
     routes: [
         {
-            path: dev?'/portal':'/',
+            path: multiApp?'/portal':'/',
             redirect: function () {
-                if(dev){
+                if(multiApp){
                     return '/portal/home'
                 }else{
                     return '/home'

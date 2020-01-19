@@ -27,6 +27,7 @@ function distHistoryFallback(req,res,project){
         var reg = /\?.*/
         var url = req.url.replace(reg,'')
         url = decodeURI(url)
+        // console.log(url,333);
         res.sendFile(path.resolve(__dirname,`../${project}${url}`))
     } else {
 
