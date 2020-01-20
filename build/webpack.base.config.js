@@ -210,6 +210,9 @@ function getExports(project){
             }
         },
         plugins: plugins.concat([
+            /*new copyWebpackPlugin([
+                {from:path.resolve(__dirname,`${config.mainDir}/${config.project}/portal/static`),to:path.resolve(__dirname,`./dist/${config.project}/portal/static`)}
+            ])*/
             new VueLoaderPlugin(),
             //在这边配置全局引入后哪个模块不用require都可以用
             // new webpack.ProvidePlugin({
