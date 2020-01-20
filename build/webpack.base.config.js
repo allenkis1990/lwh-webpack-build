@@ -182,23 +182,26 @@ function getExports(project){
             splitChunks: {
                 cacheGroups:Object.assign(cacheGroups,{
                     vendor: {
-                        chunks: 'initial',// 只对入口文件处理
+                        //initial(初始块)、async(按需加载块)、 all(全部块)
+                        chunks: 'all',
                         test:/[\\/]node_modules[\\/]/,
                         name: 'common/vendor',
                         priority: 10,
                         enforce: true,
                         // minChunks:1//最小被引用两次的公共库才被抽离到公共代码
-                    },
+                    }
                     //引用parent的assets另外写规则
-                    parentAssets : {
-                        chunks: 'all',// 只对入口文件处理
+                    //由于portal和center如果都引了assets会用一个导致会引入互相都没的代码故不用此策略
+                    /*parentAssets : {
+                        //initial(初始块)、async(按需加载块)、 all(全部块)
+                        chunks: 'all',
                         test: /[\\/]assets[\\/]/,
                         // test: /assets/,
-                        name: 'assets',
+                        name: 'common/assets',
                         priority: 10,
                         enforce: true,
                         minChunks:1//最小被引用两次的公共库才被抽离到公共代码
-                    }
+                    }*/
                 })
             },
             //抽取webpack运行文件代码

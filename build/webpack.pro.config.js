@@ -7,7 +7,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');//
 const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
 const PurifyCSSPlugin = require('purifycss-webpack');
 const glob = require('glob-all');
-// const PrerenderSPAPlugin = require('prerender-spa-plugin')
 let merge = require('webpack-merge')
 let baseConfig = require('./webpack.base.config.js')
 function getExports(project){
@@ -127,11 +126,6 @@ function getExports(project){
             // }),
             //使用内容hash的规则hash文件 便于静态资源缓存
             new webpack.HashedModuleIdsPlugin()
-            //服务端预渲染，适合静态页面
-            // new PrerenderSPAPlugin({
-            //     staticDir:path.resolve(__dirname,'..',config.dist,project),
-            //     routes:['/home']
-            // })
         ])
     }
 }
