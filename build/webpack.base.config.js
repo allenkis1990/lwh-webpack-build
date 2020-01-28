@@ -237,7 +237,9 @@ function getExports(project){
                                     regenerator: true,
                                     useESModules: true,
                                     moduleName: 'babel-runtime'
-                                },
+                                }
+                            ],
+                            [
                                 "component",
                                 {
                                     "libraryName": "element-ui",
