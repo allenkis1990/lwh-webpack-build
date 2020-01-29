@@ -41,7 +41,7 @@
     .fuck-enter-active, .fuck-leave-active {
         transition: all 1s ease;
     }
-    @import '~nms/element-ui/lib/theme-chalk/index.css';/*完整*/
+    /*@import '~nms/element-ui/lib/theme-chalk/index.css';!*完整*!*/
     @import "~@portal/style/base.css";
     @import "~@portal/style/bootstrap.min.css";
     @import "~@portal/style/cv.css";

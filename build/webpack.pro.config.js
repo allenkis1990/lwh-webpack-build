@@ -65,8 +65,8 @@ function getExports(project){
                         },
                         {loader: 'postcss-loader'}//配合postcss.config文件来加CSS前缀
                     ],
-                    exclude: [path.resolve(__dirname,'..',config.dist), /node_modules/],//排除解析dist文件夹
-                    include: [path.resolve(__dirname,`${config.mainDir}/${project}`),path.resolve(__dirname,`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve(__dirname,'..',config.dist)],//排除解析dist文件夹
+                    include: [path.resolve(__dirname,`${config.mainDir}/${project}`),path.resolve(__dirname,`${config.parentMainDir}`),/node_modules/]//只编译src文件夹
                 },
                 {
                     test: /\.less/,
@@ -87,8 +87,8 @@ function getExports(project){
                             loader: "less-loader"
                         }
                     ],
-                    exclude: [path.resolve(__dirname,'..',config.dist), /node_modules/],//排除解析dist文件夹
-                    include: [path.resolve(__dirname,`${config.mainDir}/${project}`),path.resolve(__dirname,`${config.parentMainDir}`)]//只编译src文件夹 但是node_modules除外
+                    exclude: [path.resolve(__dirname,'..',config.dist)],//排除解析dist文件夹
+                    include: [path.resolve(__dirname,`${config.mainDir}/${project}`),path.resolve(__dirname,`${config.parentMainDir}`),/node_modules/]//只编译src文件夹
                 }
             ])
         },
