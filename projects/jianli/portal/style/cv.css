@@ -802,6 +802,10 @@ h4{
     background-image: url("~@portal/images/vue.jpg");
     background-position: 0 2px;
 }
+.base-knowleage.typescript{
+    background-image: url("~@portal/images/typescript.jpg");
+    background-position: 6px 2px;
+}
 
 /*基本技能*/
 @media (min-width:0px) and (max-width:360px){

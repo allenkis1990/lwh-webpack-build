@@ -68,9 +68,10 @@
                             博客工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal')">https://github.com/allenkis1990/lwh-webpack-build/tree/master/projects/jianli/portal</a>。
                         </p>
                         <p>
-                            在前端工作中为了提高工作效率和契合某些业务场景，使用webpack+vue搭建过一些脚手架。<br>
-                            多子项目前端脚手架工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build')">https://github.com/allenkis1990/lwh-webpack-build</a><br>
-                            微服务前端脚手架工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh2-webpack-build')">https://github.com/allenkis1990/lwh2-webpack-build</a>
+                            在前端工作中为了提高工作效率和契合某些业务场景，使用webpack+vue搭建过一些脚手架。以下是github地址:<br>
+                            1.多子项目前端脚手架工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-webpack-build')">https://github.com/allenkis1990/lwh-webpack-build</a><br>
+                            2.微服务前端脚手架工程github地址：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh2-webpack-build')">https://github.com/allenkis1990/lwh2-webpack-build</a><br>
+                            3.Vue工程集成typescript脚手架改造（非vue-cli）：<a href="javascript:void(0)" @click="openGithubAddress('https://github.com/allenkis1990/lwh-vue-typescript')">https://github.com/allenkis1990/lwh-vue-typescript</a><br>
                         </p>
                     </div>
                 </div>
@@ -598,7 +599,8 @@
                     {name:'HTML5',className:'html5'},
                     {name:'CSS3',className:'css3'},
                     {name:'js',className:'js'},
-                    {name:'nodejs',className:'nodejs'}
+                    {name:'nodejs',className:'nodejs'},
+                    {name:'typeScript',className:'typescript'}
                 ],
                 mvvmKnowleage:[
                     {name:'angular1',className:'angular'},
