@@ -60,8 +60,8 @@ export default new VueRouter({
                     component: () => import(/* webpackChunkName: "chunk/projectXcx" */'@portal/views/projectJy/projectXcx.vue')
                 },
                 {
-                    name:'demo',
-                    path:'demo',
+                    name:'vueDemo',
+                    path:'vueDemo',
                     component:()=>import(/* webpackChunkName: "chunk/demo" */'@portal/views/demo/index.vue'),
                     children:[
                         {
