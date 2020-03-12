@@ -525,7 +525,7 @@
                 </div>
             </div>
         </div>
-        <!--<p class="center beian">© RedSpite | <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">蜀ICP备16004270号</a></p>-->
+       <!-- <p class="center beian">© Allen | <a href="http://www.beian.miit.gov.cn">闽ICP备19015435号</a></p>-->
 
     </div>
 </template>

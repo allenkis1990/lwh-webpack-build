@@ -818,3 +818,14 @@ h4{
         height:115px;
     }
 }
+.footer-view{
+    background:#500304;
+    color:#fff;
+    text-align:center;
+    padding:15px 0;
+    font-size:14px;
+}
+.footer-view a{
+    color:#fff;
+    font-size:14px;
+}

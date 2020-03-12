@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter);
 import Root from '@portal/views/root/root.vue'
+import Footer from '@portal/views/home/footer.vue'
 import Page404 from '@portal/views/Page404/Page404.vue'
 
 // meta: {
@@ -22,7 +23,10 @@ export default new VueRouter({
                 }
             },
             name:'root',
-            component: Root,
+            components: {
+                default:Root,
+                footer:Footer
+            },
             children: [
                 {
                     name:'home',

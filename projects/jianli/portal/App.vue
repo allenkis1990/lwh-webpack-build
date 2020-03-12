@@ -8,6 +8,7 @@
         <transition name="fuck" appear>
             <router-view v-if="!$route.meta.keepAlive"></router-view>
         </transition>
+        <router-view name="footer"></router-view>
     </div>
 </template>
 <script>
