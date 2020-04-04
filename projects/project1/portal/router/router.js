@@ -201,6 +201,15 @@ export default new VueRouter({
                                     return import(/* webpackChunkName: "portal/chunk/$attrs$listeners" */'@portal/views/component/$attrs$listeners.vue')
                                 }
                             }
+                        },
+                        {
+                            name: 'component-form',
+                            path: 'form',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "portal/chunk/component-form" */'@portal/views/component/component-form.vue')
+                                }
+                            }
                         }
                     ]
                 },

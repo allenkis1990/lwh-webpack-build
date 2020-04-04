@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>指令基本用法</div>
+        <!--<div>指令基本用法</div>
         <div v-my-directive="dataSource">
             <div>我是指令内部的元素
                 <button>修改外部data</button>
@@ -11,12 +11,32 @@
         <div>
             dataSource:{{dataSource}}
         </div>
-        <hr>
+        <hr>-->
         <div>实现表单校验指令</div>
         <button @click="initForm()">初始化表单状态</button>
         <div>
+            <p>表单1：</p>
             <form name="myForm">
                 <ul>
+                    <li>
+                        卧槽：<span name="wocao"
+                                v-model="wocao"
+                                v-required="true"></span>{{wocao}}
+                        <button @click="add($event)">add</button>
+                        <button @click="splice($event)">splice</button>
+                        <span style="color:red" v-if="myForm.wocao.$error.required&&myForm.wocao.$dirty">请添加一个数</span>
+                    </li>
+                    <li>
+                        生日：<el-date-picker
+                                v-model="birthDay"
+                                name="birthDay"
+                                value-format="yyyy-MM-dd"
+                                v-required="true"
+                                type="date"
+                                placeholder="请选择生日日期">
+                        </el-date-picker>
+                        <span style="color:red" v-if="myForm.birthDay.$error.required&&myForm.birthDay.$dirty">请选择生日日期</span>
+                    </li>
                     <li>
                         用户名：<input type="text"
                                v-pattern="/^[a-zA-Z]+$/"
@@ -60,13 +80,14 @@
                         <span style="color:red" v-if="myForm.num.$error.num&&myForm.num.$dirty&&!myForm.num.$error.required">请输入固定数字</span>
                     </li>
 
-                    <li style="color:red" v-if="myForm.$invalid">整个表单没过</li>
+                    <li style="color:red" v-if="myForm.$invalid">表单1整个没过</li>
                 </ul>
             </form>
         </div>
 
 
-        <div>
+        <div style="margin-top:20px;">
+            <p>表单2：</p>
             <form name="myForm2">
                 <ul>
                     <li>
@@ -79,7 +100,7 @@
                         <span style="color:red" v-if="myForm2.userName.$error.required&&myForm2.userName.$dirty">请输入用户名</span>
                         <span style="color:red" v-if="myForm2.userName.$error.pattern&&myForm2.userName.$dirty&&!myForm2.userName.$error.required">请输入英文</span>
                     </li>
-                    <li style="color:red" v-if="myForm2.$invalid">整个表单没过</li>
+                    <li style="color:red" v-if="myForm2.$invalid">表单2整个没过</li>
                 </ul>
             </form>
         </div>
@@ -93,6 +114,7 @@
      * 3.vNode.context修改指令外部的data
      */
     import validation from '@portal/views/directive/validation'
+    import {datePicker} from 'element-ui'
     export default {
         data(){
             return {
@@ -101,32 +123,30 @@
                 userName2:'',
                 phone:'',
                 num:'',
+                birthDay:'',
+                wocao:[],
                 sel:{data:''},
-                myForm:{
-                    sel:{
-                        $error:{}
-                    },
-                    userName:{
-                        $error:{}
-                    },
-                    phone:{
-                        $error:{}
-                    },
-                    num:{
-                        $error:{}
-                    }
-                },
-                myForm2:{
-                    userName:{
-                        $error:{}
-                    }
-                }
+                //相当于创建myForm2:{userName:{$error:{}}}
+                ...validation.initFormErrorObj('myForm', ['birthDay', 'sel','userName','phone','num','wocao']),
+                ...validation.initFormErrorObj('myForm2', ['userName'])
             }
+        },
+        beforeCreate(){},
+        components:{
+            elDatePicker:datePicker
         },
         mounted(){
             console.log('第一次加载');
         },
         methods: {
+            add(e){
+                e.preventDefault()
+                this.wocao.push(1)
+            },
+            splice(e){
+                e.preventDefault()
+                this.wocao.splice(this.wocao.length-1,1)
+            },
             fn(){
                 console.log(this.dataSource, '检验外部data是否变化');
             },

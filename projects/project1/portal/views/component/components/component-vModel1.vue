@@ -1,9 +1,9 @@
 <template>
     <div>
         请选择性别：<button :class="{'current':valueData.current==='1'}"
-                            @click="changeSex('1')">男</button>
+                            @click="changeSex($event,'1')">男</button>
                     <button :class="{'current':valueData.current==='2'}"
-                            @click="changeSex('2')">女</button>
+                            @click="changeSex($event,'2')">女</button>
     </div>
 </template>
 <style scoped>
@@ -38,7 +38,8 @@
         mounted(){
         },
         methods: {
-            changeSex(sex){
+            changeSex(e,sex){
+                e.preventDefault()
                 this.$emit('change-sex',{current:sex})
             }
         }

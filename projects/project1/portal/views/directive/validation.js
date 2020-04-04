@@ -16,7 +16,22 @@ import Vue from 'vue'
 
 var utils = {
     isNull(str){
-        return str === undefined || str === null || str.replace(/^\s+/,'').replace(/\s+$/,'') === ''
+        if(typeof str === 'object'){
+            var s = JSON.stringify(str)
+            if(s==='{}'){
+                return true
+            }else if(s==='[]'){
+                return true
+            }else{
+                return false
+            }
+        }else{
+            return str === undefined || str === null || str.replace(/^\s+/,'').replace(/\s+$/,'') === ''
+        }
+    },
+    //是不是原生表单，如果是组件或者div之类的就不是
+    isNativeFormType(ele){
+        return ele.nodeName.toLowerCase()==='input' || ele.nodeName.toLowerCase()==='select'
     }
 };
 function Validation(){
@@ -24,23 +39,37 @@ function Validation(){
 }
 
 Validation.prototype = {
-    //获取指令的options
+    //获取指令的options(暴露外用)
     getOptions(directive,compileFn){
         var _this = this;
         return {
             inserted(ele, bind, vNode){
+                var model
+                var isNativeFormType = utils.isNativeFormType(ele)
+                //原生的表单元素model在vNode.data.directives数组里，非原生的在vNode.data.model
+                if(!isNativeFormType){
+                    //Vue组件的name存在vNode.componentInstance里
+                    if(vNode.componentInstance){
+                        ele.name = vNode.componentInstance.name
+                    }else{
+                        ele.name = ele.getAttribute('name')
+                    }
+                    // console.log(ele.name,ele.nodeName,'111111');
+                    model = vNode.data.model
+                }else{
+                    var directives = vNode.data.directives;
+                    model = directives.find(function(item){
+                        return item.name === 'model'
+                    })
+                }
+                // console.log(vNode,33333);
                 if(!ele.name){
                     return false;
                 }
-
-                var directives = vNode.data.directives;
-                var model = directives.find(function(item){
-                    return item.name === 'model'
-                })
                 if(!model){
                     throw new Error('表单name为'+ele.name+'的v-model未定义')
                 }
-
+                // console.log(model,44444);
                 //缓存v-model表达式名称
                 ele.formModelName = model.expression;
 //                console.log(bind.value);
@@ -53,8 +82,10 @@ Validation.prototype = {
                         var context = vNode.context
                         var form = node.name
                         var formItem  = ele.name
-                        ele.inputEvent = function(e){
-                            var value = e.target.value;
+                        var isNativeFormType = utils.isNativeFormType(ele)
+                        function changeModelDo(v){
+                            v = v || ''
+                            var value = v;
                             context.$set(context[form][formItem],'$dirty',true)
                             if(compileFn){
                                 compileFn(ele,bind,vNode,value);
@@ -63,7 +94,25 @@ Validation.prototype = {
                             }
                             _this.setInvalid(context[form],context[form][formItem]);
                         }
-                        ele.addEventListener('input',ele.inputEvent)
+                        //如果是原生表单元素用监听input事件，如果不是就直接watch对象
+                        if(isNativeFormType){
+                            ele.inputEvent = function(e){
+                                var value = e.target.value;
+                                changeModelDo(value)
+                            }
+                            ele.addEventListener('input',ele.inputEvent)
+                        }else{
+                            var changeCount = 0
+                            context.$watch(ele.formModelName,function(nv){
+                                //有值或者非第一次都视为$dirty
+                                console.log(utils.isNull(nv),222);
+                                if(!utils.isNull(nv)|| changeCount>0){
+                                    changeModelDo(nv)
+                                }
+                                changeCount ++
+                            },{deep:true,immediate:true})
+                        }
+                        // console.log(ele.name);
                     },
                     findParentNode(compileFn,node, ele, bind, vNode){
                         if (node.nodeName.toLowerCase() === 'form') {
@@ -100,6 +149,27 @@ Validation.prototype = {
             }
         }
     },
+    //初始化form状态(暴露外用)
+    initForm(formName,context){
+        // console.log(context[formName]);
+        var form = context[formName]
+        form.$invalid = true
+        Object.keys(form).forEach(function(key){
+            if(key!=='$invalid'){
+                form[key].$invalid = true;
+                form[key].$dirty = false;
+
+                Object.keys(form[key].$error).forEach(function(subKey){
+                    var subKeyObj = form[key].$error;
+                    subKeyObj[subKey] = true;
+                })
+
+            }
+        })
+    },
+
+
+
     //初始化表单
     initFormObj(compileFn,node,ele,vNode,bind,directive){
         //缓存form的name
@@ -117,7 +187,7 @@ Validation.prototype = {
         //默认整个表单没过
         context.$set(formModel,'$invalid',true)
         var value = eval(`context.${ele.formModelName}`)
-        if(value){
+        if(!utils.isNull(value)){
             context.$set(formItemModel,'$dirty',true)
         }
         if(compileFn){
@@ -153,23 +223,18 @@ Validation.prototype = {
         fromObj.$invalid = formInvalid
 //            console.log(invalid);
     },
-    //初始化form状态
-    initForm(formName,context){
-        console.log(context[formName]);
-        var form = context[formName]
-        form.$invalid = true
-        Object.keys(form).forEach(function(key){
-            if(key!=='$invalid'){
-                form[key].$invalid = true;
-                form[key].$dirty = false;
 
-                Object.keys(form[key].$error).forEach(function(subKey){
-                    var subKeyObj = form[key].$error;
-                    subKeyObj[subKey] = true;
-                })
-
+    //初始化表单错误对象===》相当于创建myForm2:{userName:{$error:{}}}
+    initFormErrorObj(formName,formItemList){
+        let obj = {
+            [formName]:{}
+        }
+        formItemList.forEach((item)=>{
+            obj[formName][item] = {
+                $error:{}
             }
         })
+        return obj
     },
     //解析内置验证指令的方法
     compiler:{
