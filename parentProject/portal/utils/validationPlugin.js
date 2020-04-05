@@ -32,7 +32,8 @@ var utils = {
     }
 };
 
-
+var watcher = {}
+var curVm
 function Validation(){}
 Validation.prototype = {
     //获取指令的options(暴露外用)
@@ -40,6 +41,7 @@ Validation.prototype = {
         var _this = this;
         return {
             inserted(ele, bind, vNode){
+                curVm = vNode.context
                 var model
                 var isNativeFormType = utils.isNativeFormType(ele)
                 //原生的表单元素model在vNode.data.directives数组里，非原生的在vNode.data.model
@@ -115,6 +117,10 @@ Validation.prototype = {
                             if (!node.name) {
                                 return false;
                             }
+                            //新建一个watcher的form对象,用于销毁
+                            if(!watcher.hasOwnProperty(node.name) || !watcher[node.name]){
+                                watcher[node.name] = {}
+                            }
                             this.initFormObj(compileFn,node,ele,vNode,bind);
                         } else {
                             var parentNode = node.parentNode;
@@ -137,6 +143,27 @@ Validation.prototype = {
 
             unbind(ele,bind){
                 //销毁缓存的
+
+                //有watcher的话销毁watcher
+                if(watcher[ele.formName]){
+                    let curWatcher = watcher[ele.formName][ele.formItemName]
+                    if(curWatcher){
+                        curWatcher()
+                        curWatcher = undefined
+                    }
+
+                    let watcherKeys = Object.keys(watcher[ele.formName])
+                    let mapperWatcher = watcherKeys.map((item)=>{
+                        return watcher[ele.formName][item]!==undefined
+                    })
+                    if(!mapperWatcher.length){
+                        watcher[ele.formName] = null
+                        console.log(curVm,watcher,'vm');
+                    }
+                }
+
+
+                //不是watcher的话销毁dom监听事件
                 ele.formName = null;
                 ele.formItemName = null;
                 ele.formModelName = null;
