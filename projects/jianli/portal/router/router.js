@@ -94,6 +94,15 @@ export default new VueRouter({
                                     return import(/* webpackChunkName: "chunk/demo-formComponent" */'@portal/views/demo/formComponent.vue')
                                 }
                             }
+                        },
+                        {
+                            name:'demo-validationPlugin',
+                            path:'demo-validationPlugin',
+                            components:{
+                                default:function(){
+                                    return import(/* webpackChunkName: "chunk/demo-validationPlugin" */'@portal/views/demo/validationPlugin.vue')
+                                }
+                            }
                         }
                     ]
                 }

@@ -11,9 +11,6 @@
  * 详细例子见directive.vue文件
  */
 
-import Vue from 'vue'
-
-
 var utils = {
     isNull(str){
         if(typeof str === 'object'){
@@ -34,10 +31,9 @@ var utils = {
         return ele.nodeName.toLowerCase()==='input' || ele.nodeName.toLowerCase()==='select'
     }
 };
-function Validation(){
-    this.registInnerDirectives()
-}
 
+
+function Validation(){}
 Validation.prototype = {
     //获取指令的options(暴露外用)
     getOptions(directive,compileFn){
@@ -168,7 +164,18 @@ Validation.prototype = {
         })
     },
 
-
+    //初始化表单错误对象===》相当于创建myForm2:{userName:{$error:{}}}(暴露外用)
+    initFormErrorObj(formName,formItemList){
+        let obj = {
+            [formName]:{}
+        }
+        formItemList.forEach((item)=>{
+            obj[formName][item] = {
+                $error:{}
+            }
+        })
+        return obj
+    },
 
     //初始化表单
     initFormObj(compileFn,node,ele,vNode,bind,directive){
@@ -224,18 +231,6 @@ Validation.prototype = {
 //            console.log(invalid);
     },
 
-    //初始化表单错误对象===》相当于创建myForm2:{userName:{$error:{}}}
-    initFormErrorObj(formName,formItemList){
-        let obj = {
-            [formName]:{}
-        }
-        formItemList.forEach((item)=>{
-            obj[formName][item] = {
-                $error:{}
-            }
-        })
-        return obj
-    },
     //解析内置验证指令的方法
     compiler:{
         required(ele,bind,vNode,model){
@@ -277,11 +272,23 @@ Validation.prototype = {
             //typeUtils.setInvalid(fromObj,vaildObj);
         }
     },
-    registInnerDirectives(){
+    registInnerDirectives(Vue){
         Vue.directive('required',this.getOptions('required'))
         Vue.directive('pattern',this.getOptions('pattern'))
     },
     constructor:Validation
 }
+let vueFormValidation = new Validation()
 
-export default new Validation()
+
+
+let validationPlugin = {
+    install(Vue){
+        vueFormValidation.registInnerDirectives(Vue)
+    }
+}
+
+export let getOptions = vueFormValidation.getOptions.bind(vueFormValidation)
+export let initForm = vueFormValidation.initForm.bind(vueFormValidation)
+export let initFormErrorObj = vueFormValidation.initFormErrorObj.bind(vueFormValidation)
+export default validationPlugin

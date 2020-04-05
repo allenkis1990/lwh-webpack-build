@@ -7,10 +7,14 @@ import store from '@portal/store/store'
 import mixin from '@portal/utils/mixin'
 import elementUi from '@portal/utils/element-ui'
 import dialogPlugin from '@portal/utils/dialog'
+import validationPlugin from '@portal/utils/validationPlugin'
 import { sync } from 'vuex-router-sync'
 //把路由的对象放在全局的store里 this.$store.state.route
 sync(store, router);
+
+
 Vue.use(dialogPlugin)
+Vue.use(validationPlugin)
 
 
 // import instance from '@portal/utils/ajaxRequest'

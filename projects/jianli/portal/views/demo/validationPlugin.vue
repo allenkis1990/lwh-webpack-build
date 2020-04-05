@@ -1,25 +1,13 @@
 <template>
     <div>
-        <!--<div>指令基本用法</div>
-        <div v-my-directive="dataSource">
-            <div>我是指令内部的元素
-                <button>修改外部data</button>
-            </div>
-        </div>
-        <button @click="fn()">检验外部data是否变化</button>
-        <button @click="fuck()">随机改变外部值</button>
+        <div>表单校验指令</div>
+        <el-button @click="initForm()" type="primary">初始化表单状态</el-button>
         <div>
-            dataSource:{{dataSource}}
-        </div>
-        <hr>-->
-        <div>实现表单校验指令</div>
-        <button @click="initForm()">初始化表单状态</button>
-        <div>
-            <p>表单1：</p>
+            <h2>表单1：</h2>
             <form name="myForm">
-                <ul>
+                <ul class="validationList">
                     <li>
-                        卧槽：<span name="wocao"
+                        <span class="xing">*</span>添加至少一个数：<span name="wocao"
                                 v-model="wocao"
                                 v-required="true"></span>{{wocao}}
                         <button @click="add($event)">add</button>
@@ -27,7 +15,7 @@
                         <span style="color:red" v-if="myForm.wocao.$error.required&&myForm.wocao.$dirty">请添加一个数</span>
                     </li>
                     <li>
-                        生日：<el-date-picker
+                        <span class="xing">*</span>生日：<el-date-picker
                                 v-model="birthDay"
                                 name="birthDay"
                                 value-format="yyyy-MM-dd"
@@ -38,7 +26,7 @@
                         <span style="color:red" v-if="myForm.birthDay.$error.required&&myForm.birthDay.$dirty">请选择生日日期</span>
                     </li>
                     <li>
-                        用户名：<input type="text"
+                        <span class="xing">*</span>用户名：<input type="text"
                                v-pattern="/^[a-zA-Z]+$/"
                                v-model="userName"
                                name="userName"
@@ -48,7 +36,7 @@
                         <span style="color:red" v-if="myForm.userName.$error.pattern&&myForm.userName.$dirty&&!myForm.userName.$error.required">请输入英文</span>
                     </li>
                     <li>
-                        爱好：<select name="sel"
+                        <span class="xing">*</span>爱好：<select name="sel"
                                 v-model="sel.data"
                                 v-required="true">
                             <option value="">请选择</option>
@@ -60,7 +48,7 @@
 
 
                     <li>
-                        电话号码：<input type="text"
+                        <span class="xing">*</span>电话号码：<input type="text"
                                    v-pattern="/^\d{11}$/"
                                    v-model="phone"
                                    name="phone"
@@ -70,7 +58,7 @@
                         <span style="color:red" v-if="myForm.phone.$error.pattern&&myForm.phone.$dirty&&!myForm.phone.$error.required">请输入11位电话号码</span>
                     </li>
                     <li>
-                        固定数字：<input type="text"
+                        <span class="xing">*</span>固定数字：<input type="text"
                                    v-num="true"
                                    v-model="num"
                                    name="num"
@@ -86,12 +74,12 @@
         </div>
 
 
-        <div style="margin-top:20px;">
-            <p>表单2：</p>
+        <div style="margin-top:100px;">
+            <h2>表单2：</h2>
             <form name="myForm2">
-                <ul>
+                <ul class="validationList">
                     <li>
-                        用户名：<input type="text"
+                        <span class="xing">*</span>用户名：<input type="text"
                                    v-pattern="/^[a-zA-Z]+$/"
                                    v-model="userName2"
                                    name="userName"
@@ -104,20 +92,19 @@
                 </ul>
             </form>
         </div>
+
+        <md-component :md-content="mdContent"></md-component>
     </div>
 </template>
 
 <script>
-    /**
-     * 1.传进指令的data数据不是双向绑定的
-     * 2.只要外部有data发生变化就会触发指令内部的update钩子，需要去对比oldvalue和newValue
-     * 3.vNode.context修改指令外部的data
-     */
     import {getOptions,initForm,initFormErrorObj} from '@portal/utils/validationPlugin'
-    import {datePicker} from 'element-ui'
+    import {datePicker,button} from 'element-ui'
+    import mdComponent from '@portal/views/demo/component/mdComponent/index.vue'
     export default {
         data(){
             return {
+                mdContent:require('@portal/views/demo/component/validationPlugin/readme.md'),
                 dataSource: "initDataSource",
                 userName:'',
                 userName2:'',
@@ -131,12 +118,12 @@
                 ...initFormErrorObj('myForm2', ['userName'])
             }
         },
-        beforeCreate(){},
         components:{
-            elDatePicker:datePicker
+            elDatePicker:datePicker,
+            elButton:button,
+            mdComponent
         },
         mounted(){
-            console.log('第一次加载');
         },
         methods: {
             add(e){
@@ -147,34 +134,11 @@
                 e.preventDefault()
                 this.wocao.splice(this.wocao.length-1,1)
             },
-            fn(){
-                console.log(this.dataSource, '检验外部data是否变化');
-            },
-            fuck(){
-                this.dataSource = Math.random();
-            },
             initForm(){
                 initForm('myForm',this);
             }
         },
         directives: {
-            myDirective: {
-                inserted(ele, binding){
-
-                },
-                bind(ele, binding, vNode){
-                    var VNodeScope = vNode.context;
-                    ele.addEventListener('click', function (e) {
-                        var target = e.target;
-                        if (target.nodeName.toLowerCase() === 'button') {
-                            VNodeScope.dataSource = '我被指令内部修改了'
-                        }
-                    })
-                },
-                update(ele, binding, vNode){
-//                    console.log(binding, '指令内部监听更新');
-                }
-            },
             num:getOptions('num',function(ele,bind,vNode,value){
                 var context = vNode.context;
                 var form = ele.formName,
@@ -197,7 +161,13 @@
         height: 100%;
     }
 </style>
-<!--scoped-->
-<style lang="less" scoped>
-    @import "~@portal/less/onlyPortal.less";
+<style scoped lang="less">
+    .xing{color:red}
+    .validationList{
+        li{
+            margin-bottom:15px;
+        }
+    }
 </style>
+
+
