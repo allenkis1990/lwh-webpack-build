@@ -143,7 +143,6 @@ Validation.prototype = {
 
             unbind(ele,bind){
                 //销毁缓存的
-
                 //有watcher的话销毁watcher
                 if(watcher[ele.formName]){
                     let curWatcher = watcher[ele.formName][ele.formItemName]
@@ -158,7 +157,8 @@ Validation.prototype = {
                     })
                     if(!mapperWatcher.length){
                         watcher[ele.formName] = null
-                        console.log(curVm,watcher,'vm');
+                        // console.log(curVm,watcher,'vm');
+                        console.log(`form==>${ele.formName}销毁成功！`)
                     }
                 }
 
