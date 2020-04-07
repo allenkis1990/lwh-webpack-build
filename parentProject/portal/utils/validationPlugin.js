@@ -46,7 +46,7 @@ Validation.prototype = {
                 var isNativeFormType = utils.isNativeFormType(ele)
                 //原生的表单元素model在vNode.data.directives数组里，非原生的在vNode.data.model
                 if(!isNativeFormType){
-                    //Vue组件的name存在vNode.componentInstance里//
+                    //Vue组件的name存在vNode.componentInstance里
                     if(vNode.componentInstance){
                         ele.name = vNode.componentInstance.name || vNode.componentInstance.$attrs.name
                     }else{
