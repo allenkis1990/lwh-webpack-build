@@ -294,7 +294,7 @@ Validation.prototype = {
                     vaildObj.$error.pattern = true;
                 }
             } else {
-                vaildObj.$error.pattern = true;
+                vaildObj.$error.pattern = false;
             }
             //typeUtils.setInvalid(fromObj,vaildObj);
         }
