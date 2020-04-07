@@ -48,7 +48,7 @@ Validation.prototype = {
                 if(!isNativeFormType){
                     //Vue组件的name存在vNode.componentInstance里
                     if(vNode.componentInstance){
-                        ele.name = vNode.componentInstance.name
+                        ele.name = vNode.componentInstance.name || vNode.componentInstance.$attrs.name
                     }else{
                         ele.name = ele.getAttribute('name')
                     }
