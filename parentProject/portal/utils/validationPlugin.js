@@ -3,12 +3,7 @@
  */
 
 /**
- * Vue表单验证指令用法：
- * 一定要有form标签,form标签要有name属性
- * 表单元素也要有name属性，要有v-model属性
- * vue的data要定义表单相关的错误对象
- * 还可支持扩展表单验证指令
- * 详细例子见directive.vue文件
+  使用方法API见：https://www.allen19906666.com/vueDemo/demo-validationPlugin
  */
 
 var utils = {
@@ -31,7 +26,6 @@ var utils = {
         return ele.nodeName.toLowerCase()==='input' || ele.nodeName.toLowerCase()==='select'
     }
 };
-
 var watcher = {}
 var curVm
 function Validation(){}
@@ -93,7 +87,7 @@ Validation.prototype = {
                             _this.setInvalid(context[form],context[form][formItem]);
                         }
                         //如果是原生表单元素用监听input事件，如果不是就直接watch对象
-                        if(isNativeFormType){
+                        /*if(isNativeFormType){
                             ele.inputEvent = function(e){
                                 var value = e.target.value;
                                 changeModelDo(value)
@@ -109,8 +103,17 @@ Validation.prototype = {
                                 }
                                 changeCount ++
                             },{deep:true,immediate:true})
-                        }
+                        }*/
                         // console.log(ele.name);
+                        var changeCount = 0
+                        context.$watch(ele.formModelName,function(nv){
+                            //有值或者非第一次都视为$dirty
+                            console.log(utils.isNull(nv),222);
+                            if(!utils.isNull(nv)|| changeCount>0){
+                                changeModelDo(nv)
+                            }
+                            changeCount ++
+                        },{deep:true,immediate:true})
                     },
                     findParentNode(compileFn,node, ele, bind, vNode){
                         if (node.nodeName.toLowerCase() === 'form') {
