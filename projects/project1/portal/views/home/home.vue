@@ -22,6 +22,10 @@
             <img src="@portal/images/皮卡22.jpg">-->
             <div class="lwh">lwh</div>
             <div class="bgImg"></div>
+            <button @click="fn()">fn</button>
+            <iframe id="iWindow"
+                    style="display: none"
+                    src="http://193.168.70.86:8080/platform/checkEvaluation/startTest"></iframe>
         </div>
     </div>
 </template>
@@ -33,8 +37,21 @@
 //            name:'lwh'
 //        },
         mounted() {
+            //利用postmessage实现跨域
+            /*var iWindow = document.getElementById('iWindow').contentWindow;
+            setTimeout(()=>{
+                iWindow.postMessage('ok','http://localhost:8080')
+            },5000)*/
+            /*iWindow.onload=function(){
+                iWindow.postMessage('ok','http://localhost:8080/platform/checkEvaluation/startTest')
+            }*/
+
         },
         methods: {
+            fn(){
+                var iWindow = document.getElementById('iWindow').contentWindow
+                iWindow.postMessage('fn!!','http://193.168.70.86:8080')
+            },
             goState: function (stateName) {
                 this.$router.push({name: stateName});
             },
