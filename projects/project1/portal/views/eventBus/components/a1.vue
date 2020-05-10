@@ -7,7 +7,7 @@
     export default {
         mounted(){
             this.$bus.$on('haha',function(data){
-                console.log('bus输出====>',data);
+                console.log('bus输出!====>',data);
             })
         }
     }
