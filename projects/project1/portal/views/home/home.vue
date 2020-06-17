@@ -23,15 +23,18 @@
             <div class="lwh">lwh</div>
             <div class="bgImg"></div>
             <button @click="fn()">fn</button>
-            <iframe id="iWindow"
-                    style="display: none"
-                    src="http://193.168.70.86:8080/platform/checkEvaluation/startTest"></iframe>
+            <audio :src="mp3" controls></audio>
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        data(){
+            return {
+                mp3:require('@portal/images/haha.m4a')
+            }
+        },
         //可自定义
 //        hahah:{
 //            name:'lwh'

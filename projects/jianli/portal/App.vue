@@ -1,5 +1,7 @@
 <template>
     <div id="app">
+        <remote-js :src="socketioPath"></remote-js>
+        <remote-js :src="adaper"></remote-js>
         <transition name="fuck" appear>
             <keep-alive>
                 <router-view v-if="$route.meta.keepAlive"></router-view>
@@ -13,10 +15,12 @@
 </template>
 <script>
     import Vue from 'vue';
-
     export default {
         data: function () {
-            return {}
+            return {
+                socketioPath:'https://www.allen19906666.com/socket.io/socket.io.js',
+                adaper:'https://webrtc.github.io/adapter/adapter-latest.js'
+            }
         },
 
         mounted: function () {

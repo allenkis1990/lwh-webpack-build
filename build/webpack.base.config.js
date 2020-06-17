@@ -58,7 +58,7 @@ function getExports(project){
             dirName = `${app}/`
         }
         //portal,center等app下的图片资源解析
-        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4|swf)`)
+        let reg  = new RegExp(`${app}\\\\images\\\\.+\\.(gif|png|jpg|svg|ttf|woff|mp4|swf|mp3|m4a)`)
         rules.push(
             {
                 test:reg,

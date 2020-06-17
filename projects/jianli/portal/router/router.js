@@ -49,6 +49,16 @@ export default new VueRouter({
                     component: () => import(/* webpackChunkName: "chunk/faceDetect" */'@portal/views/faceDetect/faceDetect.vue')
                 },
                 {
+                    name: 'webrtcLive',
+                    path: 'webrtcLive',
+                    component: () => import(/* webpackChunkName: "chunk/webrtcLive" */'@portal/views/webrtcLive/webrtcLive.vue')
+                },
+                {
+                    name: 'webrtcLook',
+                    path: 'webrtcLook',
+                    component: () => import(/* webpackChunkName: "chunk/webrtcLook" */'@portal/views/webrtcLive/webrtcLook.vue')
+                },
+                {
                     name: 'projectPc',
                     path: 'projectPc',
                     component: () => import(/* webpackChunkName: "chunk/projectPc" */'@portal/views/projectJy/projectPc.vue')

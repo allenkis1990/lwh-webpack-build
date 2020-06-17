@@ -57,10 +57,10 @@ let config = {
     //port:!argv.design?'8080':'8181',
     port:'9999',
     designPort:'8181',
-    apps:['portal','center'],
-    // apps:['portal'],
-    // host:'127.0.0.1',
-     host:'192.168.28.253',
+    // apps:['portal','center'],
+    apps:['portal'],
+    host:'localhost',
+     // host:'193.168.70.87',
     dev:{
         publicPath:'/'
     },

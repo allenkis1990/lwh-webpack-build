@@ -19,6 +19,75 @@ elementUi(Vue)
 Vue.prototype.$http = axios
 // 混合
 Vue.mixin(mixin)
+
+//引入js的组件
+Vue.component('remote-js', {
+    render(createElement) {
+        let self = this;
+        let attrs = {
+            type: 'text/javascript'
+        };
+        self.async && (attrs.async = self.async);
+        self.defer && (attrs.defer = self.defer);
+        //虚拟节点不受BOM控制，模拟延迟效果
+        if (self.start) {
+            attrs.src = self.src;
+        }
+        let node = createElement('script', {
+            attrs
+        });
+        return node;
+    },
+    data() {
+        return {}
+    },
+    props: {
+        src: {
+            type: String,
+            required: true
+        },
+        async: {
+            type: Boolean,
+            default: false
+        },
+        defer: {
+            type: Boolean,
+            default: false
+        },
+        start: {
+            type: Boolean,
+            default: true
+        }
+    },
+    watch: {
+        start(newValue) {
+            let self = this;
+            if (newValue) {
+                self.$el.src = self.src;
+            }
+        }
+    }
+})
+//引入css的组件
+Vue.component('remote-css', {
+    render(createElement) {
+        return createElement('link', {
+            attrs: {
+                type: 'type="text/css"',
+                rel: "stylesheet",
+                href: this.href
+            }
+        });
+    },
+    props: {
+        href: {
+            type: String,
+            required: true
+        }
+    }
+})
+
+
 new Vue({
     el:'#app',
     router,
