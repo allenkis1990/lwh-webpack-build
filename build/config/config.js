@@ -59,8 +59,8 @@ let config = {
     designPort:'8181',
     // apps:['portal','center'],
     apps:['portal'],
-    host:'localhost',
-     // host:'193.168.70.87',
+    // host:'localhost',
+     host:'193.168.251.251',
     dev:{
         publicPath:'/'
     },
@@ -71,11 +71,11 @@ let config = {
     proxyList : {
         '/actions': {
             // target: 'http://127.0.0.1:8787/'
-            target: 'http://192.168.28.253:8787/'
+            target: 'http://193.168.251.251:8088/'
             // changeOrigin: false
         },
         '/socket.io': {
-            target: 'http://192.168.28.248:8080/'
+            target: 'http://193.168.251.251:8088/'
             // changeOrigin: false
         }
     }

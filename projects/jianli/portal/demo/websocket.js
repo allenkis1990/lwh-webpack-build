@@ -42,7 +42,7 @@ function wbStart(app){
 
                     //关闭弹窗
                     client.emit('hideDialog');
-                    client.broadcast.emit('hideDialog');
+                    // client.broadcast.emit('hideDialog');
 
 
                     var nameArr=collectUserArr(clientsArr);
@@ -67,7 +67,6 @@ function wbStart(app){
                     var index=findIndex(clientsArr,'name',match[1]);
                     //如果私聊的对象存在
                     if(index!==null){
-
                         //如果私聊的不是自己
                         if(match[1]!==msg.name){
                             //私聊对方可以看到 发私聊者也能看到信息

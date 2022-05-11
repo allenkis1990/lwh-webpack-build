@@ -48,8 +48,10 @@ Validation.prototype = {
                     }
                     // console.log(ele.name,ele.nodeName,'111111');
                     model = vNode.data.model
+                  // debugger
                 }else{
                     var directives = vNode.data.directives;
+                    // debugger
                     model = directives.find(function(item){
                         return item.name === 'model'
                     })
@@ -66,6 +68,7 @@ Validation.prototype = {
                 ele.formModelName = model.expression;
 //                console.log(bind.value);
                 var required = bind.value;
+                debugger
                 var methods = {
                     //初始化表单验证对象
                     initFormObj(compileFn,node,ele,vNode,bind){
@@ -132,6 +135,7 @@ Validation.prototype = {
                     }
                 }
 
+                //required为指令的值，没有值什么都不做
                 if (!required) {
                     return false;
                 } else {

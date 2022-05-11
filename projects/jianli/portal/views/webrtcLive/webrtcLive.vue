@@ -191,7 +191,9 @@
                 }*/
             },
             connect(user) {
-                socket = io.connect('http://193.168.70.87:8081');
+//                socket = io.connect('http://193.168.70.87:8081');
+//                socket = io.connect('https://www.allen19906666.com',{path:'/webrtcIo'});
+                socket = io.connect('https://www.allen19906666.com');
                 socket.emit('join', {
                     roomNum: this.roomNum,
                     nickName: this.nickName,

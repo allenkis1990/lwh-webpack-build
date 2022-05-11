@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <remote-js :src="socketioPath"></remote-js>
-        <remote-js :src="adaper"></remote-js>
+        <!--<remote-js :src="adaper"></remote-js>-->
         <transition name="fuck" appear>
             <keep-alive>
                 <router-view v-if="$route.meta.keepAlive"></router-view>

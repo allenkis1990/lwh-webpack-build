@@ -215,3 +215,48 @@ export function isSameObj(obj1,obj2){
     var obj2Sort = JSON.stringify(obj2).split('').sort()
     return JSON.stringify(obj1Sort)===JSON.stringify(obj2Sort)
 }
+
+export var cookieUtils = {
+    setItem(key, value, expires) {
+        let result = {key: key}
+        let method = expires ? 'localStorage' : 'sessionStorage'
+        result.value = value
+        setExpires()
+        window[method].setItem(key, JSON.stringify(result))
+
+        function setExpires() {
+            if (method === 'localStorage') {
+                result.expires = expires
+            }
+        }
+    },
+    getItem(key,hasExpires){
+        let res = null
+        let method = hasExpires ? 'localStorage' : 'sessionStorage'
+        let result = window[method].getItem(key)
+        if(result){
+            result = JSON.parse(result)
+            if(Object.prototype.toString.call(result)==='[object Object]'){
+                let value =  result.value
+                if(method==='localStorage'){
+                    let expireTime = result.expires
+                    if(expireTime - new Date().getTime() <= 0){
+                        this.removeItem(key,hasExpires)
+                    }else{
+                        res = value
+                    }
+                }else{
+                    res = value
+                }
+            }
+        }
+        return res
+    },
+    removeItem(key,hasExpires){
+        let method = hasExpires ? 'localStorage' : 'sessionStorage'
+        window[method].removeItem(key)
+    }
+}
+
+
+

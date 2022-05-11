@@ -25,14 +25,35 @@
             <button @click="fn()">fn</button>
             <audio :src="mp3" controls></audio>
         </div>
+        <div>
+            <el-table :data="gridData"
+                      stripe
+                      border
+                      style="width: 100%">
+                <el-table-column prop="obj.no"
+                                 label="编号"
+                                 width="180">
+                </el-table-column>
+                <el-table-column prop="obj.name"
+                                 label="姓名"
+                                 >
+                </el-table-column>
+            </el-table>
+        </div>
     </div>
 </template>
 
 <script>
+    import {Table,TableColumn} from 'element-ui'
     export default {
         data(){
             return {
-                mp3:require('@portal/images/haha.m4a')
+                mp3:require('@portal/images/haha.m4a'),
+                gridData:[
+                    {name:'allen',no:1,obj:{name:'obj-allen',no:'one'}},
+                    {name:'jack',no:2,obj:{name:'obj-jack',no:'two'}},
+                    {name:'tom',no:3,obj:{name:'obj-tom',no:'three'}}
+                ]
             }
         },
         //可自定义
@@ -61,6 +82,10 @@
             goPath: function (path) {
                 this.$router.push({path: path});
             }
+        },
+        components:{
+            elTable:Table,
+            elTableColumn:TableColumn
         }
     }
 </script>

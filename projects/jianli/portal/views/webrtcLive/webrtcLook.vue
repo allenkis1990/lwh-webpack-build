@@ -8,7 +8,7 @@
                        controls
                        autoplay></video>
             </div>
-            <div class="before">
+            <div id="before">
                 <div style="width: 250px;margin-bottom: 10px">
                     昵称：<el-input type="text" v-model="nickName"></el-input>
                 </div>
@@ -18,7 +18,7 @@
                            @click="enterRoom">连接直播间
                 </el-button>
             </div>
-            <div class="after" style="display: none">主播正在直播中！！</div>
+            <div id="after" style="display: none">主播正在直播中！！</div>
         </div>
     </div>
 </template>
@@ -93,7 +93,7 @@
 
 
                     pc.ontrack = (e) => {
-                        debugger
+//                        debugger
                         let remoteVideo = document.querySelector('#remoteVideo')
                         remoteVideo.srcObject = e.streams[0]
                     }
@@ -101,7 +101,9 @@
                 }
             },
             connect() {
-                socket = io.connect('http://193.168.70.87:8081');//
+//                socket = io.connect('https://www.allen19906666.com',{path:'/webrtcIo'});
+//                socket = io.connect('http://193.168.70.87:8081',{path:'/webrtcIo'});
+                socket = io.connect('https://www.allen19906666.com');
                 socket.emit('join', {
                     roomNum: this.roomNum,
                     nickName: this.nickName
@@ -116,7 +118,7 @@
                 socket.on('joined', (obj) => {
                     console.log('欢迎' + obj.nickName + '进入房间' + obj.roomNum)
                     console.log(obj);
-                    let before = document.querySelector('.before')
+                    let before = document.getElementById('before')
                     before.style.display = 'none'
                     this.createPc()
                 })
@@ -124,7 +126,7 @@
                 socket.on('otherJoined', (obj) => {
                     if(obj.isAnchor){
                         console.log(`欢迎 ${obj.isAnchor?'【主播】':''}${obj.nickName}进入房间${obj.roomNum}`)
-                        let after = document.querySelector('.after')
+                        let after = document.getElementById('after')
                         after.style.display = 'block'
                         before.style.display = 'none'
                     }else{
@@ -148,7 +150,7 @@
                         let remoteVideo = document.querySelector('#remoteVideo')
                         remoteVideo.srcObject = null
                         remoteVideo.src = ''
-                        let after = document.querySelector('.after')
+                        let after = document.getElementById('after')
                         after.textContent = '主播已经离开！！'
                     }
                 })

@@ -105,10 +105,10 @@ function getExports(project){
             //     testLoader:path.resolve('./loaders/testLoader.js')
             // },
             mainFields:['main'],
-            modules: [path.resolve(__dirname,'..',"node_modules"),path.resolve(__dirname,"loaders")]
+            modules: [path.resolve(__dirname,'..',""),path.resolve(__dirname,"loaders"),path.resolve(__dirname,"../node_modules")]
         },
         module:{
-            //不去解析的文件
+            //不去解析的文件node_modules
             // noParse: [/lwh\.js/],
             rules:rules.concat([
 

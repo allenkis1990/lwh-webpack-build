@@ -1,5 +1,9 @@
 // import 'babel-polyfill'
 // console.log('当前是否开发环境'+dev);
+/*document.body.addEventListener('click', function handle(event){
+    console.log(333444);
+}, true);*/
+
 import Vue from 'vue'
 import App from '@portal/App.vue'
 import router from '@portal/router/router'

@@ -138,8 +138,8 @@ margin-bottom:10px;" href="/">
 <script src="/demo/js/jquery-1.9.1.min.js"></script>
 <script>
 
-//    var socket = io.connect('http://192.168.28.248:8080');
-    var socket = io.connect('https://www.allen19906666.com');
+    var socket = io.connect('http://193.168.70.251:8088');
+//    var socket = io.connect('https://www.allen19906666.com');
     $(function(){
         $('.pending').hide();
         $('.socket-box').show();
@@ -221,11 +221,13 @@ margin-bottom:10px;" href="/">
             alert('不能和自己私聊！');
         });
 
+        //找不到私聊
         socket.on('canontFindPmUser',function(){
             alert('当前用户已经下线或者不存在！');
         });
 
 
+        //统计聊天室人数并展示
         socket.on('countTotalUser',function(data){
             console.log(data.arr);
             $('.user-count').text(data.arr.length);
@@ -242,6 +244,11 @@ margin-bottom:10px;" href="/">
 
         });
 
+
+
+//      socket.emit('wahaha',{name:'wahaha11111'})
+
+        //点击确定
         $('.initName').click(function(){
             var val=$('.initName-input').val();
             if(val===null|| $.trim(val)===''||val===undefined){
@@ -258,6 +265,8 @@ margin-bottom:10px;" href="/">
             }
         });
 
+
+        //选择头像
         $('.dialog-img-box li').click(function(){
             var $this=$(this),src=$this.find('img').attr('src');
             userImg=src;
@@ -266,6 +275,7 @@ margin-bottom:10px;" href="/">
         });
 
 
+        //按回车聊天
         $('.chat-input').keyup(function(e){
             var val=$(this).val();
             if(e.keyCode==13){
@@ -290,6 +300,7 @@ margin-bottom:10px;" href="/">
         });
 
 
+        //私聊
         $(".main-content,.silder-box").on('click','.chatUserName',function(){
             var text='@'+$(this).text()+' ';
             var input=$('.chat-input');
